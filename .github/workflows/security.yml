@@ -1,0 +1,13 @@
+on: [push]
+
+jobs:
+  local-php-security-checker:
+    runs-on: ubuntu-latest
+    name: checking
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Security Check action step
+        uses: actions/aozora0000/local-php-security-checker-action@v1
+        with:
+          lockFile: './composer.lock'
