@@ -1,0 +1,29 @@
+{
+    "name": "aozora0000/laravel-querial",
+    "description": "laravel request to query builder for search",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "aozora0000",
+            "email": "aozora0000@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Querial\\": "src/Querial"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Test\\Querial\\": "tests/Querial"
+        }
+    },
+    "require": {
+        "illuminate/http": "^8.28",
+        "illuminate/database": "^8.28"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    }
+}
