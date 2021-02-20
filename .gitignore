@@ -9,3 +9,4 @@ out
 gen
 
 vendor
+.phpunit.result.cache

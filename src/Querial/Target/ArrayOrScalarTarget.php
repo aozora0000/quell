@@ -31,6 +31,9 @@ class ArrayOrScalarTarget implements TargetInterface
      */
     public function getTarget(Request $request)
     {
+        if(!$this->isTarget($request)) {
+            return [];
+        }
         return is_array($request->input($this->target, [])) ?
             Arr::flatten($request->input($this->target, [])) :
             [$request->input($this->target, [])];

@@ -29,7 +29,7 @@ class BetweenTarget implements TargetInterface
     }
 
     /**
-     * @return ScalarTarget | DatetimeScalarTarget
+     * @return ScalarTarget
      */
     public function min(): ScalarTarget
     {
@@ -37,7 +37,7 @@ class BetweenTarget implements TargetInterface
     }
 
     /**
-     * @return ScalarTarget | DatetimeScalarTarget
+     * @return ScalarTarget
      */
     public function max(): ScalarTarget
     {
