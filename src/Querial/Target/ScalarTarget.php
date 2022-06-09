@@ -15,7 +15,7 @@ class ScalarTarget implements TargetInterface
         $this->target = $target . $postfix;
     }
 
-    public function isTarget(Request $request): bool
+    public function is(Request $request): bool
     {
         return
             $request->has($this->target) &&
@@ -28,7 +28,7 @@ class ScalarTarget implements TargetInterface
      *
      * @return string
      */
-    public function getTarget(Request $request)
+    public function of(Request $request)
     {
         return $request->input($this->target, '');
     }

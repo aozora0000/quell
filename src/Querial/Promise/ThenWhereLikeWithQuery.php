@@ -10,8 +10,8 @@ namespace Querial\Promise;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Querial\Contracts\PromiseInterface;
+use Querial\Contracts\Support\CreateAttributeFromTable;
 use Querial\Target\ScalarTarget;
-use Querial\Promises\CreateAttributeFromTable;
 
 class ThenWhereLikeWithQuery implements PromiseInterface
 {
@@ -25,7 +25,7 @@ class ThenWhereLikeWithQuery implements PromiseInterface
     /**
      * @var ScalarTarget
      */
-    protected ScalarTarget $inputTarget;
+    protected ScalarTarget $target;
     /**
      * @var string
      */
@@ -41,7 +41,7 @@ class ThenWhereLikeWithQuery implements PromiseInterface
     public function __construct(string $attribute, ?string $inputTarget = null, string $format = '%%%s%%')
     {
         $this->attribute   = $attribute;
-        $this->inputTarget = new ScalarTarget($inputTarget ?? $attribute);
+        $this->target      = new ScalarTarget($inputTarget ?? $attribute);
         $this->format      = $format;
     }
 
@@ -57,7 +57,7 @@ class ThenWhereLikeWithQuery implements PromiseInterface
             return $builder;
         }
         $attribute = $this->createAttributeFromTable($builder, $this->attribute);
-        $value     = addcslashes($this->inputTarget->getTarget($request), '%_\\');
+        $value     = addcslashes($this->target->of($request), '%_\\');
 
         return $builder->where($attribute, 'LIKE', sprintf($this->format, $value));
     }
@@ -69,6 +69,6 @@ class ThenWhereLikeWithQuery implements PromiseInterface
      */
     public function resolveIf(Request $request): bool
     {
-        return $this->inputTarget->isTarget($request);
+        return $this->target->is($request);
     }
 }

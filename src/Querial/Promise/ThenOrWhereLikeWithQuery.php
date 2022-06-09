@@ -5,12 +5,13 @@
  * Date: 2020-06-26
  * Time: 06:57
  */
+
 namespace Querial\Promise;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Querial\Contracts\PromiseInterface;
-use Querial\Promises\CreateAttributeFromTable;
+use Querial\Contracts\Support\CreateAttributeFromTable;
 use Querial\Target\ScalarTarget;
 
 class ThenOrWhereLikeWithQuery implements PromiseInterface
@@ -25,7 +26,7 @@ class ThenOrWhereLikeWithQuery implements PromiseInterface
     /**
      * @var ScalarTarget
      */
-    protected ScalarTarget $inputTarget;
+    protected ScalarTarget $target;
     /**
      * @var string
      */
@@ -33,22 +34,20 @@ class ThenOrWhereLikeWithQuery implements PromiseInterface
 
     /**
      * FactoryInterface constructor.
-     *
      * @param string      $attribute
      * @param string|null $inputTarget
      * @param string      $format
      */
     public function __construct(string $attribute, ?string $inputTarget = null, string $format = '%%%s%%')
     {
-        $this->attribute   = $attribute;
-        $this->inputTarget = new ScalarTarget($inputTarget ?? $attribute);
-        $this->format      = $format;
+        $this->attribute = $attribute;
+        $this->target = new ScalarTarget($inputTarget ?? $attribute);
+        $this->format = $format;
     }
 
     /**
      * @param Request $request
      * @param Builder $builder
-     *
      * @return Builder
      */
     public function resolve(Request $request, Builder $builder): Builder
@@ -57,18 +56,17 @@ class ThenOrWhereLikeWithQuery implements PromiseInterface
             return $builder;
         }
         $attribute = $this->createAttributeFromTable($builder, $this->attribute);
-        $value     = addcslashes($this->inputTarget->getTarget($request), '%_\\');
+        $value = addcslashes($this->target->of($request), '%_\\');
 
         return $builder->orWhere($attribute, 'LIKE', sprintf($this->format, $value));
     }
 
     /**
      * @param Request $request
-     *
      * @return bool
      */
     public function resolveIf(Request $request): bool
     {
-        return $this->inputTarget->isTarget($request);
+        return $this->target->is($request);
     }
 }

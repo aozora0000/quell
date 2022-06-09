@@ -10,8 +10,9 @@ namespace Querial\Promise;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Querial\Contracts\PromiseInterface;
+use Querial\Contracts\Support\CreateAttributeFromTable;
 use Querial\Target\ScalarTarget;
-use Querial\Promises\CreateAttributeFromTable;
+use Querial\Target\TargetInterface;
 
 class ThenWhereEqualWithQuery implements PromiseInterface
 {
@@ -25,7 +26,7 @@ class ThenWhereEqualWithQuery implements PromiseInterface
     /**
      * @var TargetInterface
      */
-    protected TargetInterface $inputTarget;
+    protected TargetInterface $target;
 
     /**
      * FactoryInterface constructor.
@@ -36,7 +37,7 @@ class ThenWhereEqualWithQuery implements PromiseInterface
     public function __construct(string $attribute, ?string $inputTarget = null)
     {
         $this->attribute   = $attribute;
-        $this->inputTarget = new ScalarTarget($inputTarget ?: $attribute);
+        $this->target      = new ScalarTarget($inputTarget ?: $attribute);
     }
 
     /**
@@ -52,7 +53,7 @@ class ThenWhereEqualWithQuery implements PromiseInterface
         }
         $attribute = $this->createAttributeFromTable($builder, $this->attribute);
 
-        return $builder->where($attribute, '=', $this->inputTarget->getTarget($request));
+        return $builder->where($attribute, '=', $this->target->of($request));
     }
 
     /**
@@ -62,6 +63,6 @@ class ThenWhereEqualWithQuery implements PromiseInterface
      */
     public function resolveIf(Request $request): bool
     {
-        return $this->inputTarget->isTarget($request);
+        return $this->target->is($request);
     }
 }

@@ -10,8 +10,8 @@ namespace Querial\Promise;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Querial\Contracts\PromiseInterface;
+use Querial\Contracts\Support\CreateAttributeFromTable;
 use Querial\Contracts\Support\PromiseAggregateImpl;
-use Querial\Promises\CreateAttributeFromTable;
 
 class ThenWhereHasRelation implements PromiseInterface
 {
@@ -66,6 +66,6 @@ class ThenWhereHasRelation implements PromiseInterface
      */
     public function resolveIf(Request $request): bool
     {
-        return $this->aggregator === null ? true : $this->aggregator->resolveIf($request);
+        return $this->aggregator === null || $this->aggregator->resolveIf($request);
     }
 }

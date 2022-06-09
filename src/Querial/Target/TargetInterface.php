@@ -10,12 +10,12 @@ interface TargetInterface
      *
      * @return bool
      */
-    public function isTarget(Request $request): bool;
+    public function is(Request $request): bool;
 
     /**
      * @param Request $request
      *
      * @return mixed
      */
-    public function getTarget(Request $request);
+    public function of(Request $request);
 }

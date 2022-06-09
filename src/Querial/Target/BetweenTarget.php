@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
+
 namespace Querial\Target;
 
 use Carbon\Carbon;
@@ -18,7 +19,6 @@ class BetweenTarget implements TargetInterface
 
     /**
      * BetweenTarget constructor.
-     *
      * @param ScalarTarget $maxTarget
      * @param ScalarTarget $minTarget
      */
@@ -44,21 +44,21 @@ class BetweenTarget implements TargetInterface
         return $this->maxTarget;
     }
 
-    public function isTarget(Request $request): bool
+    public function is(Request $request): bool
     {
-        return $this->maxTarget->isTarget($request) && $this->minTarget->isTarget($request);
+        return $this->maxTarget->is($request) && $this->minTarget->is($request);
     }
 
     /**
+     * TODO: min(), max()を比較並べ替えした後に取れるようにした方が良かった
      * @param Request $request
-     *
-     * @return Carbon[]
+     * @return string[]
      */
-    public function getTarget(Request $request)
+    public function of(Request $request)
     {
         return array_values(Arr::sort([
-            $this->maxTarget->getTarget($request),
-            $this->minTarget->getTarget($request),
+            $this->maxTarget->of($request),
+            $this->minTarget->of($request),
         ]));
     }
 }

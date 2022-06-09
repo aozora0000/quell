@@ -10,9 +10,9 @@ namespace Querial\Promise;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Querial\Contracts\PromiseInterface;
+use Querial\Contracts\Support\CreateAttributeFromTable;
 use Querial\Target\BetweenTarget;
 use Querial\Target\ScalarTarget;
-use Querial\Promises\CreateAttributeFromTable;
 
 class ThenWhereBetweenWithQuery implements PromiseInterface
 {
@@ -55,14 +55,14 @@ class ThenWhereBetweenWithQuery implements PromiseInterface
         }
         $attribute = $this->createAttributeFromTable($builder, $this->attribute);
 
-        if ($this->target->isTarget($request)) {
-            return $builder->whereBetween($attribute, $this->target->getTarget($request));
+        if ($this->target->is($request)) {
+            return $builder->whereBetween($attribute, $this->target->of($request));
         }
-        if ($this->target->max()->isTarget($request)) {
-            $builder->where($attribute, '<=', $this->target->max()->getTarget($request));
+        if ($this->target->max()->is($request)) {
+            $builder->where($attribute, '<=', $this->target->max()->of($request));
         }
-        if ($this->target->min()->isTarget($request)) {
-            $builder->where($attribute, '>=', $this->target->min()->getTarget($request));
+        if ($this->target->min()->is($request)) {
+            $builder->where($attribute, '>=', $this->target->min()->of($request));
         }
 
         return $builder;
@@ -76,8 +76,8 @@ class ThenWhereBetweenWithQuery implements PromiseInterface
     public function resolveIf(Request $request): bool
     {
         return
-            $this->target->isTarget($request) ||
-            $this->target->max()->isTarget($request) ||
-            $this->target->min()->isTarget($request);
+            $this->target->is($request) ||
+            $this->target->max()->is($request) ||
+            $this->target->min()->is($request);
     }
 }

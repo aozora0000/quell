@@ -16,7 +16,7 @@ class ArrayOrScalarTarget implements TargetInterface
         $this->target = $target . $postfix;
     }
 
-    public function isTarget(Request $request): bool
+    public function is(Request $request): bool
     {
         return
             $request->has($this->target) &&
@@ -29,11 +29,12 @@ class ArrayOrScalarTarget implements TargetInterface
      *
      * @return array
      */
-    public function getTarget(Request $request)
+    public function of(Request $request)
     {
-        if(!$this->isTarget($request)) {
+        if (!$this->is($request)) {
             return [];
         }
+
         return is_array($request->input($this->target, [])) ?
             Arr::flatten($request->input($this->target, [])) :
             [$request->input($this->target, [])];

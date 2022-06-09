@@ -5,8 +5,38 @@
  * Date: 2020-06-16
  * Time: 13:02
  */
+
 namespace Querial;
+
+use Closure;
+use Illuminate\Database\Eloquent\Builder;
+use Querial\Contracts\PromiseInterface;
+use Throwable;
 
 interface PipelineInterface
 {
+    /**
+     * @param PromiseInterface $promise
+     * @return static
+     */
+    public function then(PromiseInterface $promise): self;
+
+    /**
+     * @param Closure $callback
+     * @return static
+     */
+    public function onFailed(Closure $callback): self;
+
+    /**
+     * @param Closure $callback
+     * @return static
+     */
+    public function onFinally(Closure $callback): self;
+
+    /**
+     * @param Builder $builder
+     * @return Builder
+     * @throws Throwable
+     */
+    public function build(Builder $builder): Builder;
 }

@@ -10,8 +10,8 @@ namespace Querial\Promise;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Querial\Contracts\PromiseInterface;
+use Querial\Contracts\Support\CreateAttributeFromTable;
 use Querial\Target\ArrayOrScalarTarget;
-use Querial\Promises\CreateAttributeFromTable;
 
 class ThenWhereInArrayWithQuery implements PromiseInterface
 {
@@ -24,7 +24,7 @@ class ThenWhereInArrayWithQuery implements PromiseInterface
     /**
      * @var ArrayOrScalarTarget
      */
-    protected ArrayOrScalarTarget $inputTarget;
+    protected ArrayOrScalarTarget $target;
 
     /**
      * FactoryInterface constructor.
@@ -35,7 +35,7 @@ class ThenWhereInArrayWithQuery implements PromiseInterface
     public function __construct(string $attribute, ?string $inputTarget = null)
     {
         $this->attribute   = $attribute;
-        $this->inputTarget = new ArrayOrScalarTarget($inputTarget ?: $attribute);
+        $this->target      = new ArrayOrScalarTarget($inputTarget ?: $attribute);
     }
 
     /**
@@ -45,7 +45,7 @@ class ThenWhereInArrayWithQuery implements PromiseInterface
      */
     public function resolveIf(Request $request): bool
     {
-        return $this->inputTarget->isTarget($request);
+        return $this->target->is($request);
     }
 
     /**
@@ -61,6 +61,6 @@ class ThenWhereInArrayWithQuery implements PromiseInterface
         }
         $attribute = $this->createAttributeFromTable($builder, $this->attribute);
 
-        return $builder->whereIn($attribute, $this->inputTarget->getTarget($request));
+        return $builder->whereIn($attribute, $this->target->of($request));
     }
 }

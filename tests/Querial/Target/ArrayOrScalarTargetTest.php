@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Querial\Target;
 
 use Illuminate\Http\Request;
@@ -34,25 +33,25 @@ class ArrayOrScalarTargetTest extends TestCase
 
     /**
      * @dataProvider dataProvider
+     *
      * @param bool  $expect
      * @param array $data
      */
-    public function testIsTarget(bool $expect, array $data): void
+    public function testIs(bool $expect, array $data): void
     {
-        $target = new ArrayOrScalarTarget('email');
+        $target  = new ArrayOrScalarTarget('email');
         $request = Request::create('/', 'GET', $data);
-        static::assertEquals($expect, $target->isTarget($request));
+        static::assertEquals($expect, $target->is($request));
     }
 
-    /**
-     */
-    public function testGetTarget(): void
+
+    public function testOf(): void
     {
         $target = new ArrayOrScalarTarget('email');
 
-        $data = ['email' => '@'];
+        $data    = ['email' => '@'];
         $request = Request::create('/', 'GET', $data);
-        static::assertEquals(['@'], $target->getTarget($request));
+        static::assertEquals(['@'], $target->of($request));
 
         $data = [
             'email' => [
@@ -61,14 +60,14 @@ class ArrayOrScalarTargetTest extends TestCase
             ],
         ];
         $request = Request::create('/', 'GET', $data);
-        static::assertEquals(['@', '@'], $target->getTarget($request));
+        static::assertEquals(['@', '@'], $target->of($request));
 
-        $data = ['email' => ''];
+        $data    = ['email' => ''];
         $request = Request::create('/', 'GET', $data);
-        static::assertEquals([], $target->getTarget($request));
+        static::assertEquals([], $target->of($request));
 
-        $data = [];
+        $data    = [];
         $request = Request::create('/', 'GET', $data);
-        static::assertEquals([], $target->getTarget($request));
+        static::assertEquals([], $target->of($request));
     }
 }

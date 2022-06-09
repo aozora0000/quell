@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Querial\Test\Target;
 
 use Illuminate\Http\Request;
@@ -28,26 +27,28 @@ class ScalarTargetTest extends TestCase
 
     /**
      * @dataProvider dataProvider
+     *
      * @param bool  $expect
      * @param array $data
      */
-    public function testIsTarget(bool $expect, array $data): void
+    public function testIs(bool $expect, array $data): void
     {
         $target  = new ScalarTarget('email');
         $request = Request::create('/', 'GET', $data);
-        static::assertEquals($expect, $target->isTarget($request));
+        static::assertEquals($expect, $target->is($request));
     }
 
     /**
      * @dataProvider dataProvider
+     *
      * @param bool  $expect
      * @param array $data
      */
-    public function testGetTarget(bool $expect, array $data): void
+    public function testOf(bool $expect, array $data): void
     {
         $target  = new ScalarTarget('email');
         $request = Request::create('/', 'GET', $data);
         static::assertIsBool($expect);
-        static::assertEquals($target->getTarget($request), $request->get('email'));
+        static::assertEquals($target->of($request), $request->get('email'));
     }
 }

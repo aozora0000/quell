@@ -1,9 +1,8 @@
 <?php declare(strict_types=1);
 namespace Querial\Contracts\Support;
 
-
 use Querial\Contracts\PromiseInterface;
-use Querial\Exceptions\UnsupportedClassTypeException;
+use Querial\Exceptions\InvalidClassException;
 
 abstract class PromiseAggregateImpl implements PromiseInterface
 {
@@ -21,7 +20,7 @@ abstract class PromiseAggregateImpl implements PromiseInterface
     {
         foreach ($promises as $promise) {
             if (!$promise instanceof PromiseInterface) {
-                throw new UnsupportedClassTypeException('PromiseInterfaceに属していないクラスは使用出来ません');
+                throw new InvalidClassException('Required PromiseInterface Implement in Class');
             }
         }
         $this->promises = $promises;

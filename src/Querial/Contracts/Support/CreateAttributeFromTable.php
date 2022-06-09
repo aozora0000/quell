@@ -5,7 +5,7 @@
  * Date: 2020-06-26
  * Time: 08:42
  */
-namespace Querial\Promises;
+namespace Querial\Contracts\Support;
 
 use Illuminate\Database\Eloquent\Builder;
 
