@@ -1,5 +1,5 @@
 <?php declare(strict_types=1);
-namespace Querial\Target;
+namespace Querial\Contracts;
 
 use Illuminate\Http\Request;
 

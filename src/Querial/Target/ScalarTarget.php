@@ -2,6 +2,7 @@
 namespace Querial\Target;
 
 use Illuminate\Http\Request;
+use Querial\Contracts\TargetInterface;
 
 class ScalarTarget implements TargetInterface
 {

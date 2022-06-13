@@ -10,14 +10,12 @@ namespace Querial\Promise;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Querial\Contracts\PromiseInterface;
-use Querial\Contracts\Support\CreateAttributeFromTable;
+use Querial\Contracts\Support\PromiseQuery;
+use Querial\Helper\LikeFormatHelper;
 use Querial\Target\ScalarTarget;
 
-class ThenOrWhereLikeWithQuery implements PromiseInterface
+class ThenOrWhereLikeWithQuery extends PromiseQuery
 {
-    use CreateAttributeFromTable;
-
     /**
      * @var string
      */
@@ -27,22 +25,25 @@ class ThenOrWhereLikeWithQuery implements PromiseInterface
      * @var ScalarTarget
      */
     protected ScalarTarget $target;
+
     /**
-     * @var string
+     * @var LikeFormatHelper
      */
-    protected string $format;
+    protected LikeFormatHelper $format;
 
     /**
      * FactoryInterface constructor.
      * @param string      $attribute
      * @param string|null $inputTarget
+     * @param string|null $table
      * @param string      $format
      */
-    public function __construct(string $attribute, ?string $inputTarget = null, string $format = '%%%s%%')
+    public function __construct(string $attribute, ?string $inputTarget = null, ?string $table = null, string $format = '%%%s%%')
     {
         $this->attribute = $attribute;
         $this->target = new ScalarTarget($inputTarget ?? $attribute);
-        $this->format = $format;
+        $this->format = new LikeFormatHelper($format);
+        $this->table = $table;
     }
 
     /**
@@ -58,7 +59,7 @@ class ThenOrWhereLikeWithQuery implements PromiseInterface
         $attribute = $this->createAttributeFromTable($builder, $this->attribute);
         $value = addcslashes($this->target->of($request), '%_\\');
 
-        return $builder->orWhere($attribute, 'LIKE', sprintf($this->format, $value));
+        return $builder->orWhere($attribute, 'LIKE', $this->format->ofValue($value));
     }
 
     /**

@@ -1,5 +1,5 @@
 <?php declare(strict_types=1);
-namespace Querial\Target;
+namespace Test\Querial\Target;
 
 use Illuminate\Http\Request;
 use PHPUnit\Framework\TestCase;

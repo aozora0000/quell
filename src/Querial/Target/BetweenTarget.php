@@ -2,9 +2,9 @@
 
 namespace Querial\Target;
 
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Querial\Contracts\TargetInterface;
 
 class BetweenTarget implements TargetInterface
 {

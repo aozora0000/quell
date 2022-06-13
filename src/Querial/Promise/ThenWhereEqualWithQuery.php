@@ -5,19 +5,17 @@
  * Date: 2020-06-26
  * Time: 06:57
  */
+
 namespace Querial\Promise;
 
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Http\Request;
-use Querial\Contracts\PromiseInterface;
-use Querial\Contracts\Support\CreateAttributeFromTable;
+use Querial\Contracts\Support\PromiseQuery;
+use Querial\Contracts\TargetInterface;
 use Querial\Target\ScalarTarget;
-use Querial\Target\TargetInterface;
 
-class ThenWhereEqualWithQuery implements PromiseInterface
+class ThenWhereEqualWithQuery extends PromiseQuery
 {
-    use CreateAttributeFromTable;
-
     /**
      * @var string
      */
@@ -30,23 +28,18 @@ class ThenWhereEqualWithQuery implements PromiseInterface
 
     /**
      * FactoryInterface constructor.
-     *
      * @param string      $attribute
      * @param string|null $inputTarget
+     * @param string|null $table
      */
-    public function __construct(string $attribute, ?string $inputTarget = null)
+    public function __construct(string $attribute, ?string $inputTarget = null, ?string $table = null)
     {
-        $this->attribute   = $attribute;
-        $this->target      = new ScalarTarget($inputTarget ?: $attribute);
+        $this->attribute = $attribute;
+        $this->target = new ScalarTarget($inputTarget ?: $attribute);
+        $this->table = $table;
     }
 
-    /**
-     * @param Request $request
-     * @param Builder $builder
-     *
-     * @return Builder
-     */
-    public function resolve(Request $request, Builder $builder): Builder
+    public function resolve(Request $request, EloquentBuilder $builder): EloquentBuilder
     {
         if (!$this->resolveIf($request)) {
             return $builder;
@@ -58,7 +51,6 @@ class ThenWhereEqualWithQuery implements PromiseInterface
 
     /**
      * @param Request $request
-     *
      * @return bool
      */
     public function resolveIf(Request $request): bool

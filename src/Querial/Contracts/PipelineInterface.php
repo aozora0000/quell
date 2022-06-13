@@ -6,11 +6,10 @@
  * Time: 13:02
  */
 
-namespace Querial;
+namespace Querial\Contracts;
 
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
-use Querial\Contracts\PromiseInterface;
 use Throwable;
 
 interface PipelineInterface

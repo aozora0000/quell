@@ -4,6 +4,7 @@ namespace Querial;
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Querial\Contracts\PipelineInterface;
 use Querial\Contracts\PromiseInterface;
 use Querial\Contracts\Support\ResolvedFilter;
 use Throwable;
