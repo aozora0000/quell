@@ -1,10 +1,11 @@
 <?php declare(strict_types=1);
 namespace Querial\Contracts\Support;
 
+use Illuminate\Http\Request;
 use Querial\Contracts\PromiseInterface;
 use Querial\Exceptions\InvalidClassException;
 
-abstract class PromiseAggregateImpl implements PromiseInterface
+abstract class AggregatePromiseQuery implements PromiseInterface
 {
     /**
      * @var PromiseInterface[]
@@ -24,5 +25,12 @@ abstract class PromiseAggregateImpl implements PromiseInterface
             }
         }
         $this->promises = $promises;
+    }
+
+    protected function resolvedFilter(array $promises, Request $request): array
+    {
+        return array_filter($promises, static function (PromiseInterface $promise) use ($request) {
+            return $promise->resolveIf($request);
+        });
     }
 }

@@ -1,21 +1,20 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 /**
  * Created by PhpStorm.
  * User: aozora0000
  * Date: 2020-06-26
  * Time: 06:57
  */
+
 namespace Querial\Promise;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Querial\Contracts\PromiseInterface;
-use Querial\Contracts\Support\CreateAttributeFromTable;
+use Querial\Contracts\Support\PromiseQuery;
 use Querial\Target\ArrayOrScalarTarget;
 
-class ThenWhereInArrayWithQuery implements PromiseInterface
+class ThenWhereInArrayWithQuery extends PromiseQuery
 {
-    use CreateAttributeFromTable;
     /**
      * @var string
      */
@@ -28,19 +27,19 @@ class ThenWhereInArrayWithQuery implements PromiseInterface
 
     /**
      * FactoryInterface constructor.
-     *
      * @param string      $attribute
      * @param string|null $inputTarget
+     * @param string|null $table
      */
-    public function __construct(string $attribute, ?string $inputTarget = null)
+    public function __construct(string $attribute, ?string $inputTarget = null, ?string $table = null)
     {
-        $this->attribute   = $attribute;
-        $this->target      = new ArrayOrScalarTarget($inputTarget ?: $attribute);
+        $this->attribute = $attribute;
+        $this->target = new ArrayOrScalarTarget($inputTarget ?: $attribute);
+        $this->table = $table;
     }
 
     /**
      * @param Request $request
-     *
      * @return bool
      */
     public function resolveIf(Request $request): bool
@@ -51,7 +50,6 @@ class ThenWhereInArrayWithQuery implements PromiseInterface
     /**
      * @param Request $request
      * @param Builder $builder
-     *
      * @return Builder
      */
     public function resolve(Request $request, Builder $builder): Builder

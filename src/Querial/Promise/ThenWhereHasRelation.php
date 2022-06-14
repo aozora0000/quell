@@ -5,17 +5,16 @@
  * Date: 2020-06-26
  * Time: 07:37
  */
+
 namespace Querial\Promise;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Querial\Contracts\PromiseInterface;
-use Querial\Contracts\Support\CreateAttributeFromTable;
-use Querial\Contracts\Support\PromiseAggregateImpl;
+use Querial\Contracts\Support\AggregatePromiseQuery;
+use Querial\Contracts\Support\PromiseQuery;
 
-class ThenWhereHasRelation implements PromiseInterface
+class ThenWhereHasRelation extends PromiseQuery
 {
-    use CreateAttributeFromTable;
 
     /**
      * @var string
@@ -23,26 +22,24 @@ class ThenWhereHasRelation implements PromiseInterface
     protected string $relation;
 
     /**
-     * @var PromiseAggregateImpl | null
+     * @var AggregatePromiseQuery | null
      */
-    protected ?PromiseAggregateImpl $aggregator;
+    protected ?AggregatePromiseQuery $aggregator;
 
     /**
      * ThenHasRelation constructor.
-     *
-     * @param string                    $relation
-     * @param PromiseAggregateImpl|null $aggregator
+     * @param string                     $relation
+     * @param AggregatePromiseQuery|null $aggregator
      */
-    public function __construct(string $relation, ?PromiseAggregateImpl $aggregator)
+    public function __construct(string $relation, ?AggregatePromiseQuery $aggregator = null)
     {
-        $this->relation   = $relation;
+        $this->relation = $relation;
         $this->aggregator = $aggregator;
     }
 
     /**
      * @param Request $request
      * @param Builder $builder
-     *
      * @return Builder
      */
     public function resolve(Request $request, Builder $builder): Builder
@@ -61,7 +58,6 @@ class ThenWhereHasRelation implements PromiseInterface
 
     /**
      * @param Request $request
-     *
      * @return bool
      */
     public function resolveIf(Request $request): bool

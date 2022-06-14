@@ -10,7 +10,7 @@ class ThenOrWhereLikeWithQueryTest extends WithEloquentModelTestCase
     public function testResolve(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
-        $model = $this->createModel('users');
+        $model = $this->createModel();
         $query = $model->newQuery();
 
         // 検索するテーブルを指定してクエリを作成する

@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Querial\Contracts\Support\AggregatePromiseQuery;
 
-class ThenWherePromisesAggregator extends AggregatePromiseQuery
+class ThenOrWherePromisesAggregator extends AggregatePromiseQuery
 {
     public function resolveIf(Request $request): bool
     {
@@ -19,7 +19,7 @@ class ThenWherePromisesAggregator extends AggregatePromiseQuery
         }
         $promises = $this->resolvedFilter($this->promises, $request);
 
-        return $builder->where(function (Builder $query) use ($promises, $request) {
+        return $builder->orWhere(function (Builder $query) use ($promises, $request) {
             foreach ($promises as $promise) {
                 $promise->resolve($request, $query);
             }

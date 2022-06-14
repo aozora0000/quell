@@ -15,7 +15,7 @@ class ThenWhereEqualWithQueryTest extends WithEloquentModelTestCase
     public function testResolve(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
-        $model = $this->createModel('users');
+        $model = $this->createModel();
         $query = $model->newQuery();
 
         // リクエストに存在するキーでwhereを掛ける
@@ -43,7 +43,7 @@ EOT
     public function testResolveAnotherTable(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
-        $model = $this->createModel('users');
+        $model = $this->createModel();
         $query = $model->newQuery();
 
         // 検索するテーブルを指定してクエリを作成する

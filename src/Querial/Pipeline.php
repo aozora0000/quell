@@ -6,12 +6,10 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Querial\Contracts\PipelineInterface;
 use Querial\Contracts\PromiseInterface;
-use Querial\Contracts\Support\ResolvedFilter;
 use Throwable;
 
 class Pipeline implements PipelineInterface
 {
-    use ResolvedFilter;
 
     /**
      * @var Request
@@ -77,6 +75,13 @@ class Pipeline implements PipelineInterface
         $this->finally = $callback;
 
         return $this;
+    }
+
+    protected function resolvedFilter(array $promises, Request $request): array
+    {
+        return array_filter($promises, static function (PromiseInterface $promise) use ($request) {
+            return $promise->resolveIf($request);
+        });
     }
 
     /**
