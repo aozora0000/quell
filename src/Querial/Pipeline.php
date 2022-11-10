@@ -17,6 +17,11 @@ class Pipeline implements PipelineInterface
     private Request $request;
 
     /**
+     * @var bool
+     */
+    private bool $is_default = true;
+
+    /**
      * @var array<PromiseInterface>
      */
     private array $promises = [];
@@ -30,6 +35,11 @@ class Pipeline implements PipelineInterface
      * @var Closure|null
      */
     private ?Closure $finally = null;
+
+    /**
+     * @var Closure|null
+     */
+    private ?Closure $default = null;
 
     /**
      * IlluminateRequestCriteria constructor.
@@ -73,7 +83,12 @@ class Pipeline implements PipelineInterface
     public function onFinally(Closure $callback): self
     {
         $this->finally = $callback;
+        return $this;
+    }
 
+    public function onDefault(Closure $closure): self
+    {
+        $this->default = $closure;
         return $this;
     }
 
@@ -95,20 +110,44 @@ class Pipeline implements PipelineInterface
     {
         try {
             $promises = $this->resolvedFilter($this->promises, $this->request);
+            if(count($promises) !== 0) {
+                $this->is_default = false;
+            }
             foreach ($promises as $promise) {
                 $builder = $promise->resolve($this->request, $builder);
             }
         } catch (Throwable $exception) {
-            if ($this->failed === null) {
+            if (!$this->hasFailed()) {
                 throw $exception;
             }
+            $this->is_default = false;
             $builder = call_user_func($this->failed, $this->request, $builder, $exception);
         }
 
-        if ($this->finally !== null) {
+        if ($this->hasFinally()) {
+            $this->is_default = false;
             $builder = call_user_func($this->finally, $this->request, $builder);
         }
 
+        if($this->is_default && $this->hasDefault()) {
+            $builder = call_user_func($this->default, $builder);
+        }
+
         return $builder;
+    }
+
+    public function hasFailed(): bool
+    {
+        return $this->failed !== null;
+    }
+
+    public function hasFinally(): bool
+    {
+        return $this->finally !== null;
+    }
+
+    public function hasDefault(): bool
+    {
+        return $this->default !== null;
     }
 }

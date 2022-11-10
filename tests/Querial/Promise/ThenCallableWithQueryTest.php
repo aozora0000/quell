@@ -3,20 +3,22 @@
 namespace Test\Querial\Promise;
 
 use Illuminate\Http\Request;
-use Querial\Promise\ThenWhereHasRelation;
+use Querial\Promise\ThenWhereEqualWithQuery;
 use Test\WithEloquentModelTestCase;
 
-class ThenWhereHasRelationTest extends WithEloquentModelTestCase
+class ThenCallableWithQueryTest extends WithEloquentModelTestCase
 {
-    public function testResolve()
+
+    public function testResolve(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
         $model = $this->createModel();
         $query = $model->newQuery();
 
-        $query = (new ThenWhereHasRelation('items'))->resolve($request, $query);
+        // TODO: ここから
+        $query = (new ThenWhereEqualWithQuery('name'))->resolve($request, $query);
         $this->assertSame(<<<EOT
-select * from "users" where exists (select * from "items" where "users"."id" = "items"."user_id")
+select * from "users" where "users"."name" = 'test'
 EOT
             , $query->toRawSql());
     }

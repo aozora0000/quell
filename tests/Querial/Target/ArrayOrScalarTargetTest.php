@@ -3,6 +3,7 @@ namespace Test\Querial\Target;
 
 use Illuminate\Http\Request;
 use PHPUnit\Framework\TestCase;
+use Querial\Target\ArrayOrScalarTarget;
 
 class ArrayOrScalarTargetTest extends TestCase
 {

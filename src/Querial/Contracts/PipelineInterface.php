@@ -27,10 +27,20 @@ interface PipelineInterface
     public function onFailed(Closure $callback): self;
 
     /**
+     * @return bool
+     */
+    public function hasFailed(): bool;
+
+    /**
      * @param Closure $callback
      * @return static
      */
     public function onFinally(Closure $callback): self;
+
+    /**
+     * @return bool
+     */
+    public function hasFinally(): bool;
 
     /**
      * @param Builder $builder

@@ -16,7 +16,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Test\\Querial\\": "tests/Querial"
+            "Test\\": "tests"
         }
     },
     "require": {

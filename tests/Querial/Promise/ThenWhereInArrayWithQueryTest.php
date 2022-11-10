@@ -4,7 +4,7 @@ namespace Test\Querial\Promise;
 
 use Illuminate\Http\Request;
 use Querial\Promise\ThenWhereInArrayWithQuery;
-use Test\Querial\WithEloquentModelTestCase;
+use Test\WithEloquentModelTestCase;
 
 class ThenWhereInArrayWithQueryTest extends WithEloquentModelTestCase
 {

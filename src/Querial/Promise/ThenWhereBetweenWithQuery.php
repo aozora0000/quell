@@ -9,15 +9,13 @@ namespace Querial\Promise;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Querial\Contracts\PromiseInterface;
 use Querial\Contracts\Support\CreateAttributeFromTable;
+use Querial\Contracts\Support\PromiseQuery;
 use Querial\Target\BetweenTarget;
 use Querial\Target\ScalarTarget;
 
-class ThenWhereBetweenWithQuery implements PromiseInterface
+class ThenWhereBetweenWithQuery extends PromiseQuery
 {
-    use CreateAttributeFromTable;
-
     /**
      * @var string
      */

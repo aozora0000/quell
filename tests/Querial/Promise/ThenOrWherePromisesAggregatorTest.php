@@ -3,10 +3,10 @@
 namespace Test\Querial\Promise;
 
 use Illuminate\Http\Request;
+use Querial\Promise\ThenOrWherePromisesAggregator;
 use Querial\Promise\ThenWhereEqualWithQuery;
 use Querial\Promise\ThenWhereLikeWithQuery;
-use Querial\Promise\ThenOrWherePromisesAggregator;
-use Test\Querial\WithEloquentModelTestCase;
+use Test\WithEloquentModelTestCase;
 
 class ThenOrWherePromisesAggregatorTest extends WithEloquentModelTestCase
 {

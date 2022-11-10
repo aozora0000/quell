@@ -4,7 +4,7 @@ namespace Querial\Promise;
 
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
-use Test\Querial\WithEloquentModelTestCase;
+use Test\WithEloquentModelTestCase;
 
 /**
  * @property Builder $builder

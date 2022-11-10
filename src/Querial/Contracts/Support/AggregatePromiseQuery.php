@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
+
 namespace Querial\Contracts\Support;
 
 use Illuminate\Http\Request;
@@ -14,7 +15,6 @@ abstract class AggregatePromiseQuery implements PromiseInterface
 
     /**
      * ThenOrPromisesAggregator constructor.
-     *
      * @param PromiseInterface[] $promises
      */
     final public function __construct(array $promises)
@@ -27,6 +27,11 @@ abstract class AggregatePromiseQuery implements PromiseInterface
         $this->promises = $promises;
     }
 
+    /**
+     * @param PromiseInterface[] $promises
+     * @param Request            $request
+     * @return PromiseInterface[]
+     */
     protected function resolvedFilter(array $promises, Request $request): array
     {
         return array_filter($promises, static function (PromiseInterface $promise) use ($request) {

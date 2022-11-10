@@ -11,7 +11,7 @@ namespace Querial\Promise;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Querial\Contracts\Support\PromiseQuery;
-use Querial\Helper\LikeFormatHelper;
+use Querial\Formatter\LikeFormatter;
 use Querial\Target\ScalarTarget;
 
 class ThenOrWhereLikeWithQuery extends PromiseQuery
@@ -27,9 +27,9 @@ class ThenOrWhereLikeWithQuery extends PromiseQuery
     protected ScalarTarget $target;
 
     /**
-     * @var LikeFormatHelper
+     * @var LikeFormatter
      */
-    protected LikeFormatHelper $format;
+    protected LikeFormatter $formatter;
 
     /**
      * FactoryInterface constructor.
@@ -42,7 +42,7 @@ class ThenOrWhereLikeWithQuery extends PromiseQuery
     {
         $this->attribute = $attribute;
         $this->target = new ScalarTarget($inputTarget ?? $attribute);
-        $this->format = new LikeFormatHelper($format);
+        $this->formatter = new LikeFormatter($format);
         $this->table = $table;
     }
 
@@ -59,7 +59,7 @@ class ThenOrWhereLikeWithQuery extends PromiseQuery
         $attribute = $this->createAttributeFromTable($builder, $this->attribute);
         $value = addcslashes($this->target->of($request), '%_\\');
 
-        return $builder->orWhere($attribute, 'LIKE', $this->format->ofValue($value));
+        return $builder->orWhere($attribute, 'LIKE', $this->formatter->format($value));
     }
 
     /**

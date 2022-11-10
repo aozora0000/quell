@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Querial\Promise\ThenWhereEqualWithQuery;
 use Querial\Promise\ThenWhereLikeWithQuery;
 use Querial\Promise\ThenWherePromisesAggregator;
-use Test\Querial\WithEloquentModelTestCase;
+use Test\WithEloquentModelTestCase;
 
 class ThenWherePromisesAggregatorTest extends WithEloquentModelTestCase
 {

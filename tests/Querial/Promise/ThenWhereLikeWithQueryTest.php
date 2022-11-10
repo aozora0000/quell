@@ -3,9 +3,9 @@
 namespace Test\Querial\Promise;
 
 use Illuminate\Http\Request;
-use Querial\Helper\LikeFormatHelper;
+use Querial\Formatter\LikeFormatter;
 use Querial\Promise\ThenWhereLikeWithQuery;
-use Test\Querial\WithEloquentModelTestCase;
+use Test\WithEloquentModelTestCase;
 
 class ThenWhereLikeWithQueryTest extends WithEloquentModelTestCase
 {
@@ -22,7 +22,7 @@ EOT
             , $query->toRawSql());
 
 
-        $query = (new ThenWhereLikeWithQuery('email', null, null, LikeFormatHelper::BACKWORD_MATCH))->resolve($request, $query);
+        $query = (new ThenWhereLikeWithQuery('email', null, null, LikeFormatter::BACKWORD_MATCH))->resolve($request, $query);
         $this->assertSame(<<<EOT
 select * from "users" where "users"."name" LIKE '%test%' and "users"."email" LIKE 'email@email.com%'
 EOT

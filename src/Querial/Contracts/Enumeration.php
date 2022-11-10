@@ -1,19 +1,18 @@
 <?php
 
-namespace Querial\Helper;
+namespace Querial\Contracts;
 
 use Querial\Exceptions\InvalidEnumerationException;
 use ReflectionObject;
 
 abstract class Enumeration
 {
-    private $scalar;
+    protected $scalar;
 
     public function __construct($value)
     {
         $ref = new ReflectionObject($this);
-        $consts = $ref->getConstants();
-        if (!in_array($value, $consts, true)) {
+        if (!in_array($value, $ref->getConstants(), true)) {
             throw new InvalidEnumerationException($value . ' is not found enumeration');
         }
 
@@ -27,9 +26,7 @@ abstract class Enumeration
         return new $class($const);
     }
 
-    //元の値を取り出すメソッド。
-    //メソッド名は好みのものに変更どうぞ
-    final public function of()
+    public function of()
     {
         return $this->scalar;
     }

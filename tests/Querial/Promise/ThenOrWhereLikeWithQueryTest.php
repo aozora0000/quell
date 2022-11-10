@@ -1,9 +1,10 @@
 <?php
 
-namespace Querial\Promise;
+namespace Test\Querial\Promise;
 
 use Illuminate\Http\Request;
-use Test\Querial\WithEloquentModelTestCase;
+use Querial\Promise\ThenOrWhereLikeWithQuery;
+use Test\WithEloquentModelTestCase;
 
 class ThenOrWhereLikeWithQueryTest extends WithEloquentModelTestCase
 {
