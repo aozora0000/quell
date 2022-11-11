@@ -15,7 +15,6 @@ use Querial\Target\DatetimeTarget;
 
 class ThenWhereBetweenDaysWithQuery extends ThenWhereBetweenWithQuery
 {
-    use CreateAttributeFromTable;
 
     public function __construct(string $attribute, ?string $inputTarget = null, string $minPostfix = '_min', string $maxPostfix = '_max')
     {
@@ -26,6 +25,9 @@ class ThenWhereBetweenDaysWithQuery extends ThenWhereBetweenWithQuery
 
     public function resolve(Request $request, Builder $builder): Builder
     {
+        dd($this->target->is($request),
+            $this->target->max()->is($request),
+            $this->target->min()->is($request));
         if (!$this->resolveIf($request)) {
             return $builder;
         }
@@ -33,7 +35,7 @@ class ThenWhereBetweenDaysWithQuery extends ThenWhereBetweenWithQuery
 
         if ($this->target->is($request)) {
             [$min, $max] = $this->target->of($request);
-
+            dd($min, $max);
             return $builder->whereBetween($attribute, [$min->startOfDay(), $max->endOfDay()]);
         }
         if ($this->target->max()->is($request)) {

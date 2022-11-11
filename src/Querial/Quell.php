@@ -18,17 +18,32 @@ abstract class Quell
         $this->request = $request;
     }
 
+    /**
+     * @return PromiseInterface|null
+     */
     abstract protected function promise(): ?PromiseInterface;
 
+    /**
+     * When Throwable throw
+     * @return callable|null
+     */
     abstract protected function failed(): ?callable;
 
+    /**
+     * try~catch~finally
+     * @return callable|null
+     */
     abstract protected function finally(): ?callable;
 
+    /**
+     * When (promises,failed,finally) Not Works.
+     * @param Builder $builder
+     * @return Builder|null
+     */
     protected function default(Builder $builder): ?Builder
     {
         return $builder;
     }
-
 
     final public function build(Builder $builder): Builder
     {

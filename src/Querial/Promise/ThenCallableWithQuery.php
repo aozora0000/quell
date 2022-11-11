@@ -17,6 +17,10 @@ class ThenCallableWithQuery extends PromiseQuery
      */
     protected $resolve;
 
+    /**
+     * @param callable(Request): bool $resolveIf
+     * @param callable(Request, EloquentBuilder): EloquentBuilder $resolve
+     */
     public function __construct(callable $resolveIf, callable $resolve)
     {
         $this->resolveIf = $resolveIf;

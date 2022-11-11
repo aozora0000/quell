@@ -5,7 +5,9 @@ namespace Test\Querial;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Querial\Contracts\PromiseInterface;
+use Querial\Promise\ThenWhereBetweenWithQuery;
 use Querial\Promise\ThenWhereEqualWithQuery;
+use Querial\Promise\ThenWherePromisesAggregator;
 use Querial\Quell;
 use Test\WithEloquentModelTestCase;
 
@@ -13,7 +15,7 @@ class QuellTest extends WithEloquentModelTestCase
 {
     public function testBuild()
     {
-        $request = Request::create('/', 'GET', ['value' => '1']);
+        $request = Request::create('/', 'GET', ['name' => 'test', 'created_at_min' => '2022-01-01', 'created_at_max' => '2022-12-31']);
 
         $instance = new class($request) extends Quell {
 
@@ -29,13 +31,16 @@ class QuellTest extends WithEloquentModelTestCase
 
             protected function promise(): ?PromiseInterface
             {
-                return new ThenWhereEqualWithQuery('value');
+                return new ThenWherePromisesAggregator([
+                    new ThenWhereEqualWithQuery('name'),
+                    new ThenWhereBetweenWithQuery('created_at'),
+                ]);
             }
         };
 
         $query = $this->createModel()->newQuery();
         $this->assertSame(<<<EOT
-select * from "users" where "users"."value" = 1
+select * from "users" where ("users"."name" = 'test' and "users"."created_at" between '2022-01-01' and '2022-12-31')
 EOT
             , $instance->build($query)->toRawSql());
     }
@@ -62,7 +67,10 @@ EOT
 
             protected function promise(): ?PromiseInterface
             {
-                return new ThenWhereEqualWithQuery('value');
+                return new ThenWherePromisesAggregator([
+                    new ThenWhereEqualWithQuery('name'),
+                    new ThenWhereBetweenWithQuery('created_at'),
+                ]);
             }
         };
 
