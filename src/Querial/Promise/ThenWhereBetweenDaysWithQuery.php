@@ -5,29 +5,19 @@
  * Date: 2020-06-26
  * Time: 06:57
  */
+
 namespace Querial\Promise;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Querial\Contracts\Support\CreateAttributeFromTable;
-use Querial\Target\BetweenTarget;
 use Querial\Target\DatetimeTarget;
 
 class ThenWhereBetweenDaysWithQuery extends ThenWhereBetweenWithQuery
 {
 
-    public function __construct(string $attribute, ?string $inputTarget = null, string $minPostfix = '_min', string $maxPostfix = '_max')
-    {
-        $this->attribute     = $attribute;
-        $target              = $inputTarget ?? $attribute;
-        $this->target        = new BetweenTarget(new DatetimeTarget($target, $minPostfix), new DatetimeTarget($target, $maxPostfix));
-    }
-
     public function resolve(Request $request, Builder $builder): Builder
     {
-        dd($this->target->is($request),
-            $this->target->max()->is($request),
-            $this->target->min()->is($request));
         if (!$this->resolveIf($request)) {
             return $builder;
         }
@@ -35,8 +25,16 @@ class ThenWhereBetweenDaysWithQuery extends ThenWhereBetweenWithQuery
 
         if ($this->target->is($request)) {
             [$min, $max] = $this->target->of($request);
-            dd($min, $max);
-            return $builder->whereBetween($attribute, [$min->startOfDay(), $max->endOfDay()]);
+            switch (true) {
+                case $max instanceof Carbon && $min instanceof Carbon:
+                    return $builder->whereBetween($attribute, [$min->startOfDay(), $max->endOfDay()]);
+                case $max instanceof Carbon:
+                    return $builder->whereBetween($attribute, [$min, $max->endOfDay()]);
+                case $min instanceof Carbon:
+                    return $builder->whereBetween($attribute, [$min->startOfDay(), $max]);
+                default:
+                    return $builder->whereBetween($attribute, [$min, $max]);
+            }
         }
         if ($this->target->max()->is($request)) {
             $max = $this->target->max();
@@ -50,7 +48,7 @@ class ThenWhereBetweenDaysWithQuery extends ThenWhereBetweenWithQuery
             }
         }
         if ($this->target->min()->is($request)) {
-            $min = $this->target->max();
+            $min = $this->target->min();
             switch (true) {
                 case $min instanceof DatetimeTarget:
                     $builder->where($attribute, '>=', $min->of($request)->startOfDay());

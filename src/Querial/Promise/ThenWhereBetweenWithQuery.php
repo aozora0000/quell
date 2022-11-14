@@ -37,7 +37,7 @@ class ThenWhereBetweenWithQuery extends PromiseQuery
     {
         $this->attribute     = $attribute;
         $target              = $inputTarget ?? $attribute;
-        $this->target        = new BetweenTarget(new ScalarTarget($target, $minPostfix), new ScalarTarget($target, $maxPostfix));
+        $this->target        = new BetweenTarget(new ScalarTarget($target, $maxPostfix), new ScalarTarget($target, $minPostfix));
     }
 
     /**

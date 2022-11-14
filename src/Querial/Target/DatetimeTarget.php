@@ -32,7 +32,7 @@ class DatetimeTarget extends ScalarTarget
         }
         $value = parent::of($request);
         try {
-            return Carbon::createFromFormat($this->format, $value) instanceof Carbon;
+            return $this->of($request) instanceof Carbon;
         } catch (InvalidFormatException $exception) {
             return false;
         }
