@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: aozora0000
@@ -10,62 +12,45 @@ namespace Querial\Promise;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Querial\Contracts\Formatter;
 use Querial\Contracts\Support\PromiseQuery;
 use Querial\Formatter\LikeFormatter;
 use Querial\Target\ScalarTarget;
 
 class ThenOrWhereLikeWithQuery extends PromiseQuery
 {
-    /**
-     * @var string
-     */
     protected string $attribute;
 
-    /**
-     * @var ScalarTarget
-     */
     protected ScalarTarget $target;
 
-    /**
-     * @var LikeFormatter
-     */
     protected LikeFormatter $formatter;
 
     /**
      * FactoryInterface constructor.
-     * @param string      $attribute
-     * @param string|null $inputTarget
-     * @param string|null $table
-     * @param string      $format
      */
-    public function __construct(string $attribute, ?string $inputTarget = null, ?string $table = null, string $format = '%%%s%%')
-    {
+    public function __construct(
+        string $attribute,
+        ?string $inputTarget = null,
+        ?string $table = null,
+        Formatter $format = LikeFormatter::PARTIAL_MATCH
+    ) {
         $this->attribute = $attribute;
         $this->target = new ScalarTarget($inputTarget ?? $attribute);
-        $this->formatter = new LikeFormatter($format);
+        $this->formatter = $format;
         $this->table = $table;
     }
 
-    /**
-     * @param Request $request
-     * @param Builder $builder
-     * @return Builder
-     */
     public function resolve(Request $request, Builder $builder): Builder
     {
-        if (!$this->resolveIf($request)) {
+        if (! $this->resolveIf($request)) {
             return $builder;
         }
         $attribute = $this->createAttributeFromTable($builder, $this->attribute);
-        $value = addcslashes($this->target->of($request), '%_\\');
+        $value = addcslashes($this->target->value($request), '%_\\');
 
         return $builder->orWhere($attribute, 'LIKE', $this->formatter->format($value));
     }
 
-    /**
-     * @param Request $request
-     * @return bool
-     */
     public function resolveIf(Request $request): bool
     {
         return $this->target->is($request);

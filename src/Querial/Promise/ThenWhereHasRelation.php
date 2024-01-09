@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: aozora0000
@@ -15,21 +17,12 @@ use Querial\Contracts\Support\PromiseQuery;
 
 class ThenWhereHasRelation extends PromiseQuery
 {
-
-    /**
-     * @var string
-     */
     protected string $relation;
 
-    /**
-     * @var AggregatePromiseQuery | null
-     */
     protected ?AggregatePromiseQuery $aggregator;
 
     /**
      * ThenHasRelation constructor.
-     * @param string                     $relation
-     * @param AggregatePromiseQuery|null $aggregator
      */
     public function __construct(string $relation, ?AggregatePromiseQuery $aggregator = null)
     {
@@ -37,17 +30,12 @@ class ThenWhereHasRelation extends PromiseQuery
         $this->aggregator = $aggregator;
     }
 
-    /**
-     * @param Request $request
-     * @param Builder $builder
-     * @return Builder
-     */
     public function resolve(Request $request, Builder $builder): Builder
     {
         if ($this->aggregator === null) {
             return $builder->has($this->relation);
         }
-        if (!$this->resolveIf($request)) {
+        if (! $this->resolveIf($request)) {
             return $builder;
         }
 
@@ -56,10 +44,6 @@ class ThenWhereHasRelation extends PromiseQuery
         });
     }
 
-    /**
-     * @param Request $request
-     * @return bool
-     */
     public function resolveIf(Request $request): bool
     {
         return $this->aggregator === null || $this->aggregator->resolveIf($request);

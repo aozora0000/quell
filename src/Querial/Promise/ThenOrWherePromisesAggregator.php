@@ -1,4 +1,7 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
+
 namespace Querial\Promise;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -9,12 +12,12 @@ class ThenOrWherePromisesAggregator extends AggregatePromiseQuery
 {
     public function resolveIf(Request $request): bool
     {
-        return !empty($this->resolvedFilter($this->promises, $request));
+        return ! empty($this->resolvedFilter($this->promises, $request));
     }
 
     public function resolve(Request $request, Builder $builder): Builder
     {
-        if (!$this->resolveIf($request)) {
+        if (! $this->resolveIf($request)) {
             return $builder;
         }
         $promises = $this->resolvedFilter($this->promises, $request);

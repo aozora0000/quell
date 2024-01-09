@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: aozora0000
@@ -9,43 +11,33 @@
 namespace Querial\Contracts;
 
 use Closure;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 use Throwable;
 
 interface PipelineInterface
 {
     /**
-     * @param PromiseInterface $promise
      * @return static
      */
     public function then(PromiseInterface $promise): self;
 
     /**
-     * @param Closure $callback
      * @return static
      */
     public function onFailed(Closure $callback): self;
 
-    /**
-     * @return bool
-     */
-    public function hasFailed(): bool;
+    public function hasFailedClosure(): bool;
 
     /**
-     * @param Closure $callback
      * @return static
      */
     public function onFinally(Closure $callback): self;
 
-    /**
-     * @return bool
-     */
-    public function hasFinally(): bool;
+    public function hasFinallyClosure(): bool;
 
     /**
-     * @param Builder $builder
-     * @return Builder
      * @throws Throwable
      */
-    public function build(Builder $builder): Builder;
+    public function build(EloquentBuilder|QueryBuilder $builder): EloquentBuilder|QueryBuilder;
 }

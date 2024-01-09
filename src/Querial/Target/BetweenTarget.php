@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace Querial\Target;
 
@@ -8,38 +10,25 @@ use Querial\Contracts\TargetInterface;
 
 class BetweenTarget implements TargetInterface
 {
-    /**
-     * @var ScalarTarget
-     */
-    protected ScalarTarget $maxTarget;
-    /**
-     * @var ScalarTarget
-     */
-    protected ScalarTarget $minTarget;
+    protected TargetInterface $maxTarget;
+
+    protected TargetInterface $minTarget;
 
     /**
      * BetweenTarget constructor.
-     * @param ScalarTarget $maxTarget
-     * @param ScalarTarget $minTarget
      */
-    public function __construct(ScalarTarget $maxTarget, ScalarTarget $minTarget)
+    public function __construct(TargetInterface $maxTarget, TargetInterface $minTarget)
     {
         $this->maxTarget = $maxTarget;
         $this->minTarget = $minTarget;
     }
 
-    /**
-     * @return ScalarTarget
-     */
-    public function min(): ScalarTarget
+    public function min(): TargetInterface
     {
         return $this->minTarget;
     }
 
-    /**
-     * @return ScalarTarget
-     */
-    public function max(): ScalarTarget
+    public function max(): TargetInterface
     {
         return $this->maxTarget;
     }
@@ -51,14 +40,14 @@ class BetweenTarget implements TargetInterface
 
     /**
      * TODO: min(), max()を比較並べ替えした後に取れるようにした方が良かった
-     * @param Request $request
+     *
      * @return string[]
      */
-    public function of(Request $request)
+    public function value(Request $request)
     {
         return array_values(Arr::sort([
-            $this->maxTarget->of($request),
-            $this->minTarget->of($request),
+            $this->maxTarget->value($request),
+            $this->minTarget->value($request),
         ]));
     }
 }

@@ -11,6 +11,7 @@ class CallableTarget implements TargetInterface
      * @var callable
      */
     protected $isCallback;
+
     /**
      * @var callable
      */
@@ -27,7 +28,7 @@ class CallableTarget implements TargetInterface
         return call_user_func($this->isCallback, $request);
     }
 
-    public function of(Request $request)
+    public function value(Request $request): mixed
     {
         return call_user_func($this->ofCallback, $request);
     }

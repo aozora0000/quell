@@ -16,8 +16,8 @@ class ThenWhereBetweenWithQueryTest extends WithEloquentModelTestCase
         $query = $model->newQuery();
 
         $instance = new ThenWhereBetweenWithQuery('price', null);
-        $this->assertSame(<<<EOT
-select * from "users" where "users"."price" between 1 and 100
+        $this->assertSame(<<<'EOT'
+select * from "users" where "users"."price" between '1' and '100'
 EOT
             , $instance->resolve($request, $query)->toRawSql());
     }
@@ -30,8 +30,8 @@ EOT
         $query = $model->newQuery();
 
         $instance = new ThenWhereBetweenWithQuery('price', null);
-        $this->assertSame(<<<EOT
-select * from "users" where "users"."price" >= 1
+        $this->assertSame(<<<'EOT'
+select * from "users" where "users"."price" >= '1'
 EOT
             , $instance->resolve($request, $query)->toRawSql());
     }
@@ -44,8 +44,8 @@ EOT
         $query = $model->newQuery();
 
         $instance = new ThenWhereBetweenWithQuery('price', null);
-        $this->assertSame(<<<EOT
-select * from "users" where "users"."price" <= 100
+        $this->assertSame(<<<'EOT'
+select * from "users" where "users"."price" <= '100'
 EOT
             , $instance->resolve($request, $query)->toRawSql());
     }

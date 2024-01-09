@@ -10,7 +10,7 @@ use Test\WithEloquentModelTestCase;
 
 class ThenOrWherePromisesAggregatorTest extends WithEloquentModelTestCase
 {
-    public function testResolve()
+    public function testResolve(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
         $model = $this->createModel();
@@ -24,7 +24,7 @@ class ThenOrWherePromisesAggregatorTest extends WithEloquentModelTestCase
             new ThenWhereEqualWithQuery('name'),
             new ThenWhereLikeWithQuery('email'),
         ]))->resolve($request, $query);
-        $this->assertSame(<<<EOT
+        $this->assertSame(<<<'EOT'
 select * from "users" where ("users"."name" = 'test' and "users"."email" LIKE '%email@email.com%') or ("users"."name" = 'test' and "users"."email" LIKE '%email@email.com%')
 EOT
             , $query->toRawSql());

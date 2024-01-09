@@ -2,18 +2,17 @@
 
 namespace Querial\Formatter;
 
-use Querial\Contracts\Enumeration;
 use Querial\Contracts\Formatter;
 
-class LikeFormatter extends Enumeration implements Formatter
+enum LikeFormatter: string implements Formatter
 {
-    const FORWORD_MATCH = '%%%s';
-    const BACKWORD_MATCH = '%s%%';
-    const PARTIAL_MATCH = '%%%s%%';
-    const EXACT_MATCH = '%s';
+    case FORWORD_MATCH = '%%%s';
+    case BACKWORD_MATCH = '%s%%';
+    case PARTIAL_MATCH = '%%%s%%';
+    case EXACT_MATCH = '%s';
 
     public function format(string $value): string
     {
-        return sprintf($this->of(), $value);
+        return sprintf($this->value, $value);
     }
 }

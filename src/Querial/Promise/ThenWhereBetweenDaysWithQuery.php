@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: aozora0000
@@ -15,16 +17,15 @@ use Querial\Target\DatetimeTarget;
 
 class ThenWhereBetweenDaysWithQuery extends ThenWhereBetweenWithQuery
 {
-
     public function resolve(Request $request, Builder $builder): Builder
     {
-        if (!$this->resolveIf($request)) {
+        if (! $this->resolveIf($request)) {
             return $builder;
         }
         $attribute = $this->createAttributeFromTable($builder, $this->attribute);
 
         if ($this->target->is($request)) {
-            [$min, $max] = $this->target->of($request);
+            [$min, $max] = $this->target->value($request);
             switch (true) {
                 case $max instanceof Carbon && $min instanceof Carbon:
                     return $builder->whereBetween($attribute, [$min->startOfDay(), $max->endOfDay()]);
@@ -40,10 +41,10 @@ class ThenWhereBetweenDaysWithQuery extends ThenWhereBetweenWithQuery
             $max = $this->target->max();
             switch (true) {
                 case $max instanceof DatetimeTarget:
-                    $builder->where($attribute, '<=', $max->of($request)->endOfDay());
+                    $builder->where($attribute, '<=', $max->value($request)->endOfDay());
                     break;
                 default:
-                    $builder->where($attribute, '<=', $max->of($request));
+                    $builder->where($attribute, '<=', $max->value($request));
                     break;
             }
         }
@@ -51,10 +52,10 @@ class ThenWhereBetweenDaysWithQuery extends ThenWhereBetweenWithQuery
             $min = $this->target->min();
             switch (true) {
                 case $min instanceof DatetimeTarget:
-                    $builder->where($attribute, '>=', $min->of($request)->startOfDay());
+                    $builder->where($attribute, '>=', $min->value($request)->startOfDay());
                     break;
                 default:
-                    $builder->where($attribute, '>=', $min->of($request));
+                    $builder->where($attribute, '>=', $min->value($request));
                     break;
             }
         }

@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace Querial\Contracts\Support;
 
@@ -15,12 +17,13 @@ abstract class AggregatePromiseQuery implements PromiseInterface
 
     /**
      * ThenOrPromisesAggregator constructor.
-     * @param PromiseInterface[] $promises
+     *
+     * @param  PromiseInterface[]  $promises
      */
     final public function __construct(array $promises)
     {
         foreach ($promises as $promise) {
-            if (!$promise instanceof PromiseInterface) {
+            if (! $promise instanceof PromiseInterface) {
                 throw new InvalidClassException('Required PromiseInterface Implement in Class');
             }
         }
@@ -28,8 +31,7 @@ abstract class AggregatePromiseQuery implements PromiseInterface
     }
 
     /**
-     * @param PromiseInterface[] $promises
-     * @param Request            $request
+     * @param  PromiseInterface[]  $promises
      * @return PromiseInterface[]
      */
     protected function resolvedFilter(array $promises, Request $request): array

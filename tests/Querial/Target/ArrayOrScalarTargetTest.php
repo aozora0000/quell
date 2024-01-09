@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 namespace Test\Querial\Target;
 
 use Illuminate\Http\Request;
@@ -7,7 +10,10 @@ use Querial\Target\ArrayOrScalarTarget;
 
 class ArrayOrScalarTargetTest extends TestCase
 {
-    public function dataProvider(): array
+    /**
+     * @return array<array{bool,array<string, mixed>}>
+     */
+    public static function dataProvider(): array
     {
         return [
             [
@@ -35,24 +41,22 @@ class ArrayOrScalarTargetTest extends TestCase
     /**
      * @dataProvider dataProvider
      *
-     * @param bool  $expect
-     * @param array $data
+     * @param  array<string, mixed>  $data
      */
     public function testIs(bool $expect, array $data): void
     {
-        $target  = new ArrayOrScalarTarget('email');
+        $target = new ArrayOrScalarTarget('email');
         $request = Request::create('/', 'GET', $data);
         static::assertEquals($expect, $target->is($request));
     }
-
 
     public function testOf(): void
     {
         $target = new ArrayOrScalarTarget('email');
 
-        $data    = ['email' => '@'];
+        $data = ['email' => '@'];
         $request = Request::create('/', 'GET', $data);
-        static::assertEquals(['@'], $target->of($request));
+        static::assertEquals(['@'], $target->value($request));
 
         $data = [
             'email' => [
@@ -61,14 +65,14 @@ class ArrayOrScalarTargetTest extends TestCase
             ],
         ];
         $request = Request::create('/', 'GET', $data);
-        static::assertEquals(['@', '@'], $target->of($request));
+        static::assertEquals(['@', '@'], $target->value($request));
 
-        $data    = ['email' => ''];
+        $data = ['email' => ''];
         $request = Request::create('/', 'GET', $data);
-        static::assertEquals([], $target->of($request));
+        static::assertEquals([], $target->value($request));
 
-        $data    = [];
+        $data = [];
         $request = Request::create('/', 'GET', $data);
-        static::assertEquals([], $target->of($request));
+        static::assertEquals([], $target->value($request));
     }
 }

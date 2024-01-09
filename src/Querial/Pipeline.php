@@ -1,8 +1,12 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 namespace Querial;
 
 use Closure;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Http\Request;
 use Querial\Contracts\PipelineInterface;
 use Querial\Contracts\PromiseInterface;
@@ -10,15 +14,8 @@ use Throwable;
 
 class Pipeline implements PipelineInterface
 {
-
-    /**
-     * @var Request
-     */
     private Request $request;
 
-    /**
-     * @var bool
-     */
     private bool $is_default = true;
 
     /**
@@ -26,25 +23,14 @@ class Pipeline implements PipelineInterface
      */
     private array $promises = [];
 
-    /**
-     * @var Closure|null
-     */
-    private ?Closure $failed = null;
+    private ?Closure $onFailedClosure = null;
 
-    /**
-     * @var Closure|null
-     */
-    private ?Closure $finally = null;
+    private ?Closure $onFinallyClosure = null;
 
-    /**
-     * @var Closure|null
-     */
-    private ?Closure $default = null;
+    private ?Closure $onDefaultClosure = null;
 
     /**
      * IlluminateRequestCriteria constructor.
-     *
-     * @param Request $request
      */
     public function __construct(Request $request)
     {
@@ -52,8 +38,6 @@ class Pipeline implements PipelineInterface
     }
 
     /**
-     * @param PromiseInterface $promise
-     *
      * @return static
      */
     public function then(PromiseInterface $promise): self
@@ -64,31 +48,29 @@ class Pipeline implements PipelineInterface
     }
 
     /**
-     * @param Closure $callback
-     *
      * @return static
      */
-    public function onFailed(Closure $callback): self
+    public function onFailed(Closure|callable $callback): self
     {
-        $this->failed = $callback;
+        $this->onFailedClosure = $callback;
 
         return $this;
     }
 
     /**
-     * @param Closure $callback
-     *
      * @return static
      */
-    public function onFinally(Closure $callback): self
+    public function onFinally(Closure|callable $callback): self
     {
-        $this->finally = $callback;
+        $this->onFinallyClosure = $callback;
+
         return $this;
     }
 
-    public function onDefault(Closure $closure): self
+    public function onDefault(Closure|callable $closure): self
     {
-        $this->default = $closure;
+        $this->onDefaultClosure = $closure;
+
         return $this;
     }
 
@@ -100,54 +82,50 @@ class Pipeline implements PipelineInterface
     }
 
     /**
-     * @param Builder $builder
-     *
-     * @return Builder
-     *
      * @throws Throwable
      */
-    public function build(Builder $builder): Builder
+    public function build(EloquentBuilder|QueryBuilder $builder): EloquentBuilder|QueryBuilder
     {
         try {
             $promises = $this->resolvedFilter($this->promises, $this->request);
-            if(count($promises) !== 0) {
+            if (count($promises) !== 0) {
                 $this->is_default = false;
             }
             foreach ($promises as $promise) {
                 $builder = $promise->resolve($this->request, $builder);
             }
         } catch (Throwable $exception) {
-            if (!$this->hasFailed()) {
+            if (! $this->hasFailedClosure()) {
                 throw $exception;
             }
             $this->is_default = false;
-            $builder = call_user_func($this->failed, $this->request, $builder, $exception);
+            $builder = call_user_func($this->onFailedClosure, $this->request, $builder, $exception);
         }
 
-        if ($this->hasFinally()) {
+        if ($this->hasFinallyClosure()) {
             $this->is_default = false;
-            $builder = call_user_func($this->finally, $this->request, $builder);
+            $builder = call_user_func($this->onFinallyClosure, $this->request, $builder);
         }
 
-        if($this->is_default && $this->hasDefault()) {
-            $builder = call_user_func($this->default, $builder);
+        if ($this->is_default && $this->hasDefaultClosure()) {
+            $builder = call_user_func($this->onDefaultClosure, $builder);
         }
 
         return $builder;
     }
 
-    public function hasFailed(): bool
+    public function hasFailedClosure(): bool
     {
-        return $this->failed !== null;
+        return $this->onFailedClosure !== null;
     }
 
-    public function hasFinally(): bool
+    public function hasFinallyClosure(): bool
     {
-        return $this->finally !== null;
+        return $this->onFinallyClosure !== null;
     }
 
-    public function hasDefault(): bool
+    public function hasDefaultClosure(): bool
     {
-        return $this->default !== null;
+        return $this->onDefaultClosure !== null;
     }
 }

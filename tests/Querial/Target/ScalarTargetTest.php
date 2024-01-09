@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 namespace Querial\Test\Target;
 
 use Illuminate\Http\Request;
@@ -7,7 +10,10 @@ use Querial\Target\ScalarTarget;
 
 class ScalarTargetTest extends TestCase
 {
-    public function dataProvider(): array
+    /**
+     * @return array<array{bool,array<string, mixed>}>
+     */
+    public static function dataProvider(): array
     {
         return [
             [
@@ -28,12 +34,11 @@ class ScalarTargetTest extends TestCase
     /**
      * @dataProvider dataProvider
      *
-     * @param bool  $expect
-     * @param array $data
+     * @param  array<string, mixed>  $data
      */
     public function testIs(bool $expect, array $data): void
     {
-        $target  = new ScalarTarget('email');
+        $target = new ScalarTarget('email');
         $request = Request::create('/', 'GET', $data);
         static::assertEquals($expect, $target->is($request));
     }
@@ -41,14 +46,13 @@ class ScalarTargetTest extends TestCase
     /**
      * @dataProvider dataProvider
      *
-     * @param bool  $expect
-     * @param array $data
+     * @param  array<string, mixed>  $data
      */
     public function testOf(bool $expect, array $data): void
     {
-        $target  = new ScalarTarget('email');
+        $target = new ScalarTarget('email');
         $request = Request::create('/', 'GET', $data);
         static::assertIsBool($expect);
-        static::assertEquals($target->of($request), $request->get('email'));
+        static::assertEquals($target->value($request), $request->get('email'));
     }
 }

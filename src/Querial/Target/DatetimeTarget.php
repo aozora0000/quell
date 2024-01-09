@@ -1,49 +1,47 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 
 namespace Querial\Target;
 
 use Carbon\Carbon;
 use Carbon\Exceptions\InvalidFormatException;
 use Illuminate\Http\Request;
+use Querial\Contracts\TargetInterface;
 
-class DatetimeTarget extends ScalarTarget
+class DatetimeTarget implements TargetInterface
 {
     protected string $format;
 
-    /**
-     * @param string $format
-     * @param string $target
-     * @param string $postfix
-     */
+    protected string $target;
+
     public function __construct(string $format, string $target, string $postfix = '')
     {
-        parent::__construct($target, $postfix);
+        $this->target = $target.$postfix;
         $this->format = $format;
     }
 
-    /**
-     * @param Request $request
-     * @return bool
-     */
     public function is(Request $request): bool
     {
-        if (!parent::is($request)) {
+        if (! $request->has($this->target)) {
             return false;
         }
-        $value = parent::of($request);
+        if (empty($request->input($this->target))) {
+            return false;
+        }
+        if (! is_scalar($request->input($this->target))) {
+            return false;
+        }
         try {
-            return $this->of($request) instanceof Carbon;
+            return $this->value($request) instanceof Carbon;
         } catch (InvalidFormatException $exception) {
             return false;
         }
     }
 
-    /**
-     * @param Request $request
-     * @return Carbon
-     */
-    public function of(Request $request)
+    #[\ReturnTypeWillChange]
+    public function value(Request $request): Carbon|false
     {
-        return Carbon::createFromFormat($this->format, parent::of($request));
+        return Carbon::createFromFormat($this->format, $request->str($this->target, '')->value());
     }
 }

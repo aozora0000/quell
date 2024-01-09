@@ -2,9 +2,7 @@
 
 namespace Test\Querial\Promise;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Querial\Promise\ThenCallableWithQuery;
 use Querial\Promise\ThenWhereBetweenDaysWithQuery;
 use Test\WithEloquentModelTestCase;
 
@@ -18,7 +16,7 @@ class ThenWhereBetweenDaysWithQueryTest extends WithEloquentModelTestCase
         $query = $model->newQuery();
 
         $instance = new ThenWhereBetweenDaysWithQuery('created_at', null);
-        $this->assertSame(<<<EOT
+        $this->assertSame(<<<'EOT'
 select * from "users" where "users"."created_at" between '2022-01-01' and '2022-12-31'
 EOT
             , $instance->resolve($request, $query)->toRawSql());
@@ -32,7 +30,7 @@ EOT
         $query = $model->newQuery();
 
         $instance = new ThenWhereBetweenDaysWithQuery('created_at', null);
-        $this->assertSame(<<<EOT
+        $this->assertSame(<<<'EOT'
 select * from "users" where "users"."created_at" >= '2022-01-01'
 EOT
             , $instance->resolve($request, $query)->toRawSql());
@@ -46,7 +44,7 @@ EOT
         $query = $model->newQuery();
 
         $instance = new ThenWhereBetweenDaysWithQuery('created_at', null);
-        $this->assertSame(<<<EOT
+        $this->assertSame(<<<'EOT'
 select * from "users" where "users"."created_at" <= '2022-12-31'
 EOT
             , $instance->resolve($request, $query)->toRawSql());

@@ -1,4 +1,6 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: aozora0000
@@ -16,21 +18,12 @@ use Querial\Target\ScalarTarget;
 
 class ThenWhereNotEqualWithQuery extends PromiseQuery
 {
-    /**
-     * @var string
-     */
     protected string $attribute;
 
-    /**
-     * @var TargetInterface
-     */
     protected TargetInterface $target;
 
     /**
      * FactoryInterface constructor.
-     * @param string      $attribute
-     * @param string|null $inputTarget
-     * @param string|null $table
      */
     public function __construct(string $attribute, ?string $inputTarget = null, ?string $table = null)
     {
@@ -41,18 +34,14 @@ class ThenWhereNotEqualWithQuery extends PromiseQuery
 
     public function resolve(Request $request, EloquentBuilder $builder): EloquentBuilder
     {
-        if (!$this->resolveIf($request)) {
+        if (! $this->resolveIf($request)) {
             return $builder;
         }
         $attribute = $this->createAttributeFromTable($builder, $this->attribute);
 
-        return $builder->where($attribute, '<>', $this->target->of($request));
+        return $builder->where($attribute, '<>', $this->target->value($request));
     }
 
-    /**
-     * @param Request $request
-     * @return bool
-     */
     public function resolveIf(Request $request): bool
     {
         return $this->target->is($request);
