@@ -10,17 +10,16 @@ declare(strict_types=1);
 
 namespace Querial\Promise;
 
-use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Querial\Contracts\Support\PromiseQuery;
-use Querial\Contracts\TargetInterface;
-use Querial\Target\ScalarTarget;
+use Querial\Target\ArrayOrScalarTarget;
 
-class ThenWhereEqualWithQuery extends PromiseQuery
+class ThenWhereInArray extends PromiseQuery
 {
     protected string $attribute;
 
-    protected TargetInterface $target;
+    protected ArrayOrScalarTarget $target;
 
     /**
      * FactoryInterface constructor.
@@ -28,22 +27,22 @@ class ThenWhereEqualWithQuery extends PromiseQuery
     public function __construct(string $attribute, ?string $inputTarget = null, ?string $table = null)
     {
         $this->attribute = $attribute;
-        $this->target = new ScalarTarget($inputTarget ?: $attribute);
+        $this->target = new ArrayOrScalarTarget($inputTarget ?: $attribute);
         $this->table = $table;
     }
 
-    public function resolve(Request $request, EloquentBuilder $builder): EloquentBuilder
+    public function resolveIf(Request $request): bool
+    {
+        return $this->target->is($request);
+    }
+
+    public function resolve(Request $request, Builder $builder): Builder
     {
         if (! $this->resolveIf($request)) {
             return $builder;
         }
         $attribute = $this->createAttributeFromTable($builder, $this->attribute);
 
-        return $builder->where($attribute, '=', $this->target->value($request));
-    }
-
-    public function resolveIf(Request $request): bool
-    {
-        return $this->target->is($request);
+        return $builder->whereIn($attribute, $this->target->value($request));
     }
 }

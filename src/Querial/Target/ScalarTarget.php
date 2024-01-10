@@ -19,8 +19,7 @@ class ScalarTarget implements TargetInterface
     public function is(Request $request): bool
     {
         return
-            $request->has($this->target) &&
-            ! empty($request->input($this->target)) &&
+            $request->filled($this->target) &&
             is_scalar($request->input($this->target));
     }
 

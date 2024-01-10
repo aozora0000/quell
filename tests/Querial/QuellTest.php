@@ -1,16 +1,15 @@
 <?php
 
-namespace Test\Querial;
+namespace Tests\Querial;
 
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Http\Request;
 use Querial\Contracts\PromiseInterface;
-use Querial\Promise\ThenWhereBetweenWithQuery;
-use Querial\Promise\ThenWhereEqualWithQuery;
-use Querial\Promise\ThenWherePromisesAggregator;
+use Querial\Promise\Support\ThenWherePromisesAggregator;
+use Querial\Promise\ThenWhereBetween;
+use Querial\Promise\ThenWhereEqual;
 use Querial\Quell;
-use Test\WithEloquentModelTestCase;
 
 class QuellTest extends WithEloquentModelTestCase
 {
@@ -33,8 +32,8 @@ class QuellTest extends WithEloquentModelTestCase
             protected function promise(): ?PromiseInterface
             {
                 return new ThenWherePromisesAggregator([
-                    new ThenWhereEqualWithQuery('name'),
-                    new ThenWhereBetweenWithQuery('created_at'),
+                    new ThenWhereEqual('name'),
+                    new ThenWhereBetween('created_at'),
                 ]);
             }
         };
@@ -52,9 +51,11 @@ EOT
 
         $instance = new class($request) extends Quell
         {
-            protected function default(EloquentBuilder|QueryBuilder $builder): EloquentBuilder|QueryBuilder|null
+            protected function default(): ?callable
             {
-                return $builder->limit(10);
+                return static function (Request $request, EloquentBuilder|QueryBuilder $builder) {
+                    $builder->limit(10);
+                };
             }
 
             protected function failed(): ?callable
@@ -70,8 +71,8 @@ EOT
             protected function promise(): ?PromiseInterface
             {
                 return new ThenWherePromisesAggregator([
-                    new ThenWhereEqualWithQuery('name'),
-                    new ThenWhereBetweenWithQuery('created_at'),
+                    new ThenWhereEqual('name'),
+                    new ThenWhereBetween('created_at'),
                 ]);
             }
         };
@@ -79,6 +80,50 @@ EOT
         $query = $this->createModel()->newQuery();
         $this->assertSame(<<<'EOT'
 select * from "users" limit 10
+EOT
+            , $instance->build($query)->toRawSql());
+    }
+
+    public function testFailedBuild(): void
+    {
+        $request = Request::create('/', 'GET');
+
+        $instance = new class($request) extends Quell
+        {
+            protected function failed(): ?callable
+            {
+                return static function (Request $request, QueryBuilder|EloquentBuilder $builder, \Throwable $throwable) {
+                    $builder->where('name', $throwable->getMessage());
+
+                    return $builder;
+                };
+            }
+
+            protected function finally(): ?callable
+            {
+                return null;
+            }
+
+            protected function promise(): ?PromiseInterface
+            {
+                return new class implements PromiseInterface
+                {
+                    public function resolveIf(Request $request): bool
+                    {
+                        return true;
+                    }
+
+                    public function resolve(Request $request, EloquentBuilder $builder): EloquentBuilder
+                    {
+                        throw new \RuntimeException('unknown');
+                    }
+                };
+            }
+        };
+
+        $query = $this->createModel()->newQuery();
+        $this->assertSame(<<<'EOT'
+select * from "users" where "name" = 'unknown'
 EOT
             , $instance->build($query)->toRawSql());
     }

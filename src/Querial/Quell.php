@@ -2,6 +2,7 @@
 
 namespace Querial;
 
+use Closure;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Http\Request;
@@ -22,19 +23,19 @@ abstract class Quell
     /**
      * When Throwable throw
      */
-    abstract protected function failed(): ?callable;
+    abstract protected function failed(): callable|Closure|null;
 
     /**
      * try~catch~finally
      */
-    abstract protected function finally(): ?callable;
+    abstract protected function finally(): callable|Closure|null;
 
     /**
      * When (promises,failed,finally) Not Works.
      */
-    protected function default(EloquentBuilder|QueryBuilder $builder): EloquentBuilder|QueryBuilder|null
+    protected function default(): callable|Closure|null
     {
-        return $builder;
+        return null;
     }
 
     /**
@@ -48,9 +49,6 @@ abstract class Quell
     final public function build(EloquentBuilder|QueryBuilder $builder): EloquentBuilder|QueryBuilder
     {
         $pipeline = new Pipeline($this->request);
-        $pipeline->onDefault(function () use ($builder) {
-            return $this->default($builder);
-        });
         if ($this->promise() !== null) {
             $pipeline->then($this->promise());
         }
@@ -59,6 +57,9 @@ abstract class Quell
         }
         if ($this->finally() !== null) {
             $pipeline->onFinally($this->finally());
+        }
+        if ($this->default() !== null) {
+            $pipeline->onDefault($this->default());
         }
 
         return $pipeline->build($builder);

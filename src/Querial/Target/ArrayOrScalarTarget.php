@@ -19,10 +19,7 @@ class ArrayOrScalarTarget implements TargetInterface
 
     public function is(Request $request): bool
     {
-        return
-            $request->has($this->target) &&
-            ! empty($request->input($this->target)) &&
-            (is_scalar($request->input($this->target)) || is_array($request->input($this->target)));
+        return $request->filled($this->target);
     }
 
     /**

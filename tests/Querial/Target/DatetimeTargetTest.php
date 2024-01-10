@@ -1,10 +1,11 @@
 <?php
 
-namespace Querial\Target;
+namespace Tests\Querial\Target;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use PHPUnit\Framework\TestCase;
+use Querial\Target\DatetimeTarget;
 
 class DatetimeTargetTest extends TestCase
 {

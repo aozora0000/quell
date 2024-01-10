@@ -1,12 +1,12 @@
 <?php
 
-namespace Test\Querial\Promise;
+namespace Tests\Querial\Promise\Support;
 
 use Illuminate\Http\Request;
-use Querial\Promise\ThenWhereEqualWithQuery;
-use Querial\Promise\ThenWhereLikeWithQuery;
-use Querial\Promise\ThenWherePromisesAggregator;
-use Test\WithEloquentModelTestCase;
+use Querial\Promise\Support\ThenWherePromisesAggregator;
+use Querial\Promise\ThenWhereEqual;
+use Querial\Promise\ThenWhereLike;
+use Tests\Querial\WithEloquentModelTestCase;
 
 class ThenWherePromisesAggregatorTest extends WithEloquentModelTestCase
 {
@@ -17,8 +17,8 @@ class ThenWherePromisesAggregatorTest extends WithEloquentModelTestCase
         $query = $model->newQuery();
 
         $query = (new ThenWherePromisesAggregator([
-            new ThenWhereEqualWithQuery('name'),
-            new ThenWhereLikeWithQuery('email'),
+            new ThenWhereEqual('name'),
+            new ThenWhereLike('email'),
         ]))->resolve($request, $query);
         $this->assertSame(<<<'EOT'
 select * from "users" where ("users"."name" = 'test' and "users"."email" LIKE '%email@email.com%')

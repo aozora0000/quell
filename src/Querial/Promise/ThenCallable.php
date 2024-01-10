@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Http\Request;
 use Querial\Contracts\Support\PromiseQuery;
 
-class ThenCallableWithQuery extends PromiseQuery
+class ThenCallable extends PromiseQuery
 {
     /**
      * @var callable

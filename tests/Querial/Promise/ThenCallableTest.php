@@ -1,13 +1,13 @@
 <?php
 
-namespace Test\Querial\Promise;
+namespace Tests\Querial\Promise;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Querial\Promise\ThenCallableWithQuery;
-use Test\WithEloquentModelTestCase;
+use Querial\Promise\ThenCallable;
+use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenCallableWithQueryTest extends WithEloquentModelTestCase
+class ThenCallableTest extends WithEloquentModelTestCase
 {
     public function testResolve(): void
     {
@@ -15,7 +15,7 @@ class ThenCallableWithQueryTest extends WithEloquentModelTestCase
         $model = $this->createModel();
         $query = $model->newQuery();
 
-        $instance = (new ThenCallableWithQuery(function (Request $request) {
+        $instance = (new ThenCallable(function (Request $request) {
             return $request->has('name') && $request->input('name') === 'test';
         }, function (Request $request, Builder $builder) {
             return $builder->where('name', 'LIKE', 'test%');

@@ -1,12 +1,12 @@
 <?php
 
-namespace Test\Querial\Promise;
+namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
-use Querial\Promise\ThenWhereInArrayWithQuery;
-use Test\WithEloquentModelTestCase;
+use Querial\Promise\ThenWhereInArray;
+use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenWhereInArrayWithQueryTest extends WithEloquentModelTestCase
+class ThenWhereInArrayTest extends WithEloquentModelTestCase
 {
     public function testResolve(): void
     {
@@ -14,7 +14,7 @@ class ThenWhereInArrayWithQueryTest extends WithEloquentModelTestCase
         $model = $this->createModel();
         $query = $model->newQuery();
 
-        $query = (new ThenWhereInArrayWithQuery('name'))->resolve($request, $query);
+        $query = (new ThenWhereInArray('name'))->resolve($request, $query);
         $this->assertSame(<<<'EOT'
 select * from "users" where "users"."name" in ('test1', 'test2')
 EOT

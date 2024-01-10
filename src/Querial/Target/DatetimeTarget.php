@@ -23,10 +23,7 @@ class DatetimeTarget implements TargetInterface
 
     public function is(Request $request): bool
     {
-        if (! $request->has($this->target)) {
-            return false;
-        }
-        if (empty($request->input($this->target))) {
+        if (! $request->filled($this->target)) {
             return false;
         }
         if (! is_scalar($request->input($this->target))) {

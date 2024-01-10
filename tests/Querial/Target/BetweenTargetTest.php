@@ -1,9 +1,11 @@
 <?php
 
-namespace Querial\Target;
+namespace Tests\Querial\Target;
 
 use Illuminate\Http\Request;
 use PHPUnit\Framework\TestCase;
+use Querial\Target\BetweenTarget;
+use Querial\Target\ScalarTarget;
 
 class BetweenTargetTest extends TestCase
 {

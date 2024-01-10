@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\Querial\MockModel;
+namespace Tests\Querial\MockModel;
 
 use Illuminate\Database\Eloquent\Model;
 

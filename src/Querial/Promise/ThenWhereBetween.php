@@ -16,7 +16,7 @@ use Querial\Contracts\Support\PromiseQuery;
 use Querial\Target\BetweenTarget;
 use Querial\Target\ScalarTarget;
 
-class ThenWhereBetweenWithQuery extends PromiseQuery
+class ThenWhereBetween extends PromiseQuery
 {
     protected string $attribute;
 

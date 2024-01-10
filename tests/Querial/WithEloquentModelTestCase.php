@@ -1,6 +1,6 @@
 <?php
 
-namespace Test;
+namespace Tests\Querial;
 
 use Illuminate\Database\ConnectionResolver;
 use Illuminate\Database\ConnectionResolverInterface;
@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\SQLiteConnection;
 use PDO;
 use PHPUnit\Framework\TestCase;
-use Test\Querial\MockModel\User;
+use Tests\Querial\MockModel\User;
 
 class WithEloquentModelTestCase extends TestCase
 {

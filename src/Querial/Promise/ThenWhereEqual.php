@@ -16,7 +16,7 @@ use Querial\Contracts\Support\PromiseQuery;
 use Querial\Contracts\TargetInterface;
 use Querial\Target\ScalarTarget;
 
-class ThenWhereNotEqualWithQuery extends PromiseQuery
+class ThenWhereEqual extends PromiseQuery
 {
     protected string $attribute;
 
@@ -39,7 +39,7 @@ class ThenWhereNotEqualWithQuery extends PromiseQuery
         }
         $attribute = $this->createAttributeFromTable($builder, $this->attribute);
 
-        return $builder->where($attribute, '<>', $this->target->value($request));
+        return $builder->where($attribute, '=', $this->target->value($request));
     }
 
     public function resolveIf(Request $request): bool

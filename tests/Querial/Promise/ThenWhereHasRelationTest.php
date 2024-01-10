@@ -1,10 +1,10 @@
 <?php
 
-namespace Test\Querial\Promise;
+namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
 use Querial\Promise\ThenWhereHasRelation;
-use Test\WithEloquentModelTestCase;
+use Tests\Querial\WithEloquentModelTestCase;
 
 class ThenWhereHasRelationTest extends WithEloquentModelTestCase
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Test\Querial\Target;
+namespace Tests\Querial\Target;
 
 use Illuminate\Http\Request;
 use PHPUnit\Framework\TestCase;

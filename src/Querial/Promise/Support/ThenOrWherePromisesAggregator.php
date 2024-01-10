@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Querial\Promise;
+namespace Querial\Promise\Support;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;

@@ -16,7 +16,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Test\\": "tests"
+            "Tests\\Querial\\": "tests/Querial"
         }
     },
     "require": {
@@ -31,6 +31,11 @@
         "laravel/pint": "^1.13"
     },
     "scripts": {
+        "all": [
+            "@pint",
+            "@stan",
+            "@test"
+        ],
         "test": "phpunit",
         "pint": "pint",
         "stan": "phpstan analyze ."

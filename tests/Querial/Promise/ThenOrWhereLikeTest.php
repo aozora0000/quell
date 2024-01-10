@@ -1,12 +1,12 @@
 <?php
 
-namespace Test\Querial\Promise;
+namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
-use Querial\Promise\ThenOrWhereLikeWithQuery;
-use Test\WithEloquentModelTestCase;
+use Querial\Promise\ThenOrWhereLike;
+use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenOrWhereLikeWithQueryTest extends WithEloquentModelTestCase
+class ThenOrWhereLikeTest extends WithEloquentModelTestCase
 {
     public function testResolve(): void
     {
@@ -15,21 +15,21 @@ class ThenOrWhereLikeWithQueryTest extends WithEloquentModelTestCase
         $query = $model->newQuery();
 
         // 検索するテーブルを指定してクエリを作成する
-        $query = (new ThenOrWhereLikeWithQuery('name'))->resolve($request, $query);
+        $query = (new ThenOrWhereLike('name'))->resolve($request, $query);
         $this->assertSame(<<<'EOT'
 select * from "users" where "users"."name" LIKE '%test%'
 EOT
             , $query->toRawSql());
 
         // 検索するテーブルを指定してクエリを作成する
-        $query = (new ThenOrWhereLikeWithQuery('email'))->resolve($request, $query);
+        $query = (new ThenOrWhereLike('email'))->resolve($request, $query);
         $this->assertSame(<<<'EOT'
 select * from "users" where "users"."name" LIKE '%test%' or "users"."email" LIKE '%email@email.com%'
 EOT
             , $query->toRawSql());
 
         // リクエストに存在しないキーの場合、SQLには反映されない
-        $query = (new ThenOrWhereLikeWithQuery('onattr'))->resolve($request, $query);
+        $query = (new ThenOrWhereLike('onattr'))->resolve($request, $query);
         $this->assertNotSame(<<<'EOT'
 select * from "users" where "users"."name" LIKE '%test%' or "users"."email" LIKE '%email@email.com%' or "users"."noattr" LIKE ''
 EOT

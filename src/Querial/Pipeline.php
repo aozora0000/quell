@@ -99,16 +99,15 @@ class Pipeline implements PipelineInterface
                 throw $exception;
             }
             $this->is_default = false;
-            $builder = call_user_func($this->onFailedClosure, $this->request, $builder, $exception);
+            call_user_func($this->onFailedClosure, $this->request, $builder, $exception);
         }
 
         if ($this->hasFinallyClosure()) {
-            $this->is_default = false;
-            $builder = call_user_func($this->onFinallyClosure, $this->request, $builder);
+            call_user_func($this->onFinallyClosure, $this->request, $builder);
         }
 
         if ($this->is_default && $this->hasDefaultClosure()) {
-            $builder = call_user_func($this->onDefaultClosure, $builder);
+            call_user_func($this->onDefaultClosure, $this->request, $builder);
         }
 
         return $builder;

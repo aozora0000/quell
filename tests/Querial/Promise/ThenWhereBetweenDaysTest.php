@@ -1,12 +1,12 @@
 <?php
 
-namespace Test\Querial\Promise;
+namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
-use Querial\Promise\ThenWhereBetweenDaysWithQuery;
-use Test\WithEloquentModelTestCase;
+use Querial\Promise\ThenWhereBetweenDays;
+use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenWhereBetweenDaysWithQueryTest extends WithEloquentModelTestCase
+class ThenWhereBetweenDaysTest extends WithEloquentModelTestCase
 {
     public function testResolveMinMax(): void
     {
@@ -15,7 +15,7 @@ class ThenWhereBetweenDaysWithQueryTest extends WithEloquentModelTestCase
         $model = $this->createModel();
         $query = $model->newQuery();
 
-        $instance = new ThenWhereBetweenDaysWithQuery('created_at', null);
+        $instance = new ThenWhereBetweenDays('created_at', null);
         $this->assertSame(<<<'EOT'
 select * from "users" where "users"."created_at" between '2022-01-01' and '2022-12-31'
 EOT
@@ -29,7 +29,7 @@ EOT
         $model = $this->createModel();
         $query = $model->newQuery();
 
-        $instance = new ThenWhereBetweenDaysWithQuery('created_at', null);
+        $instance = new ThenWhereBetweenDays('created_at', null);
         $this->assertSame(<<<'EOT'
 select * from "users" where "users"."created_at" >= '2022-01-01'
 EOT
@@ -43,7 +43,7 @@ EOT
         $model = $this->createModel();
         $query = $model->newQuery();
 
-        $instance = new ThenWhereBetweenDaysWithQuery('created_at', null);
+        $instance = new ThenWhereBetweenDays('created_at', null);
         $this->assertSame(<<<'EOT'
 select * from "users" where "users"."created_at" <= '2022-12-31'
 EOT

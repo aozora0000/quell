@@ -1,12 +1,12 @@
 <?php
 
-namespace Test\Querial\Promise;
+namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
-use Querial\Promise\ThenWhereBetweenWithQuery;
-use Test\WithEloquentModelTestCase;
+use Querial\Promise\ThenWhereBetween;
+use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenWhereBetweenWithQueryTest extends WithEloquentModelTestCase
+class ThenWhereBetweenTest extends WithEloquentModelTestCase
 {
     public function testResolveMinMax(): void
     {
@@ -15,7 +15,7 @@ class ThenWhereBetweenWithQueryTest extends WithEloquentModelTestCase
         $model = $this->createModel();
         $query = $model->newQuery();
 
-        $instance = new ThenWhereBetweenWithQuery('price', null);
+        $instance = new ThenWhereBetween('price', null);
         $this->assertSame(<<<'EOT'
 select * from "users" where "users"."price" between '1' and '100'
 EOT
@@ -29,7 +29,7 @@ EOT
         $model = $this->createModel();
         $query = $model->newQuery();
 
-        $instance = new ThenWhereBetweenWithQuery('price', null);
+        $instance = new ThenWhereBetween('price', null);
         $this->assertSame(<<<'EOT'
 select * from "users" where "users"."price" >= '1'
 EOT
@@ -43,7 +43,7 @@ EOT
         $model = $this->createModel();
         $query = $model->newQuery();
 
-        $instance = new ThenWhereBetweenWithQuery('price', null);
+        $instance = new ThenWhereBetween('price', null);
         $this->assertSame(<<<'EOT'
 select * from "users" where "users"."price" <= '100'
 EOT
