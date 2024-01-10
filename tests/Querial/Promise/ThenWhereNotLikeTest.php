@@ -21,7 +21,7 @@ select * from "users" where "users"."name" not LIKE '%test%'
 EOT
             , $query->toRawSql());
 
-        $query = (new ThenWhereNotLike('email', null, null, LikeFormatter::BACKWORD_MATCH))->resolve($request, $query);
+        $query = (new ThenWhereNotLike('email', null, null, LikeFormatter::BACKWARD_MATCH))->resolve($request, $query);
         $this->assertSame(<<<'EOT'
 select * from "users" where "users"."name" not LIKE '%test%' and "users"."email" not LIKE 'email@email.com%'
 EOT

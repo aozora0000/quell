@@ -21,7 +21,7 @@ select * from "users" where "users"."name" LIKE '%test%'
 EOT
             , $query->toRawSql());
 
-        $query = (new ThenWhereLike('email', null, null, LikeFormatter::BACKWORD_MATCH))->resolve($request, $query);
+        $query = (new ThenWhereLike('email', null, null, LikeFormatter::BACKWARD_MATCH))->resolve($request, $query);
         $this->assertSame(<<<'EOT'
 select * from "users" where "users"."name" LIKE '%test%' and "users"."email" LIKE 'email@email.com%'
 EOT
