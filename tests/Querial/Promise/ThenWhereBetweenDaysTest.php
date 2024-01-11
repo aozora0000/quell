@@ -15,9 +15,9 @@ class ThenWhereBetweenDaysTest extends WithEloquentModelTestCase
         $model = $this->createModel();
         $query = $model->newQuery();
 
-        $instance = new ThenWhereBetweenDays('created_at', null);
+        $instance = new ThenWhereBetweenDays('created_at', null, 'Y-m-d');
         $this->assertSame(<<<'EOT'
-select * from "users" where "users"."created_at" between '2022-01-01' and '2022-12-31'
+select * from "users" where "users"."created_at" between '2022-01-01 00:00:00' and '2022-12-31 23:59:59'
 EOT
             , $instance->resolve($request, $query)->toRawSql());
     }
@@ -29,9 +29,9 @@ EOT
         $model = $this->createModel();
         $query = $model->newQuery();
 
-        $instance = new ThenWhereBetweenDays('created_at', null);
+        $instance = new ThenWhereBetweenDays('created_at', null, 'Y-m-d');
         $this->assertSame(<<<'EOT'
-select * from "users" where "users"."created_at" >= '2022-01-01'
+select * from "users" where "users"."created_at" >= '2022-01-01 00:00:00'
 EOT
             , $instance->resolve($request, $query)->toRawSql());
     }
@@ -43,9 +43,9 @@ EOT
         $model = $this->createModel();
         $query = $model->newQuery();
 
-        $instance = new ThenWhereBetweenDays('created_at', null);
+        $instance = new ThenWhereBetweenDays('created_at', null, 'Y-m-d');
         $this->assertSame(<<<'EOT'
-select * from "users" where "users"."created_at" <= '2022-12-31'
+select * from "users" where "users"."created_at" <= '2022-12-31 23:59:59'
 EOT
             , $instance->resolve($request, $query)->toRawSql());
     }

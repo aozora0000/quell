@@ -13,10 +13,18 @@ namespace Querial\Promise;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Querial\Target\BetweenTarget;
 use Querial\Target\DatetimeTarget;
 
 class ThenWhereBetweenDays extends ThenWhereBetween
 {
+    public function __construct(string $attribute, ?string $inputTarget = null, string $format = 'Y-m-d H:i:s', string $minPostfix = '_min', string $maxPostfix = '_max')
+    {
+        $this->attribute = $attribute;
+        $target = $inputTarget ?? $attribute;
+        $this->target = new BetweenTarget(new DatetimeTarget($format, $target.$maxPostfix), new DatetimeTarget($format, $target.$minPostfix));
+    }
+
     public function resolve(Request $request, Builder $builder): Builder
     {
         if (! $this->resolveIf($request)) {
