@@ -1,4 +1,8 @@
 parameters:
+    level: 1
+    paths:
+        - src
+        - tests
     excludes_analyse:
         - 'vendor'
     bootstrapFiles:

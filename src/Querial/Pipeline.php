@@ -1,42 +1,36 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 namespace Querial;
 
 use Closure;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Http\Request;
 use Querial\Contracts\PipelineInterface;
 use Querial\Contracts\PromiseInterface;
-use Querial\Contracts\Support\ResolvedFilter;
 use Throwable;
 
 class Pipeline implements PipelineInterface
 {
-    use ResolvedFilter;
-
-    /**
-     * @var Request
-     */
     private Request $request;
+
+    private bool $is_default = true;
 
     /**
      * @var array<PromiseInterface>
      */
     private array $promises = [];
 
-    /**
-     * @var Closure|null
-     */
-    private ?Closure $failed = null;
+    private ?Closure $onFailedClosure = null;
 
-    /**
-     * @var Closure|null
-     */
-    private ?Closure $finally = null;
+    private ?Closure $onFinallyClosure = null;
+
+    private ?Closure $onDefaultClosure = null;
 
     /**
      * IlluminateRequestCriteria constructor.
-     *
-     * @param Request $request
      */
     public function __construct(Request $request)
     {
@@ -44,8 +38,6 @@ class Pipeline implements PipelineInterface
     }
 
     /**
-     * @param PromiseInterface $promise
-     *
      * @return static
      */
     public function then(PromiseInterface $promise): self
@@ -56,54 +48,83 @@ class Pipeline implements PipelineInterface
     }
 
     /**
-     * @param Closure $callback
-     *
      * @return static
      */
-    public function onFailed(Closure $callback): self
+    public function onFailed(Closure|callable $callback): self
     {
-        $this->failed = $callback;
+        $this->onFailedClosure = $callback;
 
         return $this;
     }
 
     /**
-     * @param Closure $callback
-     *
      * @return static
      */
-    public function onFinally(Closure $callback): self
+    public function onFinally(Closure|callable $callback): self
     {
-        $this->finally = $callback;
+        $this->onFinallyClosure = $callback;
 
         return $this;
     }
 
+    public function onDefault(Closure|callable $closure): self
+    {
+        $this->onDefaultClosure = $closure;
+
+        return $this;
+    }
+
+    protected function resolvedFilter(array $promises, Request $request): array
+    {
+        return array_filter($promises, static function (PromiseInterface $promise) use ($request) {
+            return $promise->resolveIf($request);
+        });
+    }
+
     /**
-     * @param Builder $builder
-     *
-     * @return Builder
-     *
      * @throws Throwable
      */
-    public function build(Builder $builder): Builder
+    public function build(EloquentBuilder|QueryBuilder $builder): EloquentBuilder|QueryBuilder
     {
         try {
             $promises = $this->resolvedFilter($this->promises, $this->request);
+            if (count($promises) !== 0) {
+                $this->is_default = false;
+            }
             foreach ($promises as $promise) {
                 $builder = $promise->resolve($this->request, $builder);
             }
         } catch (Throwable $exception) {
-            if ($this->failed === null) {
+            if (! $this->hasFailedClosure()) {
                 throw $exception;
             }
-            $builder = call_user_func($this->failed, $this->request, $builder, $exception);
+            $this->is_default = false;
+            call_user_func($this->onFailedClosure, $this->request, $builder, $exception);
         }
 
-        if ($this->finally !== null) {
-            $builder = call_user_func($this->finally, $this->request, $builder);
+        if ($this->hasFinallyClosure()) {
+            call_user_func($this->onFinallyClosure, $this->request, $builder);
+        }
+
+        if ($this->is_default && $this->hasDefaultClosure()) {
+            call_user_func($this->onDefaultClosure, $this->request, $builder);
         }
 
         return $builder;
+    }
+
+    public function hasFailedClosure(): bool
+    {
+        return $this->onFailedClosure !== null;
+    }
+
+    public function hasFinallyClosure(): bool
+    {
+        return $this->onFinallyClosure !== null;
+    }
+
+    public function hasDefaultClosure(): bool
+    {
+        return $this->onDefaultClosure !== null;
     }
 }
