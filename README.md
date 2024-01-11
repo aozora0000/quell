@@ -1,5 +1,5 @@
 # LaravelQuerial
-[![Laravel 9](https://img.shields.io/badge/Laravel-9-orange.svg)](http://laravel.com)
+[![Laravel 10](https://img.shields.io/badge/Laravel-10-orange.svg)](http://laravel.com)
 
 PromiseLike Chains IlluminateRequest to QueryBuilder
 
