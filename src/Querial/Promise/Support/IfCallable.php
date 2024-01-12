@@ -25,14 +25,14 @@ class IfCallable implements PromiseInterface
         $this->promise = $promise;
     }
 
-    public function resolveIf(Request $request): bool
+    public function match(Request $request): bool
     {
-        return call_user_func($this->closure, $request) && $this->promise->resolveIf($request);
+        return call_user_func($this->closure, $request) && $this->promise->match($request);
     }
 
     public function resolve(Request $request, EloquentBuilder $builder): EloquentBuilder
     {
-        if (! $this->resolveIf($request)) {
+        if (! $this->match($request)) {
             return $builder;
         }
 

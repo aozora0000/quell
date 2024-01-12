@@ -20,7 +20,7 @@ class ThenCallableTest extends WithEloquentModelTestCase
         }, function (Request $request, Builder $builder) {
             return $builder->where('name', 'LIKE', 'test%');
         }));
-        $this->assertTrue($instance->resolveIf($request));
+        $this->assertTrue($instance->match($request));
         $this->assertSame(<<<'EOT'
 select * from "users" where "name" LIKE 'test%'
 EOT

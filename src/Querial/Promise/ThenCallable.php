@@ -28,7 +28,7 @@ class ThenCallable extends PromiseQuery
         $this->resolve = $resolve;
     }
 
-    public function resolveIf(Request $request): bool
+    public function match(Request $request): bool
     {
         return call_user_func($this->resolveIf, $request);
     }

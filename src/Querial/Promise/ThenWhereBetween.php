@@ -37,7 +37,7 @@ class ThenWhereBetween extends PromiseQuery
         $attribute = $this->createAttributeFromTable($builder, $this->attribute);
 
         return match (true) {
-            ! $this->resolveIf($request) => $builder,
+            ! $this->match($request) => $builder,
             $this->target->is($request) => $builder->whereBetween($attribute, $this->target->value($request)),
             $this->target->max()->is($request) => $builder->where($attribute, '<=', $this->target->max()->value($request)),
             $this->target->min()->is($request) => $builder->where($attribute, '>=', $this->target->min()->value($request)),
@@ -45,7 +45,7 @@ class ThenWhereBetween extends PromiseQuery
         };
     }
 
-    public function resolveIf(Request $request): bool
+    public function match(Request $request): bool
     {
         return
             $this->target->is($request) ||

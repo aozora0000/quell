@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 use Querial\Contracts\Support\AggregatePromiseQuery;
 use Querial\Contracts\Support\PromiseQuery;
 
-class ThenWhereHasRelation extends PromiseQuery
+class ThenWhereHasNotRelation extends PromiseQuery
 {
     protected string $relation;
 
@@ -33,13 +33,13 @@ class ThenWhereHasRelation extends PromiseQuery
     public function resolve(Request $request, Builder $builder): Builder
     {
         if ($this->aggregator === null) {
-            return $builder->has($this->relation);
+            return $builder->whereDoesntHave($this->relation);
         }
         if (! $this->match($request)) {
             return $builder;
         }
 
-        return $builder->whereHas($this->relation, function (Builder $builder) use ($request) {
+        return $builder->whereDoesntHave($this->relation, function (Builder $builder) use ($request) {
             return $this->aggregator->resolve($request, $builder);
         });
     }

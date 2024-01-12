@@ -9,7 +9,7 @@ class ThenWhereGreaterThan extends ThenWhereEqual
 {
     public function resolve(Request $request, EloquentBuilder $builder): EloquentBuilder
     {
-        if (! $this->resolveIf($request)) {
+        if (! $this->match($request)) {
             return $builder;
         }
         $attribute = $this->createAttributeFromTable($builder, $this->attribute);

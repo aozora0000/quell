@@ -10,17 +10,17 @@ use Querial\Contracts\Support\AggregatePromiseQuery;
 
 class ThenOrWherePromisesAggregator extends AggregatePromiseQuery
 {
-    public function resolveIf(Request $request): bool
+    public function match(Request $request): bool
     {
-        return ! empty($this->resolvedFilter($this->promises, $request));
+        return ! empty($this->getMatchedPromises($this->promises, $request));
     }
 
     public function resolve(Request $request, Builder $builder): Builder
     {
-        if (! $this->resolveIf($request)) {
+        if (! $this->match($request)) {
             return $builder;
         }
-        $promises = $this->resolvedFilter($this->promises, $request);
+        $promises = $this->getMatchedPromises($this->promises, $request);
 
         return $builder->orWhere(function (Builder $query) use ($promises, $request) {
             foreach ($promises as $promise) {

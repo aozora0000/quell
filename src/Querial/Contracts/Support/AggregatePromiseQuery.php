@@ -34,10 +34,10 @@ abstract class AggregatePromiseQuery implements PromiseInterface
      * @param  PromiseInterface[]  $promises
      * @return PromiseInterface[]
      */
-    protected function resolvedFilter(array $promises, Request $request): array
+    protected function getMatchedPromises(array $promises, Request $request): array
     {
         return array_filter($promises, static function (PromiseInterface $promise) use ($request) {
-            return $promise->resolveIf($request);
+            return $promise->match($request);
         });
     }
 }

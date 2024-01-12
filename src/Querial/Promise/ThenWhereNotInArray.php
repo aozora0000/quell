@@ -9,7 +9,7 @@ class ThenWhereNotInArray extends ThenWhereInArray
 {
     public function resolve(Request $request, Builder $builder): Builder
     {
-        if (! $this->resolveIf($request)) {
+        if (! $this->match($request)) {
             return $builder;
         }
         $attribute = $this->createAttributeFromTable($builder, $this->attribute);

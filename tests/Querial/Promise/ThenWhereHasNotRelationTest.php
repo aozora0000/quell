@@ -5,10 +5,10 @@ namespace Tests\Querial\Promise;
 use Illuminate\Http\Request;
 use Querial\Promise\Support\ThenPromisesAggregator;
 use Querial\Promise\ThenWhereEqual;
-use Querial\Promise\ThenWhereHasRelation;
+use Querial\Promise\ThenWhereHasNotRelation;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenWhereHasRelationTest extends WithEloquentModelTestCase
+class ThenWhereHasNotRelationTest extends WithEloquentModelTestCase
 {
     public function testResolve(): void
     {
@@ -16,9 +16,9 @@ class ThenWhereHasRelationTest extends WithEloquentModelTestCase
         $model = $this->createModel();
         $query = $model->newQuery();
 
-        $query = (new ThenWhereHasRelation('items'))->resolve($request, $query);
+        $query = (new ThenWhereHasNotRelation('items'))->resolve($request, $query);
         $this->assertSame(<<<'EOT'
-select * from "users" where exists (select * from "items" where "users"."id" = "items"."user_id")
+select * from "users" where not exists (select * from "items" where "users"."id" = "items"."user_id")
 EOT
             , $query->toRawSql());
     }
@@ -29,11 +29,11 @@ EOT
         $model = $this->createModel();
         $query = $model->newQuery();
 
-        $query = (new ThenWhereHasRelation('items', new ThenPromisesAggregator([
+        $query = (new ThenWhereHasNotRelation('items', new ThenPromisesAggregator([
             new ThenWhereEqual('name', null, 'users'),
         ])))->resolve($request, $query);
         $this->assertSame(<<<'EOT'
-select * from "users" where exists (select * from "items" where "users"."id" = "items"."user_id" and "users"."name" = 'test')
+select * from "users" where not exists (select * from "items" where "users"."id" = "items"."user_id" and "users"."name" = 'test')
 EOT
             , $query->toRawSql());
     }

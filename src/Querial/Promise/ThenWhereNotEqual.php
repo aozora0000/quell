@@ -34,7 +34,7 @@ class ThenWhereNotEqual extends PromiseQuery
 
     public function resolve(Request $request, EloquentBuilder $builder): EloquentBuilder
     {
-        if (! $this->resolveIf($request)) {
+        if (! $this->match($request)) {
             return $builder;
         }
         $attribute = $this->createAttributeFromTable($builder, $this->attribute);
@@ -42,7 +42,7 @@ class ThenWhereNotEqual extends PromiseQuery
         return $builder->where($attribute, '<>', $this->target->value($request));
     }
 
-    public function resolveIf(Request $request): bool
+    public function match(Request $request): bool
     {
         return $this->target->is($request);
     }

@@ -42,7 +42,7 @@ class ThenOrWhereLike extends PromiseQuery
 
     public function resolve(Request $request, Builder $builder): Builder
     {
-        if (! $this->resolveIf($request)) {
+        if (! $this->match($request)) {
             return $builder;
         }
         $attribute = $this->createAttributeFromTable($builder, $this->attribute);
@@ -51,7 +51,7 @@ class ThenOrWhereLike extends PromiseQuery
         return $builder->orWhere($attribute, 'LIKE', $this->formatter->format($value));
     }
 
-    public function resolveIf(Request $request): bool
+    public function match(Request $request): bool
     {
         return $this->target->is($request);
     }

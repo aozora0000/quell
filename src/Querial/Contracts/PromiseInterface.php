@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 interface PromiseInterface
 {
-    public function resolveIf(Request $request): bool;
+    public function match(Request $request): bool;
 
     public function resolve(Request $request, EloquentBuilder $builder): EloquentBuilder;
 }

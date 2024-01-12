@@ -73,10 +73,10 @@ class Pipeline implements PipelineInterface
         return $this;
     }
 
-    protected function resolvedFilter(array $promises, Request $request): array
+    protected function getMatchedPromises(array $promises, Request $request): array
     {
         return array_filter($promises, static function (PromiseInterface $promise) use ($request) {
-            return $promise->resolveIf($request);
+            return $promise->match($request);
         });
     }
 
@@ -86,7 +86,7 @@ class Pipeline implements PipelineInterface
     public function build(EloquentBuilder $builder): EloquentBuilder
     {
         try {
-            $promises = $this->resolvedFilter($this->promises, $this->request);
+            $promises = $this->getMatchedPromises($this->promises, $this->request);
             if (count($promises) !== 0) {
                 $this->is_default = false;
             }

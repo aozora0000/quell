@@ -8,17 +8,17 @@ use Querial\Contracts\Support\AggregatePromiseQuery;
 
 class ThenPromisesAggregator extends AggregatePromiseQuery
 {
-    public function resolveIf(Request $request): bool
+    public function match(Request $request): bool
     {
-        return ! empty($this->resolvedFilter($this->promises, $request));
+        return ! empty($this->getMatchedPromises($this->promises, $request));
     }
 
     public function resolve(Request $request, EloquentBuilder $builder): EloquentBuilder
     {
-        if (! $this->resolveIf($request)) {
+        if (! $this->match($request)) {
             return $builder;
         }
-        $promises = $this->resolvedFilter($this->promises, $request);
+        $promises = $this->getMatchedPromises($this->promises, $request);
 
         foreach ($promises as $promise) {
             $promise->resolve($request, $builder);

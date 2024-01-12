@@ -108,7 +108,7 @@ EOT
             {
                 return new class implements PromiseInterface
                 {
-                    public function resolveIf(Request $request): bool
+                    public function match(Request $request): bool
                     {
                         return true;
                     }
