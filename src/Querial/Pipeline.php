@@ -6,7 +6,6 @@ namespace Querial;
 
 use Closure;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
-use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Http\Request;
 use Querial\Contracts\PipelineInterface;
 use Querial\Contracts\PromiseInterface;
@@ -84,7 +83,7 @@ class Pipeline implements PipelineInterface
     /**
      * @throws Throwable
      */
-    public function build(EloquentBuilder|QueryBuilder $builder): EloquentBuilder|QueryBuilder
+    public function build(EloquentBuilder $builder): EloquentBuilder
     {
         try {
             $promises = $this->resolvedFilter($this->promises, $this->request);

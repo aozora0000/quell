@@ -4,7 +4,6 @@ namespace Querial;
 
 use Closure;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
-use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Http\Request;
 use Querial\Contracts\PromiseInterface;
 use Throwable;
@@ -41,12 +40,12 @@ abstract class Quell
     /**
      * Builds the pipeline for the given builder.
      *
-     * @param  EloquentBuilder|QueryBuilder  $builder The builder instance.
-     * @return EloquentBuilder|QueryBuilder The updated builder instance.
+     * @param  EloquentBuilder  $builder The builder instance.
+     * @return EloquentBuilder The updated builder instance.
      *
      * @throws Throwable
      */
-    final public function build(EloquentBuilder|QueryBuilder $builder): EloquentBuilder|QueryBuilder
+    final public function build(EloquentBuilder $builder): EloquentBuilder
     {
         $pipeline = new Pipeline($this->request);
         if ($this->promise() !== null) {

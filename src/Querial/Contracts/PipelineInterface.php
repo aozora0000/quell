@@ -12,7 +12,6 @@ namespace Querial\Contracts;
 
 use Closure;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
-use Illuminate\Database\Query\Builder as QueryBuilder;
 use Throwable;
 
 interface PipelineInterface
@@ -39,5 +38,5 @@ interface PipelineInterface
     /**
      * @throws Throwable
      */
-    public function build(EloquentBuilder|QueryBuilder $builder): EloquentBuilder|QueryBuilder;
+    public function build(EloquentBuilder $builder): EloquentBuilder;
 }
