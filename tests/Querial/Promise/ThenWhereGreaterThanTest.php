@@ -16,9 +16,14 @@ class ThenWhereGreaterThanTest extends WithEloquentModelTestCase
         $query = $model->newQuery();
 
         $instance = new ThenWhereGreaterThan('price', null);
-        $this->assertSame(<<<'EOT'
-select * from "users" where "users"."price" < '1'
-EOT
-            , $instance->resolve($request, $query)->toRawSql());
+        $sql = <<<'EOT'
+SELECT
+  *
+FROM
+  "users"
+WHERE
+  "users"."price" < '1'
+EOT;
+        $this->assertSame($sql, $this->format($instance->resolve($request, $query)));
     }
 }

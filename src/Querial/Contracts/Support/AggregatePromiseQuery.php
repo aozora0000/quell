@@ -30,6 +30,12 @@ abstract class AggregatePromiseQuery implements PromiseInterface
         $this->promises = $promises;
     }
 
+    public function match(Request $request): bool
+    {
+        return ! empty($this->getMatchedPromises($this->promises, $request));
+    }
+
+
     /**
      * @param  PromiseInterface[]  $promises
      * @return PromiseInterface[]

@@ -28,7 +28,8 @@
         "phpunit/phpunit": "^10.5.5",
         "ext-pdo": "*",
         "nunomaduro/larastan": "^2.8",
-        "laravel/pint": "^1.13"
+        "laravel/pint": "^1.13",
+        "doctrine/sql-formatter": "^1.2"
     },
     "scripts": {
         "all": [

@@ -1,6 +1,6 @@
 <?php
 
-namespace Querial\Promise;
+namespace Querial\Promise\Support;
 
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Http\Request;
@@ -35,6 +35,10 @@ class ThenCallable extends PromiseQuery
 
     public function resolve(Request $request, EloquentBuilder $builder): EloquentBuilder
     {
+        if (! $this->match($request)) {
+            return $builder;
+        }
+
         return call_user_func($this->resolve, $request, $builder);
     }
 }

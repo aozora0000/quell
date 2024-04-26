@@ -15,9 +15,14 @@ class ThenWhereNotInArrayTest extends WithEloquentModelTestCase
         $query = $model->newQuery();
 
         $query = (new ThenWhereNotInArray('name'))->resolve($request, $query);
-        $this->assertSame(<<<'EOT'
-select * from "users" where "users"."name" not in ('test1', 'test2')
-EOT
-            , $query->toRawSql());
+        $sql = <<<'EOT'
+SELECT
+  *
+FROM
+  "users"
+WHERE
+  "users"."name" NOT IN ('test1', 'test2')
+EOT;
+        $this->assertSame($sql, $this->format($query));
     }
 }

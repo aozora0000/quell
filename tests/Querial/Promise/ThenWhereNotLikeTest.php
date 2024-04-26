@@ -9,28 +9,68 @@ use Tests\Querial\WithEloquentModelTestCase;
 
 class ThenWhereNotLikeTest extends WithEloquentModelTestCase
 {
-    public function testResolve(): void
+    /**
+     * @test
+     */
+    public function 無指定の場合、部分一致としてLIKE検索される(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
         $model = $this->createModel();
         $query = $model->newQuery();
 
         $query = (new ThenWhereNotLike('name'))->resolve($request, $query);
-        $this->assertSame(<<<'EOT'
-select * from "users" where "users"."name" not LIKE '%test%'
-EOT
-            , $query->toRawSql());
+        $sql = <<<'EOT'
+SELECT
+  *
+FROM
+  "users"
+WHERE
+  "users"."name" NOT LIKE '%test%'
+EOT;
+        $this->assertSame($sql, $this->format($query));
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function 指定された場合、後方一致としてLIKE検索される()
+    {
+        $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
+        $model = $this->createModel();
+        $query = $model->newQuery();
 
         $query = (new ThenWhereNotLike('email', null, null, LikeFormatter::BACKWARD_MATCH))->resolve($request, $query);
-        $this->assertSame(<<<'EOT'
-select * from "users" where "users"."name" not LIKE '%test%' and "users"."email" not LIKE '%email@email.com'
-EOT
-            , $query->toRawSql());
+        $sql = <<<'EOT'
+SELECT
+  *
+FROM
+  "users"
+WHERE
+  "users"."email" NOT LIKE '%email@email.com'
+EOT;
+        $this->assertSame($sql, $this->format($query));
+    }
+
+    /**
+     * @test
+     */
+    public function 指定された場合、前方一致としてLIKE検索される(): void
+    {
+        $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
+        $model = $this->createModel();
+        $query = $model->newQuery();
 
         $query = (new ThenWhereNotLike('email', null, null, LikeFormatter::FORWARD_MATCH))->resolve($request, $query);
-        $this->assertSame(<<<'EOT'
-select * from "users" where "users"."name" not LIKE '%test%' and "users"."email" not LIKE '%email@email.com' and "users"."email" not LIKE 'email@email.com%'
-EOT
-            , $query->toRawSql());
+        $sql = <<<'EOT'
+SELECT
+  *
+FROM
+  "users"
+WHERE
+  "users"."email" NOT LIKE 'email@email.com%'
+EOT;
+        $this->assertSame($sql, $this->format($query));
     }
 }

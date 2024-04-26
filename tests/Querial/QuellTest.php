@@ -39,10 +39,20 @@ class QuellTest extends WithEloquentModelTestCase
         };
 
         $query = $this->createModel()->newQuery();
-        $this->assertSame(<<<'EOT'
-select * from "users" where ("users"."name" = 'test' and "users"."created_at" between '2022-01-01' and '2022-12-31')
-EOT
-            , $instance->build($query)->toRawSql());
+        $sql = <<<'EOT'
+SELECT
+  *
+FROM
+  "users"
+WHERE
+  (
+    "users"."name" = 'test'
+    AND "users"."created_at" BETWEEN '2022-01-01'
+    AND '2022-12-31'
+  )
+EOT;
+        $this->assertSame($sql, $this->format($instance->build($query)));
+
     }
 
     public function testDefaultBuild(): void
@@ -78,10 +88,15 @@ EOT
         };
 
         $query = $this->createModel()->newQuery();
-        $this->assertSame(<<<'EOT'
-select * from "users" limit 10
-EOT
-            , $instance->build($query)->toRawSql());
+        $sql = <<<'EOT'
+SELECT
+  *
+FROM
+  "users"
+LIMIT
+  10
+EOT;
+        $this->assertSame($sql, $this->format($instance->build($query)));
     }
 
     public function testFailedBuild(): void
@@ -122,9 +137,14 @@ EOT
         };
 
         $query = $this->createModel()->newQuery();
-        $this->assertSame(<<<'EOT'
-select * from "users" where "name" = 'unknown'
-EOT
-            , $instance->build($query)->toRawSql());
+        $sql = <<<'EOT'
+SELECT
+  *
+FROM
+  "users"
+WHERE
+  "name" = 'unknown'
+EOT;
+        $this->assertSame($sql, $this->format($instance->build($query)));
     }
 }

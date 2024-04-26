@@ -15,9 +15,14 @@ class ThenWhereInArrayTest extends WithEloquentModelTestCase
         $query = $model->newQuery();
 
         $query = (new ThenWhereInArray('name'))->resolve($request, $query);
-        $this->assertSame(<<<'EOT'
-select * from "users" where "users"."name" in ('test1', 'test2')
-EOT
-            , $query->toRawSql());
+        $sql = <<<'EOT'
+SELECT
+  *
+FROM
+  "users"
+WHERE
+  "users"."name" IN ('test1', 'test2')
+EOT;
+        $this->assertSame($sql, $this->format($query));
     }
 }

@@ -16,15 +16,28 @@ class ThenWhereLikeTest extends WithEloquentModelTestCase
         $query = $model->newQuery();
 
         $query = (new ThenWhereLike('name'))->resolve($request, $query);
-        $this->assertSame(<<<'EOT'
-select * from "users" where "users"."name" LIKE '%test%'
-EOT
-            , $query->toRawSql());
+        $sql = <<<'EOT'
+SELECT
+  *
+FROM
+  "users"
+WHERE
+  "users"."name" LIKE '%test%'
+EOT;
+        $this->assertSame($sql, $this->format($query));
+
 
         $query = (new ThenWhereLike('email', null, null, LikeFormatter::BACKWARD_MATCH))->resolve($request, $query);
-        $this->assertSame(<<<'EOT'
-select * from "users" where "users"."name" LIKE '%test%' and "users"."email" LIKE '%email@email.com'
-EOT
-            , $query->toRawSql());
+        $sql = <<<'EOT'
+SELECT
+  *
+FROM
+  "users"
+WHERE
+  "users"."name" LIKE '%test%'
+  AND "users"."email" LIKE '%email@email.com'
+EOT;
+        $this->assertSame($sql, $this->format($query));
+
     }
 }

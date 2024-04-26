@@ -11,39 +11,56 @@ use Tests\Querial\WithEloquentModelTestCase;
 
 class IfCallableTest extends WithEloquentModelTestCase
 {
-    public function testResolved(): void
+    /**
+     * @test
+     * @return void
+     */
+    public function 即時関数の条件に一致した場合、Promiseクエリが実行される(): void
     {
-        $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
+        $request = Request::create('/', 'GET', ['mode' => 'search', 'name' => 'test', 'email' => 'email@email.com']);
         $model = $this->createModel();
         $query = $model->newQuery();
 
         $query = (new IfCallable(function (Request $request) {
-            return $request->filled('name') && $request->input('name') === 'test';
+            return $request->filled('mode') && $request->input('mode') === 'search';
         }, new ThenPromisesAggregator([
             new ThenWhereEqual('name'),
             new ThenWhereLike('email'),
         ])))->resolve($request, $query);
-        $this->assertSame(<<<'EOT'
-select * from "users" where "users"."name" = 'test' and "users"."email" LIKE '%email@email.com%'
-EOT
-            , $query->toRawSql());
+        $sql = <<<'EOT'
+SELECT
+  *
+FROM
+  "users"
+WHERE
+  "users"."name" = 'test'
+  AND "users"."email" LIKE '%email@email.com%'
+EOT;
+        $this->assertSame($sql, $this->format($query));
     }
 
-    public function testNotResolved(): void
+    /**
+     * @test
+     * @return void
+     */
+    public function 即時関数の条件に一致しない場合、Promiseクエリは実行されない(): void
     {
-        $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
+        $request = Request::create('/', 'GET', ['mode' => 'normal', 'name' => 'test', 'email' => 'email@email.com']);
         $model = $this->createModel();
         $query = $model->newQuery();
 
         $query = (new IfCallable(function (Request $request) {
-            return $request->filled('name') && $request->input('name') === 'test2';
+            return $request->filled('name') && $request->input('name') === 'search';
         }, new ThenPromisesAggregator([
             new ThenWhereEqual('name'),
             new ThenWhereLike('email'),
         ])))->resolve($request, $query);
-        $this->assertSame(<<<'EOT'
-select * from "users"
-EOT
-            , $query->toRawSql());
+        $sql = <<<'EOT'
+SELECT
+  *
+FROM
+  "users"
+EOT;
+        $this->assertSame($sql, $this->format($query));
     }
 }
