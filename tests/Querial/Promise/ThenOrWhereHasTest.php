@@ -10,7 +10,11 @@ use Tests\Querial\WithEloquentModelTestCase;
 
 class ThenOrWhereHasTest extends WithEloquentModelTestCase
 {
-    public function testResolveWithSubWhereQuery(): void
+    /**
+     * @test
+     * @return void
+     */
+    public function 複数のExistsサブクエリが入った時にORになる(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
         $model = $this->createModel();

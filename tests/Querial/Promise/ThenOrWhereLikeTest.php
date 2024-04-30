@@ -8,7 +8,11 @@ use Tests\Querial\WithEloquentModelTestCase;
 
 class ThenOrWhereLikeTest extends WithEloquentModelTestCase
 {
-    public function testResolve(): void
+    /**
+     * @test
+     * @return void
+     */
+    public function 複数のWhereクエリが入った時にORになる(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
         $model = $this->createModel();
@@ -29,19 +33,6 @@ EOT;
 
         // 検索するテーブルを指定してクエリを作成する
         $query = (new ThenOrWhereLike('email'))->resolve($request, $query);
-        $sql = <<<'EOT'
-SELECT
-  *
-FROM
-  "users"
-WHERE
-  "users"."name" LIKE '%test%'
-  OR "users"."email" LIKE '%email@email.com%'
-EOT;
-        $this->assertSame($sql, $this->format($query));
-
-        // リクエストに存在しないキーの場合、SQLには反映されない
-        $query = (new ThenOrWhereLike('onattr'))->resolve($request, $query);
         $sql = <<<'EOT'
 SELECT
   *

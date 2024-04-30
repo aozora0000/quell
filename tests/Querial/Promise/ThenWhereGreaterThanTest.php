@@ -8,7 +8,11 @@ use Tests\Querial\WithEloquentModelTestCase;
 
 class ThenWhereGreaterThanTest extends WithEloquentModelTestCase
 {
-    public function testResolve(): void
+    /**
+     * @test
+     * @return void
+     */
+    public function リクエストにキーが存在する場合GREATERTHANクエリを発行する事を確認(): void
     {
         $request = Request::create('/', 'GET', ['price' => '1']);
 
@@ -22,7 +26,7 @@ SELECT
 FROM
   "users"
 WHERE
-  "users"."price" < '1'
+  "users"."price" > '1'
 EOT;
         $this->assertSame($sql, $this->format($instance->resolve($request, $query)));
     }

@@ -10,7 +10,11 @@ use Tests\Querial\WithEloquentModelTestCase;
 
 class ThenWhereHasNotTest extends WithEloquentModelTestCase
 {
-    public function testResolve(): void
+    /**
+     * @test
+     * @return void
+     */
+    public function リクエストにキーが存在する場合NOTEXISTSWhereサブクエリを発行する事を確認(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
         $model = $this->createModel();
@@ -35,7 +39,11 @@ EOT;
         $this->assertSame($sql, $this->format($query));
     }
 
-    public function testResolveWithSubWhereQuery(): void
+    /**
+     * @test
+     * @return void
+     */
+    public function 複数のNOTExistsサブクエリが入った時にANDになる(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
         $model = $this->createModel();

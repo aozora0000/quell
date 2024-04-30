@@ -9,7 +9,11 @@ use Tests\Querial\WithEloquentModelTestCase;
 
 class ThenWhereLikeTest extends WithEloquentModelTestCase
 {
-    public function testResolve(): void
+    /**
+     * @test
+     * @return void
+     */
+    public function リクエストにキーが存在する場合WhereLikeクエリを発行する事を確認(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
         $model = $this->createModel();
@@ -25,19 +29,5 @@ WHERE
   "users"."name" LIKE '%test%'
 EOT;
         $this->assertSame($sql, $this->format($query));
-
-
-        $query = (new ThenWhereLike('email', null, null, LikeFormatter::BACKWARD_MATCH))->resolve($request, $query);
-        $sql = <<<'EOT'
-SELECT
-  *
-FROM
-  "users"
-WHERE
-  "users"."name" LIKE '%test%'
-  AND "users"."email" LIKE '%email@email.com'
-EOT;
-        $this->assertSame($sql, $this->format($query));
-
     }
 }

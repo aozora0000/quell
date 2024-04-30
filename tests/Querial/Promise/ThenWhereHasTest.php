@@ -10,7 +10,11 @@ use Tests\Querial\WithEloquentModelTestCase;
 
 class ThenWhereHasTest extends WithEloquentModelTestCase
 {
-    public function testResolve(): void
+    /**
+     * @test
+     * @return void
+     */
+    public function リクエストにキーが存在する場合EXISTSWhereサブクエリを発行する事を確認(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
         $model = $this->createModel();
@@ -35,12 +39,18 @@ EOT;
         $this->assertSame($sql, $this->format($query));
     }
 
-    public function testResolveWithSubWhereQuery(): void
+    /**
+     * @test
+     */
+    public function 複数のExistsサブクエリが入った時にANDになる(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
         $model = $this->createModel();
         $query = $model->newQuery();
 
+        $query = (new ThenWhereHas('items', new ThenPromisesAggregator([
+            new ThenWhereEqual('name', null, 'users'),
+        ])))->resolve($request, $query);
         $query = (new ThenWhereHas('items', new ThenPromisesAggregator([
             new ThenWhereEqual('name', null, 'users'),
         ])))->resolve($request, $query);
@@ -51,6 +61,15 @@ FROM
   "users"
 WHERE
   EXISTS (
+    SELECT
+      *
+    FROM
+      "items"
+    WHERE
+      "users"."id" = "items"."user_id"
+      AND "users"."name" = 'test'
+  )
+  AND EXISTS (
     SELECT
       *
     FROM

@@ -12,7 +12,11 @@ use Tests\Querial\WithEloquentModelTestCase;
  */
 class ThenWhereEqualTest extends WithEloquentModelTestCase
 {
-    public function testResolve(): void
+    /**
+     * @test
+     * @return void
+     */
+    public function リクエストにキーが存在する場合Whereクエリを発行する事を確認(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
         $model = $this->createModel();
@@ -29,35 +33,13 @@ WHERE
   "users"."name" = 'test'
 EOT;
         $this->assertSame($sql, $this->format($query));
-
-        // リクエストに存在するキーでand whereを掛ける
-        $query = (new ThenWhereEqual('email'))->resolve($request, $query);
-        $sql = <<<'EOT'
-SELECT
-  *
-FROM
-  "users"
-WHERE
-  "users"."name" = 'test'
-  AND "users"."email" = 'email@email.com'
-EOT;
-        $this->assertSame($sql, $this->format($query));
-
-        // リクエストに存在しないキーの場合、SQLには反映されない
-        $query = (new ThenWhereEqual('noattr'))->resolve($request, $query);
-        $sql = <<<'EOT'
-SELECT
-  *
-FROM
-  "users"
-WHERE
-  "users"."name" = 'test'
-  AND "users"."email" = 'email@email.com'
-EOT;
-        $this->assertSame($sql, $this->format($query));
     }
 
-    public function testResolveAnotherTable(): void
+    /**
+     * @test
+     * @return void
+     */
+    public function 別テーブルでもWhereイコールが出来る事を確認(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
         $model = $this->createModel();

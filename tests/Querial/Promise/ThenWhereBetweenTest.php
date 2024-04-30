@@ -8,7 +8,11 @@ use Tests\Querial\WithEloquentModelTestCase;
 
 class ThenWhereBetweenTest extends WithEloquentModelTestCase
 {
-    public function testResolveMinMax(): void
+    /**
+     * @test
+     * @return void
+     */
+    public function 最小最大が揃っている時はBETWEENでクエリを実行する(): void
     {
         $request = Request::create('/', 'GET', ['price_min' => '1', 'price_max' => '100']);
 
@@ -28,7 +32,11 @@ EOT;
         $this->assertSame($sql, $this->format($instance->resolve($request, $query)));
     }
 
-    public function testResolveMinOnly(): void
+    /**
+     * @test
+     * @return void
+     */
+    public function 最小のみが揃っている時はMORETHANでクエリを実行する(): void
     {
         $request = Request::create('/', 'GET', ['price_min' => '1']);
 
@@ -47,7 +55,11 @@ EOT;
         $this->assertSame($sql, $this->format($instance->resolve($request, $query)));
     }
 
-    public function testResolveMaxOnly(): void
+    /**
+     * @test
+     * @return void
+     */
+    public function 最大のみが揃っている時はLESSTHANでクエリを実行する(): void
     {
         $request = Request::create('/', 'GET', ['price_max' => '100']);
 
