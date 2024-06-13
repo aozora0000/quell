@@ -14,7 +14,6 @@ class ThenWhereEqualTest extends WithEloquentModelTestCase
 {
     /**
      * @test
-     * @return void
      */
     public function リクエストにキーが存在する場合Whereクエリを発行する事を確認(): void
     {
@@ -37,7 +36,6 @@ EOT;
 
     /**
      * @test
-     * @return void
      */
     public function 別テーブルでもWhereイコールが出来る事を確認(): void
     {

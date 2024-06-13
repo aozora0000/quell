@@ -3,7 +3,6 @@
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
-use Querial\Formatter\LikeFormatter;
 use Querial\Promise\ThenWhereLike;
 use Tests\Querial\WithEloquentModelTestCase;
 
@@ -11,7 +10,6 @@ class ThenWhereLikeTest extends WithEloquentModelTestCase
 {
     /**
      * @test
-     * @return void
      */
     public function リクエストにキーが存在する場合WhereLikeクエリを発行する事を確認(): void
     {

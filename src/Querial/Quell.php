@@ -40,7 +40,7 @@ abstract class Quell
     /**
      * Builds the pipeline for the given builder.
      *
-     * @param  EloquentBuilder  $builder The builder instance.
+     * @param  EloquentBuilder  $builder  The builder instance.
      * @return EloquentBuilder The updated builder instance.
      *
      * @throws Throwable

@@ -10,7 +10,6 @@ class ThenWhereNotInArrayTest extends WithEloquentModelTestCase
 {
     /**
      * @test
-     * @return void
      */
     public function リクエストにキーが存在し単体の場合WhereInを発行する事を確認(): void
     {
@@ -32,7 +31,6 @@ EOT;
 
     /**
      * @test
-     * @return void
      */
     public function リクエストにキーが存在し配列の場合WhereInを発行する事を確認(): void
     {

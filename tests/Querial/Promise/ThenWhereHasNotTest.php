@@ -12,7 +12,6 @@ class ThenWhereHasNotTest extends WithEloquentModelTestCase
 {
     /**
      * @test
-     * @return void
      */
     public function リクエストにキーが存在する場合NOTEXISTSWhereサブクエリを発行する事を確認(): void
     {
@@ -41,7 +40,6 @@ EOT;
 
     /**
      * @test
-     * @return void
      */
     public function 複数のNOTExistsサブクエリが入った時にANDになる(): void
     {

@@ -14,7 +14,6 @@ class ThenWhereNotEqualTest extends WithEloquentModelTestCase
 {
     /**
      * @test
-     * @return void
      */
     public function リクエストに存在するキーでwhereを掛ける(): void
     {
@@ -37,7 +36,6 @@ EOT;
 
     /**
      * @test
-     * @return void
      */
     public function リクエストに存在するキーでandwhereを掛ける(): void
     {
@@ -62,7 +60,6 @@ EOT;
 
     /**
      * @test
-     * @return void
      */
     public function リクエストに存在しないキーの場合、SQLには反映されない(): void
     {
@@ -87,7 +84,6 @@ EOT;
 
     /**
      * @test
-     * @return void
      */
     public function 検索するテーブルを指定してクエリを作成する(): void
     {

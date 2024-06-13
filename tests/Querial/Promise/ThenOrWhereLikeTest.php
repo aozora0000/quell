@@ -10,7 +10,6 @@ class ThenOrWhereLikeTest extends WithEloquentModelTestCase
 {
     /**
      * @test
-     * @return void
      */
     public function 複数のWhereクエリが入った時にORになる(): void
     {
@@ -29,7 +28,6 @@ WHERE
   "users"."name" LIKE '%test%'
 EOT;
         $this->assertSame($sql, $this->format($query));
-
 
         // 検索するテーブルを指定してクエリを作成する
         $query = (new ThenOrWhereLike('email'))->resolve($request, $query);

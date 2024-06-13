@@ -6,7 +6,6 @@ namespace Querial\Promise\Support;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Querial\Contracts\Support\AggregatePromiseQuery;
 
 class ThenOrWherePromisesAggregator extends ThenPromisesAggregator
 {

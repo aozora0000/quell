@@ -12,7 +12,6 @@ class ThenOrWhereHasTest extends WithEloquentModelTestCase
 {
     /**
      * @test
-     * @return void
      */
     public function 複数のExistsサブクエリが入った時にORになる(): void
     {

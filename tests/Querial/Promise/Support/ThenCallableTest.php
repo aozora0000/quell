@@ -11,7 +11,6 @@ class ThenCallableTest extends WithEloquentModelTestCase
 {
     /**
      * @test
-     * @return void
      */
     public function 即時関数の条件に一致した場合、即時関数内のクエリが実行される(): void
     {
@@ -38,7 +37,6 @@ EOT;
 
     /**
      * @test
-     * @return void
      */
     public function 即時関数の条件に一致しない場合、即時関数内のクエリは実行されない(): void
     {

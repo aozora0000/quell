@@ -33,6 +33,7 @@ class WithEloquentModelTestCase extends TestCase
     {
         $model = new User();
         $model->setConnectionResolver($this->connection);
+
         return $model->fill($attributes);
     }
 

@@ -10,7 +10,6 @@ class ThenWhereBetweenDaysTest extends WithEloquentModelTestCase
 {
     /**
      * @test
-     * @return void
      */
     public function 最小最大が揃っている時はBETWEENでクエリを実行する(): void
     {
@@ -34,7 +33,6 @@ EOT;
 
     /**
      * @test
-     * @return void
      */
     public function 最小のみが揃っている時はMORETHANでクエリを実行する(): void
     {
@@ -57,7 +55,6 @@ EOT;
 
     /**
      * @test
-     * @return void
      */
     public function 最大のみが揃っている時はLESSTHANでクエリを実行する(): void
     {

@@ -9,7 +9,6 @@ class ThenWhereLessThanEqualTest extends WithEloquentModelTestCase
 {
     /**
      * @test
-     * @return void
      */
     public function リクエストにキーが存在する場合LESSTHANEQUALクエリを発行する事を確認(): void
     {
