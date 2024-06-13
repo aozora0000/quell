@@ -8,16 +8,45 @@ use Tests\Querial\WithEloquentModelTestCase;
 
 class ThenWhereNotInArrayTest extends WithEloquentModelTestCase
 {
-    public function testResolve(): void
+    /**
+     * @test
+     */
+    public function リクエストにキーが存在し単体の場合WhereInを発行する事を確認(): void
+    {
+        $request = Request::create('/', 'GET', ['name' => ['test1'], 'email' => 'email@email.com']);
+        $model = $this->createModel();
+        $query = $model->newQuery();
+
+        $query = (new ThenWhereNotInArray('name'))->resolve($request, $query);
+        $sql = <<<'EOT'
+SELECT
+  *
+FROM
+  "users"
+WHERE
+  "users"."name" NOT IN ('test1')
+EOT;
+        $this->assertSame($sql, $this->format($query));
+    }
+
+    /**
+     * @test
+     */
+    public function リクエストにキーが存在し配列の場合WhereInを発行する事を確認(): void
     {
         $request = Request::create('/', 'GET', ['name' => ['test1', 'test2'], 'email' => 'email@email.com']);
         $model = $this->createModel();
         $query = $model->newQuery();
 
         $query = (new ThenWhereNotInArray('name'))->resolve($request, $query);
-        $this->assertSame(<<<'EOT'
-select * from "users" where "users"."name" not in ('test1', 'test2')
-EOT
-            , $query->toRawSql());
+        $sql = <<<'EOT'
+SELECT
+  *
+FROM
+  "users"
+WHERE
+  "users"."name" NOT IN ('test1', 'test2')
+EOT;
+        $this->assertSame($sql, $this->format($query));
     }
 }

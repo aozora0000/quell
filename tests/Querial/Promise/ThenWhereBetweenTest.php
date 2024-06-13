@@ -8,7 +8,10 @@ use Tests\Querial\WithEloquentModelTestCase;
 
 class ThenWhereBetweenTest extends WithEloquentModelTestCase
 {
-    public function testResolveMinMax(): void
+    /**
+     * @test
+     */
+    public function 最小最大が揃っている時はBETWEENでクエリを実行する(): void
     {
         $request = Request::create('/', 'GET', ['price_min' => '1', 'price_max' => '100']);
 
@@ -16,13 +19,22 @@ class ThenWhereBetweenTest extends WithEloquentModelTestCase
         $query = $model->newQuery();
 
         $instance = new ThenWhereBetween('price', null);
-        $this->assertSame(<<<'EOT'
-select * from "users" where "users"."price" between '1' and '100'
-EOT
-            , $instance->resolve($request, $query)->toRawSql());
+        $sql = <<<'EOT'
+SELECT
+  *
+FROM
+  "users"
+WHERE
+  "users"."price" BETWEEN '1'
+  AND '100'
+EOT;
+        $this->assertSame($sql, $this->format($instance->resolve($request, $query)));
     }
 
-    public function testResolveMinOnly(): void
+    /**
+     * @test
+     */
+    public function 最小のみが揃っている時はMORETHANでクエリを実行する(): void
     {
         $request = Request::create('/', 'GET', ['price_min' => '1']);
 
@@ -30,13 +42,21 @@ EOT
         $query = $model->newQuery();
 
         $instance = new ThenWhereBetween('price', null);
-        $this->assertSame(<<<'EOT'
-select * from "users" where "users"."price" >= '1'
-EOT
-            , $instance->resolve($request, $query)->toRawSql());
+        $sql = <<<'EOT'
+SELECT
+  *
+FROM
+  "users"
+WHERE
+  "users"."price" >= '1'
+EOT;
+        $this->assertSame($sql, $this->format($instance->resolve($request, $query)));
     }
 
-    public function testResolveMaxOnly(): void
+    /**
+     * @test
+     */
+    public function 最大のみが揃っている時はLESSTHANでクエリを実行する(): void
     {
         $request = Request::create('/', 'GET', ['price_max' => '100']);
 
@@ -44,9 +64,14 @@ EOT
         $query = $model->newQuery();
 
         $instance = new ThenWhereBetween('price', null);
-        $this->assertSame(<<<'EOT'
-select * from "users" where "users"."price" <= '100'
-EOT
-            , $instance->resolve($request, $query)->toRawSql());
+        $sql = <<<'EOT'
+SELECT
+  *
+FROM
+  "users"
+WHERE
+  "users"."price" <= '100'
+EOT;
+        $this->assertSame($sql, $this->format($instance->resolve($request, $query)));
     }
 }

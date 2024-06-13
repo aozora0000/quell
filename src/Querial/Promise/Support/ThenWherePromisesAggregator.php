@@ -6,15 +6,9 @@ namespace Querial\Promise\Support;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Querial\Contracts\Support\AggregatePromiseQuery;
 
-class ThenWherePromisesAggregator extends AggregatePromiseQuery
+class ThenWherePromisesAggregator extends ThenPromisesAggregator
 {
-    public function match(Request $request): bool
-    {
-        return ! empty($this->getMatchedPromises($this->promises, $request));
-    }
-
     public function resolve(Request $request, Builder $builder): Builder
     {
         if (! $this->match($request)) {

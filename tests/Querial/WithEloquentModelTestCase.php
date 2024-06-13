@@ -2,8 +2,10 @@
 
 namespace Tests\Querial;
 
+use Doctrine\SqlFormatter\SqlFormatter;
 use Illuminate\Database\ConnectionResolver;
 use Illuminate\Database\ConnectionResolverInterface;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\SQLiteConnection;
 use PDO;
@@ -31,6 +33,12 @@ class WithEloquentModelTestCase extends TestCase
     {
         $model = new User();
         $model->setConnectionResolver($this->connection);
+
         return $model->fill($attributes);
+    }
+
+    protected function format(Builder $builder): string
+    {
+        return (new SqlFormatter(new SqlDummyHighlighter()))->format($builder->toRawSql());
     }
 }

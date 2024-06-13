@@ -8,7 +8,10 @@ use Tests\Querial\WithEloquentModelTestCase;
 
 class ThenWhereBetweenDaysTest extends WithEloquentModelTestCase
 {
-    public function testResolveMinMax(): void
+    /**
+     * @test
+     */
+    public function 最小最大が揃っている時はBETWEENでクエリを実行する(): void
     {
         $request = Request::create('/', 'GET', ['created_at_min' => '2022-01-01', 'created_at_max' => '2022-12-31']);
 
@@ -16,13 +19,22 @@ class ThenWhereBetweenDaysTest extends WithEloquentModelTestCase
         $query = $model->newQuery();
 
         $instance = new ThenWhereBetweenDays('created_at', null, 'Y-m-d');
-        $this->assertSame(<<<'EOT'
-select * from "users" where "users"."created_at" between '2022-01-01 00:00:00' and '2022-12-31 23:59:59'
-EOT
-            , $instance->resolve($request, $query)->toRawSql());
+        $sql = <<<'EOT'
+SELECT
+  *
+FROM
+  "users"
+WHERE
+  "users"."created_at" BETWEEN '2022-01-01 00:00:00'
+  AND '2022-12-31 23:59:59'
+EOT;
+        $this->assertSame($sql, $this->format($instance->resolve($request, $query)));
     }
 
-    public function testResolveMinOnly(): void
+    /**
+     * @test
+     */
+    public function 最小のみが揃っている時はMORETHANでクエリを実行する(): void
     {
         $request = Request::create('/', 'GET', ['created_at_min' => '2022-01-01']);
 
@@ -30,13 +42,21 @@ EOT
         $query = $model->newQuery();
 
         $instance = new ThenWhereBetweenDays('created_at', null, 'Y-m-d');
-        $this->assertSame(<<<'EOT'
-select * from "users" where "users"."created_at" >= '2022-01-01 00:00:00'
-EOT
-            , $instance->resolve($request, $query)->toRawSql());
+        $sql = <<<'EOT'
+SELECT
+  *
+FROM
+  "users"
+WHERE
+  "users"."created_at" >= '2022-01-01 00:00:00'
+EOT;
+        $this->assertSame($sql, $this->format($instance->resolve($request, $query)));
     }
 
-    public function testResolveMaxOnly(): void
+    /**
+     * @test
+     */
+    public function 最大のみが揃っている時はLESSTHANでクエリを実行する(): void
     {
         $request = Request::create('/', 'GET', ['created_at_max' => '2022-12-31']);
 
@@ -44,9 +64,14 @@ EOT
         $query = $model->newQuery();
 
         $instance = new ThenWhereBetweenDays('created_at', null, 'Y-m-d');
-        $this->assertSame(<<<'EOT'
-select * from "users" where "users"."created_at" <= '2022-12-31 23:59:59'
-EOT
-            , $instance->resolve($request, $query)->toRawSql());
+        $sql = <<<'EOT'
+SELECT
+  *
+FROM
+  "users"
+WHERE
+  "users"."created_at" <= '2022-12-31 23:59:59'
+EOT;
+        $this->assertSame($sql, $this->format($instance->resolve($request, $query)));
     }
 }

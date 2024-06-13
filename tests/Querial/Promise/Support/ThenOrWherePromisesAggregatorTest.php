@@ -18,15 +18,21 @@ class ThenOrWherePromisesAggregatorTest extends WithEloquentModelTestCase
 
         $query = (new ThenOrWherePromisesAggregator([
             new ThenWhereEqual('name'),
-            new ThenWhereLike('email'),
         ]))->resolve($request, $query);
         $query = (new ThenOrWherePromisesAggregator([
-            new ThenWhereEqual('name'),
             new ThenWhereLike('email'),
         ]))->resolve($request, $query);
-        $this->assertSame(<<<'EOT'
-select * from "users" where ("users"."name" = 'test' and "users"."email" LIKE '%email@email.com%') or ("users"."name" = 'test' and "users"."email" LIKE '%email@email.com%')
-EOT
-            , $query->toRawSql());
+        $sql = <<<'EOT'
+SELECT
+  *
+FROM
+  "users"
+WHERE
+  ("users"."name" = 'test')
+  OR (
+    "users"."email" LIKE '%email@email.com%'
+  )
+EOT;
+        $this->assertSame($sql, $this->format($query));
     }
 }

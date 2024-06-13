@@ -12,7 +12,10 @@ use Tests\Querial\WithEloquentModelTestCase;
  */
 class ThenWhereNotEqualTest extends WithEloquentModelTestCase
 {
-    public function testResolve(): void
+    /**
+     * @test
+     */
+    public function リクエストに存在するキーでwhereを掛ける(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
         $model = $this->createModel();
@@ -20,27 +23,69 @@ class ThenWhereNotEqualTest extends WithEloquentModelTestCase
 
         // リクエストに存在するキーでwhereを掛ける
         $query = (new ThenWhereNotEqual('name'))->resolve($request, $query);
-        $this->assertSame(<<<'EOT'
-select * from "users" where "users"."name" <> 'test'
-EOT
-            , $query->toRawSql());
-
-        // リクエストに存在するキーでand whereを掛ける
-        $query = (new ThenWhereNotEqual('email'))->resolve($request, $query);
-        $this->assertSame(<<<'EOT'
-select * from "users" where "users"."name" <> 'test' and "users"."email" <> 'email@email.com'
-EOT
-            , $query->toRawSql());
-
-        // リクエストに存在しないキーの場合、SQLには反映されない
-        $query = (new ThenWhereNotEqual('noattr'))->resolve($request, $query);
-        $this->assertNotSame(<<<'EOT'
-select * from "users" where "users"."name" <> 'test' and "users"."email" <> 'email@email.com' and "users"."noattr" <> ''
-EOT
-            , $query->toRawSql());
+        $sql = <<<'EOT'
+SELECT
+  *
+FROM
+  "users"
+WHERE
+  "users"."name" <> 'test'
+EOT;
+        $this->assertSame($sql, $this->format($query));
     }
 
-    public function testResolveAnotherTable(): void
+    /**
+     * @test
+     */
+    public function リクエストに存在するキーでandwhereを掛ける(): void
+    {
+        $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
+        $model = $this->createModel();
+        $query = $model->newQuery();
+
+        // リクエストに存在するキーでand whereを掛ける
+        $query = (new ThenWhereNotEqual('name'))->resolve($request, $query);
+        $query = (new ThenWhereNotEqual('email'))->resolve($request, $query);
+        $sql = <<<'EOT'
+SELECT
+  *
+FROM
+  "users"
+WHERE
+  "users"."name" <> 'test'
+  AND "users"."email" <> 'email@email.com'
+EOT;
+        $this->assertSame($sql, $this->format($query));
+    }
+
+    /**
+     * @test
+     */
+    public function リクエストに存在しないキーの場合、SQLには反映されない(): void
+    {
+
+        $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
+        $model = $this->createModel();
+        $query = $model->newQuery();
+
+        // リクエストに存在しないキーの場合、SQLには反映されない
+        $query = (new ThenWhereNotEqual('name'))->resolve($request, $query);
+        $query = (new ThenWhereNotEqual('noattr'))->resolve($request, $query);
+        $sql = <<<'EOT'
+SELECT
+  *
+FROM
+  "users"
+WHERE
+  "users"."name" <> 'test'
+EOT;
+        $this->assertSame($sql, $this->format($query));
+    }
+
+    /**
+     * @test
+     */
+    public function 検索するテーブルを指定してクエリを作成する(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
         $model = $this->createModel();
@@ -48,9 +93,14 @@ EOT
 
         // 検索するテーブルを指定してクエリを作成する
         $query = (new ThenWhereNotEqual('name', null, 'items'))->resolve($request, $query);
-        $this->assertSame(<<<'EOT'
-select * from "users" where "items"."name" <> 'test'
-EOT
-            , $query->toRawSql());
+        $sql = <<<'EOT'
+SELECT
+  *
+FROM
+  "users"
+WHERE
+  "items"."name" <> 'test'
+EOT;
+        $this->assertSame($sql, $this->format($query));
     }
 }

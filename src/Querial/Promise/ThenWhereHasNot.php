@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 use Querial\Contracts\Support\AggregatePromiseQuery;
 use Querial\Contracts\Support\PromiseQuery;
 
-class ThenWhereHasNotRelation extends PromiseQuery
+class ThenWhereHasNot extends PromiseQuery
 {
     protected string $relation;
 
