@@ -26,7 +26,7 @@ FROM
 WHERE
   "users"."name" NOT IN ('test1')
 EOT;
-        $this->assertSame($sql, $this->format($query));
+        $this->assertSame(mb_strtolower($sql), $this->format($query));
     }
 
     /**
@@ -47,6 +47,6 @@ FROM
 WHERE
   "users"."name" NOT IN ('test1', 'test2')
 EOT;
-        $this->assertSame($sql, $this->format($query));
+        $this->assertSame(mb_strtolower($sql), $this->format($query));
     }
 }

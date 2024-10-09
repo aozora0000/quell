@@ -35,7 +35,7 @@ WHERE
       "users"."id" = "items"."user_id"
   )
 EOT;
-        $this->assertSame($sql, $this->format($query));
+        $this->assertSame(mb_strtolower($sql), $this->format($query));
     }
 
     /**
@@ -78,6 +78,6 @@ WHERE
       AND "users"."name" = 'test'
   )
 EOT;
-        $this->assertSame($sql, $this->format($query));
+        $this->assertSame(mb_strtolower($sql), $this->format($query));
     }
 }

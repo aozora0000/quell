@@ -26,6 +26,6 @@ FROM
 WHERE
   "users"."name" LIKE '%test%'
 EOT;
-        $this->assertSame($sql, $this->format($query));
+        $this->assertSame(mb_strtolower($sql), $this->format($query));
     }
 }

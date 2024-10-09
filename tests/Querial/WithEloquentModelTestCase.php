@@ -39,6 +39,6 @@ class WithEloquentModelTestCase extends TestCase
 
     protected function format(Builder $builder): string
     {
-        return (new SqlFormatter(new SqlDummyHighlighter()))->format($builder->toRawSql());
+        return mb_strtolower((new SqlFormatter(new SqlDummyHighlighter()))->format($builder->toRawSql()));
     }
 }

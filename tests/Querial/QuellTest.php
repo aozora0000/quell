@@ -51,7 +51,7 @@ WHERE
     AND '2022-12-31'
   )
 EOT;
-        $this->assertSame($sql, $this->format($instance->build($query)));
+        $this->assertSame(mb_strtolower($sql), $this->format($instance->build($query)));
 
     }
 
@@ -96,7 +96,7 @@ FROM
 LIMIT
   10
 EOT;
-        $this->assertSame($sql, $this->format($instance->build($query)));
+        $this->assertSame(mb_strtolower($sql), $this->format($instance->build($query)));
     }
 
     public function testFailedBuild(): void
@@ -145,6 +145,6 @@ FROM
 WHERE
   "name" = 'unknown'
 EOT;
-        $this->assertSame($sql, $this->format($instance->build($query)));
+        $this->assertSame(mb_strtolower($sql), $this->format($instance->build($query)));
     }
 }

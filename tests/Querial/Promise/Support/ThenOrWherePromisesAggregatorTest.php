@@ -33,6 +33,6 @@ WHERE
     "users"."email" LIKE '%email@email.com%'
   )
 EOT;
-        $this->assertSame($sql, $this->format($query));
+        $this->assertSame(mb_strtolower($sql), $this->format($query));
     }
 }

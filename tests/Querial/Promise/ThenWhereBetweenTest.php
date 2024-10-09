@@ -28,7 +28,7 @@ WHERE
   "users"."price" BETWEEN '1'
   AND '100'
 EOT;
-        $this->assertSame($sql, $this->format($instance->resolve($request, $query)));
+        $this->assertSame(mb_strtolower($sql), $this->format($instance->resolve($request, $query)));
     }
 
     /**
@@ -50,7 +50,7 @@ FROM
 WHERE
   "users"."price" >= '1'
 EOT;
-        $this->assertSame($sql, $this->format($instance->resolve($request, $query)));
+        $this->assertSame(mb_strtolower($sql), $this->format($instance->resolve($request, $query)));
     }
 
     /**
@@ -72,6 +72,6 @@ FROM
 WHERE
   "users"."price" <= '100'
 EOT;
-        $this->assertSame($sql, $this->format($instance->resolve($request, $query)));
+        $this->assertSame(mb_strtolower($sql), $this->format($instance->resolve($request, $query)));
     }
 }

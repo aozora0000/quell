@@ -27,7 +27,7 @@ FROM
 WHERE
   "users"."name" NOT LIKE '%test%'
 EOT;
-        $this->assertSame($sql, $this->format($query));
+        $this->assertSame(mb_strtolower($sql), $this->format($query));
     }
 
     /**
@@ -50,7 +50,7 @@ FROM
 WHERE
   "users"."email" NOT LIKE '%email@email.com'
 EOT;
-        $this->assertSame($sql, $this->format($query));
+        $this->assertSame(mb_strtolower($sql), $this->format($query));
     }
 
     /**
@@ -71,6 +71,6 @@ FROM
 WHERE
   "users"."email" NOT LIKE 'email@email.com%'
 EOT;
-        $this->assertSame($sql, $this->format($query));
+        $this->assertSame(mb_strtolower($sql), $this->format($query));
     }
 }

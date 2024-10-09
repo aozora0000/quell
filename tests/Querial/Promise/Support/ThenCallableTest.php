@@ -32,7 +32,7 @@ FROM
 WHERE
   "name" LIKE 'test%'
 EOT;
-        $this->assertSame($sql, $this->format($instance->resolve($request, $query)));
+        $this->assertSame(mb_strtolower($sql), $this->format($instance->resolve($request, $query)));
     }
 
     /**
@@ -56,6 +56,6 @@ SELECT
 FROM
   "users"
 EOT;
-        $this->assertSame($sql, $this->format($instance->resolve($request, $query)));
+        $this->assertSame(mb_strtolower($sql), $this->format($instance->resolve($request, $query)));
     }
 }

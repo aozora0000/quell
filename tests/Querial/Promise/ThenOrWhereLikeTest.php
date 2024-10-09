@@ -27,7 +27,7 @@ FROM
 WHERE
   "users"."name" LIKE '%test%'
 EOT;
-        $this->assertSame($sql, $this->format($query));
+        $this->assertSame(mb_strtolower($sql), $this->format($query));
 
         // 検索するテーブルを指定してクエリを作成する
         $query = (new ThenOrWhereLike('email'))->resolve($request, $query);
@@ -40,6 +40,6 @@ WHERE
   "users"."name" LIKE '%test%'
   OR "users"."email" LIKE '%email@email.com%'
 EOT;
-        $this->assertSame($sql, $this->format($query));
+        $this->assertSame(mb_strtolower($sql), $this->format($query));
     }
 }
