@@ -4,6 +4,7 @@ namespace Tests\Querial\Promise;
 
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
+use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\ThenWhereNotEqual;
 use Tests\Querial\WithEloquentModelTestCase;
 
@@ -15,6 +16,7 @@ class ThenWhereNotEqualTest extends WithEloquentModelTestCase
     /**
      * @test
      */
+    #[Test]
     public function リクエストに存在するキーでwhereを掛ける(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
@@ -37,6 +39,7 @@ EOT;
     /**
      * @test
      */
+    #[Test]
     public function リクエストに存在するキーでandwhereを掛ける(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
@@ -61,7 +64,8 @@ EOT;
     /**
      * @test
      */
-    public function リクエストに存在しないキーの場合、SQLには反映されない(): void
+    #[Test]
+    public function リクエストに存在しないキーの場合、_sq_lには反映されない(): void
     {
 
         $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
@@ -85,6 +89,7 @@ EOT;
     /**
      * @test
      */
+    #[Test]
     public function 検索するテーブルを指定してクエリを作成する(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);

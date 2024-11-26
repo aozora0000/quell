@@ -4,6 +4,7 @@ namespace Tests\Querial\Promise;
 
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
+use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\ThenWhereEqual;
 use Tests\Querial\WithEloquentModelTestCase;
 
@@ -15,7 +16,8 @@ class ThenWhereEqualTest extends WithEloquentModelTestCase
     /**
      * @test
      */
-    public function リクエストにキーが存在する場合Whereクエリを発行する事を確認(): void
+    #[Test]
+    public function リクエストにキーが存在する場合_whereクエリを発行する事を確認(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
         $model = $this->createModel();
@@ -37,7 +39,8 @@ EOT;
     /**
      * @test
      */
-    public function 別テーブルでもWhereイコールが出来る事を確認(): void
+    #[Test]
+    public function 別テーブルでも_whereイコールが出来る事を確認(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
         $model = $this->createModel();

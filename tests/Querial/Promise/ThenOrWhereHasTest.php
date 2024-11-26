@@ -3,6 +3,7 @@
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
+use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\Support\ThenPromisesAggregator;
 use Querial\Promise\ThenOrWhereHas;
 use Querial\Promise\ThenWhereEqual;
@@ -13,7 +14,8 @@ class ThenOrWhereHasTest extends WithEloquentModelTestCase
     /**
      * @test
      */
-    public function 複数のExistsサブクエリが入った時にORになる(): void
+    #[Test]
+    public function 複数の_existsサブクエリが入った時に_o_rになる(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
         $model = $this->createModel();

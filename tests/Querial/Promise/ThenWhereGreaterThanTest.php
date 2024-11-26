@@ -3,6 +3,7 @@
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
+use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\ThenWhereGreaterThan;
 use Tests\Querial\WithEloquentModelTestCase;
 
@@ -11,7 +12,8 @@ class ThenWhereGreaterThanTest extends WithEloquentModelTestCase
     /**
      * @test
      */
-    public function リクエストにキーが存在する場合GREATERTHANクエリを発行する事を確認(): void
+    #[Test]
+    public function リクエストにキーが存在する場合_greatertha_nクエリを発行する事を確認(): void
     {
         $request = Request::create('/', 'GET', ['price' => '1']);
 

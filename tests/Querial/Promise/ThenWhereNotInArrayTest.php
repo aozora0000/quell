@@ -3,6 +3,7 @@
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
+use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\ThenWhereNotInArray;
 use Tests\Querial\WithEloquentModelTestCase;
 
@@ -11,7 +12,8 @@ class ThenWhereNotInArrayTest extends WithEloquentModelTestCase
     /**
      * @test
      */
-    public function リクエストにキーが存在し単体の場合WhereInを発行する事を確認(): void
+    #[Test]
+    public function リクエストにキーが存在し単体の場合_where_inを発行する事を確認(): void
     {
         $request = Request::create('/', 'GET', ['name' => ['test1'], 'email' => 'email@email.com']);
         $model = $this->createModel();
@@ -32,7 +34,8 @@ EOT;
     /**
      * @test
      */
-    public function リクエストにキーが存在し配列の場合WhereInを発行する事を確認(): void
+    #[Test]
+    public function リクエストにキーが存在し配列の場合_where_inを発行する事を確認(): void
     {
         $request = Request::create('/', 'GET', ['name' => ['test1', 'test2'], 'email' => 'email@email.com']);
         $model = $this->createModel();

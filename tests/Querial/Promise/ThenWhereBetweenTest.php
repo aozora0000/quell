@@ -3,6 +3,7 @@
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
+use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\ThenWhereBetween;
 use Tests\Querial\WithEloquentModelTestCase;
 
@@ -11,7 +12,8 @@ class ThenWhereBetweenTest extends WithEloquentModelTestCase
     /**
      * @test
      */
-    public function 最小最大が揃っている時はBETWEENでクエリを実行する(): void
+    #[Test]
+    public function 最小最大が揃っている時は_betwee_nでクエリを実行する(): void
     {
         $request = Request::create('/', 'GET', ['price_min' => '1', 'price_max' => '100']);
 
@@ -34,7 +36,8 @@ EOT;
     /**
      * @test
      */
-    public function 最小のみが揃っている時はMORETHANでクエリを実行する(): void
+    #[Test]
+    public function 最小のみが揃っている時は_moretha_nでクエリを実行する(): void
     {
         $request = Request::create('/', 'GET', ['price_min' => '1']);
 
@@ -56,7 +59,8 @@ EOT;
     /**
      * @test
      */
-    public function 最大のみが揃っている時はLESSTHANでクエリを実行する(): void
+    #[Test]
+    public function 最大のみが揃っている時は_lesstha_nでクエリを実行する(): void
     {
         $request = Request::create('/', 'GET', ['price_max' => '100']);
 

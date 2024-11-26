@@ -3,6 +3,7 @@
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
+use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\Support\ThenPromisesAggregator;
 use Querial\Promise\ThenWhereEqual;
 use Querial\Promise\ThenWhereHas;
@@ -13,7 +14,8 @@ class ThenWhereHasTest extends WithEloquentModelTestCase
     /**
      * @test
      */
-    public function リクエストにキーが存在する場合EXISTSWhereサブクエリを発行する事を確認(): void
+    #[Test]
+    public function リクエストにキーが存在する場合_exists_whereサブクエリを発行する事を確認(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
         $model = $this->createModel();
@@ -41,7 +43,8 @@ EOT;
     /**
      * @test
      */
-    public function 複数のExistsサブクエリが入った時にANDになる(): void
+    #[Test]
+    public function 複数の_existsサブクエリが入った時に_an_dになる(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
         $model = $this->createModel();

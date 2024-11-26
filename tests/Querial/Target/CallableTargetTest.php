@@ -8,7 +8,7 @@ use Querial\Target\CallableTarget;
 
 class CallableTargetTest extends TestCase
 {
-    public function testIs(): void
+    public function test_is(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
         $target = new CallableTarget(static function (Request $request) {

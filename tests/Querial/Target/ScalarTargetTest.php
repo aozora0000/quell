@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Querial\Target;
 
 use Illuminate\Http\Request;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Querial\Target\ScalarTarget;
 
@@ -36,7 +37,8 @@ class ScalarTargetTest extends TestCase
      *
      * @param  array<string, mixed>  $data
      */
-    public function testIs(bool $expect, array $data): void
+    #[DataProvider('dataProvider')]
+    public function test_is(bool $expect, array $data): void
     {
         $target = new ScalarTarget('email');
         $request = Request::create('/', 'GET', $data);
@@ -48,7 +50,8 @@ class ScalarTargetTest extends TestCase
      *
      * @param  array<string, mixed>  $data
      */
-    public function testOf(bool $expect, array $data): void
+    #[DataProvider('dataProvider')]
+    public function test_of(bool $expect, array $data): void
     {
         $target = new ScalarTarget('email');
         $request = Request::create('/', 'GET', $data);

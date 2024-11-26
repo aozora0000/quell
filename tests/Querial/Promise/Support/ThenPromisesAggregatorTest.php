@@ -10,7 +10,7 @@ use Tests\Querial\WithEloquentModelTestCase;
 
 class ThenPromisesAggregatorTest extends WithEloquentModelTestCase
 {
-    public function testResolve(): void
+    public function test_resolve(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
         $model = $this->createModel();

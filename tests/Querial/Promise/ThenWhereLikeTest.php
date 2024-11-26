@@ -3,6 +3,7 @@
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
+use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\ThenWhereLike;
 use Tests\Querial\WithEloquentModelTestCase;
 
@@ -11,7 +12,8 @@ class ThenWhereLikeTest extends WithEloquentModelTestCase
     /**
      * @test
      */
-    public function リクエストにキーが存在する場合WhereLikeクエリを発行する事を確認(): void
+    #[Test]
+    public function リクエストにキーが存在する場合_where_likeクエリを発行する事を確認(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
         $model = $this->createModel();

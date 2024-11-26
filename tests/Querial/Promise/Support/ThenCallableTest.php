@@ -4,6 +4,7 @@ namespace Tests\Querial\Promise\Support;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\Support\ThenCallable;
 use Tests\Querial\WithEloquentModelTestCase;
 
@@ -12,6 +13,7 @@ class ThenCallableTest extends WithEloquentModelTestCase
     /**
      * @test
      */
+    #[Test]
     public function 即時関数の条件に一致した場合、即時関数内のクエリが実行される(): void
     {
         $request = Request::create('/', 'GET', ['mode' => 'search', 'name' => 'test', 'email' => 'email@email.com']);
@@ -38,6 +40,7 @@ EOT;
     /**
      * @test
      */
+    #[Test]
     public function 即時関数の条件に一致しない場合、即時関数内のクエリは実行されない(): void
     {
         $request = Request::create('/', 'GET', ['mode' => 'normal', 'name' => 'test', 'email' => 'email@email.com']);

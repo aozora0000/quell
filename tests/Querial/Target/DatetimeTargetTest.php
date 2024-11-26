@@ -4,6 +4,7 @@ namespace Tests\Querial\Target;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Querial\Target\DatetimeTarget;
 
@@ -79,7 +80,8 @@ class DatetimeTargetTest extends TestCase
      *
      * @param  array<string, mixed>  $data
      */
-    public function testIs(bool $expect, string $format, array $data): void
+    #[DataProvider('dataProvider')]
+    public function test_is(bool $expect, string $format, array $data): void
     {
         $target = new DatetimeTarget($format, 'period');
         $request = Request::create('/', 'GET', $data);
@@ -91,7 +93,8 @@ class DatetimeTargetTest extends TestCase
      *
      * @param  array<string, mixed>  $data
      */
-    public function testOf(bool $expect, string $format, array $data): void
+    #[DataProvider('dataProvider')]
+    public function test_of(bool $expect, string $format, array $data): void
     {
         if (! $expect) {
             static::assertTrue(true);

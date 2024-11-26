@@ -16,7 +16,7 @@ class WithEloquentModelTestCase extends TestCase
 {
     protected ConnectionResolverInterface $connection;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->connection = new ConnectionResolver([
             'default' => new SQLiteConnection(new PDO('sqlite::memory:')),
@@ -31,7 +31,7 @@ class WithEloquentModelTestCase extends TestCase
      */
     protected function createModel(array $attributes = []): Model
     {
-        $model = new User();
+        $model = new User;
         $model->setConnectionResolver($this->connection);
 
         return $model->fill($attributes);
@@ -39,6 +39,6 @@ class WithEloquentModelTestCase extends TestCase
 
     protected function format(Builder $builder): string
     {
-        return mb_strtolower((new SqlFormatter(new SqlDummyHighlighter()))->format($builder->toRawSql()));
+        return mb_strtolower((new SqlFormatter(new SqlDummyHighlighter))->format($builder->toRawSql()));
     }
 }

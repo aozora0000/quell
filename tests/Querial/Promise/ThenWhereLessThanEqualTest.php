@@ -3,6 +3,7 @@
 namespace Querial\Promise;
 
 use Illuminate\Http\Request;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\Querial\WithEloquentModelTestCase;
 
 class ThenWhereLessThanEqualTest extends WithEloquentModelTestCase
@@ -10,7 +11,8 @@ class ThenWhereLessThanEqualTest extends WithEloquentModelTestCase
     /**
      * @test
      */
-    public function リクエストにキーが存在する場合LESSTHANEQUALクエリを発行する事を確認(): void
+    #[Test]
+    public function リクエストにキーが存在する場合_lessthanequa_lクエリを発行する事を確認(): void
     {
         $request = Request::create('/', 'GET', ['price' => '1']);
 

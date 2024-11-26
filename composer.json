@@ -25,7 +25,7 @@
         "illuminate/database": "^10.0|^11.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^10.5.5",
+        "phpunit/phpunit": "^10.0|^11.0",
         "ext-pdo": "*",
         "larastan/larastan": "^2.8",
         "laravel/pint": "^1.13",
@@ -39,6 +39,6 @@
         ],
         "test": "phpunit",
         "pint": "pint",
-        "stan": "phpstan analyze ."
+        "stan": "phpstan analyze . --memory-limit=2G"
     }
 }

@@ -13,7 +13,7 @@ use Querial\Quell;
 
 class QuellTest extends WithEloquentModelTestCase
 {
-    public function testBuild(): void
+    public function test_build(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test', 'created_at_min' => '2022-01-01', 'created_at_max' => '2022-12-31']);
 
@@ -55,7 +55,7 @@ EOT;
 
     }
 
-    public function testDefaultBuild(): void
+    public function test_default_build(): void
     {
         $request = Request::create('/', 'GET');
 
@@ -99,7 +99,7 @@ EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($instance->build($query)));
     }
 
-    public function testFailedBuild(): void
+    public function test_failed_build(): void
     {
         $request = Request::create('/', 'GET');
 

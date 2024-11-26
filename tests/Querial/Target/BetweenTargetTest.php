@@ -3,6 +3,7 @@
 namespace Tests\Querial\Target;
 
 use Illuminate\Http\Request;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Querial\Target\BetweenTarget;
 use Querial\Target\ScalarTarget;
@@ -44,14 +45,15 @@ class BetweenTargetTest extends TestCase
      *
      * @param  array<string, mixed>  $data
      */
-    public function testIs(bool $expect, array $data): void
+    #[DataProvider('dataProvider')]
+    public function test_is(bool $expect, array $data): void
     {
         $target = new BetweenTarget(new ScalarTarget('from'), new ScalarTarget('to'));
         $request = Request::create('/', 'GET', $data);
         $this->assertEquals($expect, $target->is($request), implode(': ', $target->value($request)));
     }
 
-    public function testOf(): void
+    public function test_of(): void
     {
         $target = new BetweenTarget(new ScalarTarget('from'), new ScalarTarget('to'));
 

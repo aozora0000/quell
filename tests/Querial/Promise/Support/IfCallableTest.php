@@ -3,6 +3,7 @@
 namespace Tests\Querial\Promise\Support;
 
 use Illuminate\Http\Request;
+use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\Support\IfCallable;
 use Querial\Promise\Support\ThenPromisesAggregator;
 use Querial\Promise\ThenWhereEqual;
@@ -14,7 +15,8 @@ class IfCallableTest extends WithEloquentModelTestCase
     /**
      * @test
      */
-    public function 即時関数の条件に一致した場合、Promiseクエリが実行される(): void
+    #[Test]
+    public function 即時関数の条件に一致した場合、_promiseクエリが実行される(): void
     {
         $request = Request::create('/', 'GET', ['mode' => 'search', 'name' => 'test', 'email' => 'email@email.com']);
         $model = $this->createModel();
@@ -41,7 +43,8 @@ EOT;
     /**
      * @test
      */
-    public function 即時関数の条件に一致しない場合、Promiseクエリは実行されない(): void
+    #[Test]
+    public function 即時関数の条件に一致しない場合、_promiseクエリは実行されない(): void
     {
         $request = Request::create('/', 'GET', ['mode' => 'normal', 'name' => 'test', 'email' => 'email@email.com']);
         $model = $this->createModel();

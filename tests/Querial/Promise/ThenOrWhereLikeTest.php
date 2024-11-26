@@ -3,6 +3,7 @@
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
+use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\ThenOrWhereLike;
 use Tests\Querial\WithEloquentModelTestCase;
 
@@ -11,7 +12,8 @@ class ThenOrWhereLikeTest extends WithEloquentModelTestCase
     /**
      * @test
      */
-    public function 複数のWhereクエリが入った時にORになる(): void
+    #[Test]
+    public function 複数の_whereクエリが入った時に_o_rになる(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
         $model = $this->createModel();

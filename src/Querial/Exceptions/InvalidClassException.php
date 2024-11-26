@@ -6,6 +6,4 @@ namespace Querial\Exceptions;
 
 use RuntimeException;
 
-class InvalidClassException extends RuntimeException
-{
-}
+class InvalidClassException extends RuntimeException {}
