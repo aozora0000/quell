@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Carbon\Exceptions\InvalidFormatException;
 use Illuminate\Http\Request;
 use Querial\Contracts\TargetInterface;
+use ReturnTypeWillChange;
 
 class DatetimeTarget implements TargetInterface
 {
@@ -36,7 +37,7 @@ class DatetimeTarget implements TargetInterface
         }
     }
 
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function value(Request $request): Carbon|false
     {
         return Carbon::createFromFormat($this->format, $request->str($this->target, '')->value());
