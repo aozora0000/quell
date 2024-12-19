@@ -7,36 +7,27 @@ use Illuminate\Http\Request;
 use Querial\Contracts\Formatter;
 use Querial\Contracts\Support\PromiseQuery;
 use Querial\Formatter\LikeFormatter;
-use Querial\Promise\Support\ThenOrWherePromisesAggregator;
+use Querial\Promise\Support\ThenWherePromisesAggregator;
 
 class ThenWheresOrLike extends PromiseQuery
 {
     /**
-     * @var string[]
+     * @var ThenOrWhereLike[]
      */
-    private array $targets;
+    private array $promises;
 
-    private string $attribute;
-
-    private LikeFormatter|Formatter $formatter;
-
-    public function __construct(string $attribute, array $inputTarget, ?string $table = null, Formatter $formatter = LikeFormatter::PARTIAL_MATCH)
+    public function __construct(array $attributes, string $target, ?string $table = null, Formatter $formatter = LikeFormatter::PARTIAL_MATCH)
     {
-        $this->attribute = $attribute;
-        $this->targets = $inputTarget;
-        $this->formatter = $formatter;
-        $this->table = $table;
+        $this->promises = array_map(fn (string $attribute) => new ThenOrWhereLike($attribute, $target, $table, $formatter), $attributes);
     }
 
     public function match(Request $request): bool
     {
-        return $request->filled($this->attribute);
+        return collect($this->promises)->some(fn (ThenOrWhereLike $target) => $target->match($request));
     }
 
     public function resolve(Request $request, EloquentBuilder $builder): EloquentBuilder
     {
-        $promise = array_map(fn (string $target) => new ThenOrWhereLike($this->attribute, $this->attribute, $this->table, $this->formatter), $this->targets);
-
-        return (new ThenOrWherePromisesAggregator($promise))->resolve($request, $builder);
+        return (new ThenWherePromisesAggregator($this->promises))->resolve($request, $builder);
     }
 }
