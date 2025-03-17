@@ -19,7 +19,9 @@ class IfCallable implements PromiseInterface
     /**
      * @param  callable(Request $request): bool|Closure(Request $request):bool  $closure
      */
-    public function __construct(callable|Closure $closure, PromiseInterface $promise)
+    public function __construct(
+        callable|Closure $closure,
+        PromiseInterface $promise)
     {
         $this->closure = $closure;
         $this->promise = $promise;

@@ -16,7 +16,11 @@ class ThenWheresOrLike extends PromiseQuery
      */
     private array $promises;
 
-    public function __construct(array $attributes, string $target, ?string $table = null, Formatter $formatter = LikeFormatter::PARTIAL_MATCH)
+    public function __construct(
+        array $attributes,
+        string $target,
+        ?string $table = null,
+        Formatter $formatter = LikeFormatter::PARTIAL_MATCH)
     {
         $this->promises = array_map(fn (string $attribute) => new ThenOrWhereLike($attribute, $target, $table, $formatter), $attributes);
     }

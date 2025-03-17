@@ -13,8 +13,6 @@ use Throwable;
 
 class Pipeline implements PipelineInterface
 {
-    private Request $request;
-
     private bool $is_default = true;
 
     /**
@@ -31,10 +29,7 @@ class Pipeline implements PipelineInterface
     /**
      * IlluminateRequestCriteria constructor.
      */
-    public function __construct(Request $request)
-    {
-        $this->request = $request;
-    }
+    public function __construct(private Request $request) {}
 
     /**
      * @return static

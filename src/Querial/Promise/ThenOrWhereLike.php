@@ -19,8 +19,6 @@ use Querial\Target\ScalarTarget;
 
 class ThenOrWhereLike extends PromiseQuery
 {
-    protected string $attribute;
-
     protected ScalarTarget $target;
 
     protected LikeFormatter $formatter;
@@ -29,12 +27,11 @@ class ThenOrWhereLike extends PromiseQuery
      * FactoryInterface constructor.
      */
     public function __construct(
-        string $attribute,
+        protected string $attribute,
         ?string $inputTarget = null,
         ?string $table = null,
         Formatter $format = LikeFormatter::PARTIAL_MATCH
     ) {
-        $this->attribute = $attribute;
         $this->target = new ScalarTarget($inputTarget ?? $attribute);
         $this->formatter = $format;
         $this->table = $table;

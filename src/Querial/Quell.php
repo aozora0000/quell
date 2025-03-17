@@ -10,12 +10,7 @@ use Throwable;
 
 abstract class Quell
 {
-    protected Request $request;
-
-    public function __construct(Request $request)
-    {
-        $this->request = $request;
-    }
+    public function __construct(protected Request $request) {}
 
     abstract protected function promise(): ?PromiseInterface;
 

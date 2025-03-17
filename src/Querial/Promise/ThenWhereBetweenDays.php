@@ -18,9 +18,15 @@ use Querial\Target\DatetimeTarget;
 
 class ThenWhereBetweenDays extends ThenWhereBetween
 {
-    public function __construct(string $attribute, ?string $inputTarget = null, string $format = 'Y-m-d H:i:s', string $minPostfix = '_min', string $maxPostfix = '_max')
-    {
-        $this->attribute = $attribute;
+    protected BetweenTarget $target;
+
+    public function __construct(
+        protected string $attribute,
+        ?string $inputTarget = null,
+        string $format = 'Y-m-d H:i:s',
+        string $minPostfix = '_min',
+        string $maxPostfix = '_max'
+    ) {
         $target = $inputTarget ?? $attribute;
         $this->target = new BetweenTarget(new DatetimeTarget($format, $target.$maxPostfix), new DatetimeTarget($format, $target.$minPostfix));
     }

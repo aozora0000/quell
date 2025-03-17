@@ -17,16 +17,16 @@ use Querial\Target\ArrayOrScalarTarget;
 
 class ThenWhereInArray extends PromiseQuery
 {
-    protected string $attribute;
-
     protected ArrayOrScalarTarget $target;
 
     /**
      * FactoryInterface constructor.
      */
-    public function __construct(string $attribute, ?string $inputTarget = null, ?string $table = null)
+    public function __construct(
+        protected string $attribute,
+        ?string $inputTarget = null,
+        ?string $table = null)
     {
-        $this->attribute = $attribute;
         $this->target = new ArrayOrScalarTarget($inputTarget ?: $attribute);
         $this->table = $table;
     }

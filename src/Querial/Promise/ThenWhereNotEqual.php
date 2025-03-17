@@ -18,16 +18,16 @@ use Querial\Target\ScalarTarget;
 
 class ThenWhereNotEqual extends PromiseQuery
 {
-    protected string $attribute;
-
     protected TargetInterface $target;
 
     /**
      * FactoryInterface constructor.
      */
-    public function __construct(string $attribute, ?string $inputTarget = null, ?string $table = null)
+    public function __construct(
+        protected string $attribute,
+        ?string $inputTarget = null,
+        ?string $table = null)
     {
-        $this->attribute = $attribute;
         $this->target = new ScalarTarget($inputTarget ?: $attribute);
         $this->table = $table;
     }

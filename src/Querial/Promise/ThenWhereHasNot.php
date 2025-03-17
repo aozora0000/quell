@@ -17,18 +17,12 @@ use Querial\Contracts\Support\PromiseQuery;
 
 class ThenWhereHasNot extends PromiseQuery
 {
-    protected string $relation;
-
-    protected ?AggregatePromiseQuery $aggregator;
-
     /**
      * ThenHasRelation constructor.
      */
-    public function __construct(string $relation, ?AggregatePromiseQuery $aggregator = null)
-    {
-        $this->relation = $relation;
-        $this->aggregator = $aggregator;
-    }
+    public function __construct(
+        protected string $relation,
+        protected ?AggregatePromiseQuery $aggregator = null) {}
 
     public function resolve(Request $request, Builder $builder): Builder
     {

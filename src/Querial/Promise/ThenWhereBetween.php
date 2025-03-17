@@ -18,16 +18,17 @@ use Querial\Target\ScalarTarget;
 
 class ThenWhereBetween extends PromiseQuery
 {
-    protected string $attribute;
-
     protected BetweenTarget $target;
 
     /**
      * FactoryInterface constructor.
      */
-    public function __construct(string $attribute, ?string $inputTarget = null, string $minPostfix = '_min', string $maxPostfix = '_max')
+    public function __construct(
+        protected string $attribute,
+        ?string $inputTarget = null,
+        string $minPostfix = '_min',
+        string $maxPostfix = '_max')
     {
-        $this->attribute = $attribute;
         $target = $inputTarget ?? $attribute;
         $this->target = new BetweenTarget(new ScalarTarget($target, $maxPostfix), new ScalarTarget($target, $minPostfix));
     }
