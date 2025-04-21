@@ -13,7 +13,7 @@ class ThenWhereGreaterThanEqualTest extends WithEloquentModelTestCase
      * @test
      */
     #[Test]
-    public function リクエストにキーが存在する場合_greaterthanequa_lクエリを発行する事を確認(): void
+    public function リクエストにキーが存在する場合_greaterthanequalクエリを発行する事を確認(): void
     {
         $request = Request::create('/', 'GET', ['price' => '1']);
 

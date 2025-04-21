@@ -7,6 +7,7 @@ use Illuminate\Database\ConnectionResolver;
 use Illuminate\Database\ConnectionResolverInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\MySqlConnection;
 use Illuminate\Database\SQLiteConnection;
 use PDO;
 use PHPUnit\Framework\TestCase;
@@ -19,7 +20,7 @@ class WithEloquentModelTestCase extends TestCase
     protected function setUp(): void
     {
         $this->connection = new ConnectionResolver([
-            'default' => new SQLiteConnection(new PDO('sqlite::memory:')),
+            'default' => new MySqlConnection(new PDO('sqlite::memory:')),
         ]);
         $this->connection->setDefaultConnection('default');
 
