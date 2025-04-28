@@ -43,11 +43,11 @@ class QuellTest extends WithEloquentModelTestCase
 SELECT
   *
 FROM
-  "users"
+  `users`
 WHERE
   (
-    "users"."name" = 'test'
-    AND "users"."created_at" BETWEEN '2022-01-01'
+    `users`.`name` = 'test'
+    AND `users`.`created_at` BETWEEN '2022-01-01'
     AND '2022-12-31'
   )
 EOT;
@@ -92,7 +92,7 @@ EOT;
 SELECT
   *
 FROM
-  "users"
+  `users`
 LIMIT
   10
 EOT;
@@ -141,9 +141,9 @@ EOT;
 SELECT
   *
 FROM
-  "users"
+  `users`
 WHERE
-  "name" = 'unknown'
+  `name` = 'unknown'
 EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($instance->build($query)));
     }

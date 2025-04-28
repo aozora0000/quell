@@ -29,7 +29,9 @@
         "ext-pdo": "*",
         "larastan/larastan": "^3.0",
         "laravel/pint": "^1.13",
-        "doctrine/sql-formatter": "^1.2"
+        "doctrine/sql-formatter": "^1.2",
+        "rector/rector": "^2.0",
+        "driftingly/rector-laravel": "^2.0"
     },
     "scripts": {
         "all": [
@@ -39,6 +41,7 @@
         ],
         "test": "phpunit",
         "pint": "pint",
+        "rector": "rector --dry-run",
         "stan": "phpstan analyze . --memory-limit=2G"
     }
 }

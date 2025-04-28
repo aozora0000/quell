@@ -25,9 +25,9 @@ class ThenWhereBetweenTest extends WithEloquentModelTestCase
 SELECT
   *
 FROM
-  "users"
+  `users`
 WHERE
-  "users"."price" BETWEEN '1'
+  `users`.`price` BETWEEN '1'
   AND '100'
 EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($instance->resolve($request, $query)));
@@ -49,9 +49,9 @@ EOT;
 SELECT
   *
 FROM
-  "users"
+  `users`
 WHERE
-  "users"."price" >= '1'
+  `users`.`price` >= '1'
 EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($instance->resolve($request, $query)));
     }
@@ -72,9 +72,9 @@ EOT;
 SELECT
   *
 FROM
-  "users"
+  `users`
 WHERE
-  "users"."price" <= '100'
+  `users`.`price` <= '100'
 EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($instance->resolve($request, $query)));
     }

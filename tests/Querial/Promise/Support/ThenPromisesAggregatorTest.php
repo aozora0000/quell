@@ -24,10 +24,10 @@ class ThenPromisesAggregatorTest extends WithEloquentModelTestCase
 SELECT
   *
 FROM
-  "users"
+  `users`
 WHERE
-  "users"."name" = 'test'
-  AND "users"."email" LIKE '%email@email.com%'
+  `users`.`name` = 'test'
+  AND `users`.`email` LIKE '%email@email.com%'
 EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($query));
     }

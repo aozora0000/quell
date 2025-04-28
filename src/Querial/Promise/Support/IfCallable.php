@@ -14,17 +14,14 @@ class IfCallable implements PromiseInterface
      */
     private $closure;
 
-    private PromiseInterface $promise;
-
     /**
      * @param  callable(Request $request): bool|Closure(Request $request):bool  $closure
      */
     public function __construct(
         callable|Closure $closure,
-        PromiseInterface $promise)
+        private readonly PromiseInterface $promise)
     {
         $this->closure = $closure;
-        $this->promise = $promise;
     }
 
     public function match(Request $request): bool

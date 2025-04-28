@@ -10,18 +10,10 @@ use Querial\Contracts\TargetInterface;
 
 class BetweenTarget implements TargetInterface
 {
-    protected TargetInterface $maxTarget;
-
-    protected TargetInterface $minTarget;
-
     /**
      * BetweenTarget constructor.
      */
-    public function __construct(TargetInterface $maxTarget, TargetInterface $minTarget)
-    {
-        $this->maxTarget = $maxTarget;
-        $this->minTarget = $minTarget;
-    }
+    public function __construct(protected TargetInterface $maxTarget, protected TargetInterface $minTarget) {}
 
     public function min(): TargetInterface
     {

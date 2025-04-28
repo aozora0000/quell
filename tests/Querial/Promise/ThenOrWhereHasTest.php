@@ -32,25 +32,25 @@ class ThenOrWhereHasTest extends WithEloquentModelTestCase
 SELECT
   *
 FROM
-  "users"
+  `users`
 WHERE
   EXISTS (
     SELECT
       *
     FROM
-      "items"
+      `items`
     WHERE
-      "users"."id" = "items"."user_id"
-      AND "users"."name" = 'test'
+      `users`.`id` = `items`.`user_id`
+      AND `users`.`name` = 'test'
   )
   OR EXISTS (
     SELECT
       *
     FROM
-      "items"
+      `items`
     WHERE
-      "users"."id" = "items"."user_id"
-      AND "users"."email" = 'email@email.com'
+      `users`.`id` = `items`.`user_id`
+      AND `users`.`email` = 'email@email.com'
   )
 EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($query));

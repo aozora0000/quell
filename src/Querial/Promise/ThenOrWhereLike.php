@@ -12,7 +12,6 @@ namespace Querial\Promise;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Querial\Contracts\Formatter;
 use Querial\Contracts\Support\PromiseQuery;
 use Querial\Formatter\LikeFormatter;
 use Querial\Target\ScalarTarget;
@@ -21,8 +20,6 @@ class ThenOrWhereLike extends PromiseQuery
 {
     protected ScalarTarget $target;
 
-    protected LikeFormatter $formatter;
-
     /**
      * FactoryInterface constructor.
      */
@@ -30,10 +27,9 @@ class ThenOrWhereLike extends PromiseQuery
         protected string $attribute,
         ?string $inputTarget = null,
         ?string $table = null,
-        Formatter $format = LikeFormatter::PARTIAL_MATCH
+        protected LikeFormatter $formatter = LikeFormatter::PARTIAL_MATCH
     ) {
         $this->target = new ScalarTarget($inputTarget ?? $attribute);
-        $this->formatter = $format;
         $this->table = $table;
     }
 

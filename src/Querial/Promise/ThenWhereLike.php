@@ -21,8 +21,6 @@ class ThenWhereLike extends PromiseQuery
 {
     protected ScalarTarget $target;
 
-    protected Formatter $formatter;
-
     /**
      * FactoryInterface constructor.
      */
@@ -30,10 +28,9 @@ class ThenWhereLike extends PromiseQuery
         protected string $attribute,
         ?string $inputTarget = null,
         ?string $table = null,
-        Formatter $formatter = LikeFormatter::PARTIAL_MATCH)
+        protected Formatter $formatter = LikeFormatter::PARTIAL_MATCH)
     {
         $this->target = new ScalarTarget($inputTarget ?? $attribute);
-        $this->formatter = $formatter;
         $this->table = $table;
     }
 

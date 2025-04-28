@@ -25,9 +25,9 @@ class ThenWhereLessThanTest extends WithEloquentModelTestCase
 SELECT
   *
 FROM
-  "users"
+  `users`
 WHERE
-  "users"."price" < '1'
+  `users`.`price` < '1'
 EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($instance->resolve($request, $query)));
     }

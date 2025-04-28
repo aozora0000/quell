@@ -29,7 +29,7 @@ class Pipeline implements PipelineInterface
     /**
      * IlluminateRequestCriteria constructor.
      */
-    public function __construct(private Request $request) {}
+    public function __construct(private readonly Request $request) {}
 
     /**
      * @return static
@@ -70,9 +70,7 @@ class Pipeline implements PipelineInterface
 
     protected function getMatchedPromises(array $promises, Request $request): array
     {
-        return array_filter($promises, static function (PromiseInterface $promise) use ($request) {
-            return $promise->match($request);
-        });
+        return array_filter($promises, static fn (PromiseInterface $promise) => $promise->match($request));
     }
 
     /**

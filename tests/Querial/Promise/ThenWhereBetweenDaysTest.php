@@ -25,9 +25,9 @@ class ThenWhereBetweenDaysTest extends WithEloquentModelTestCase
 SELECT
   *
 FROM
-  "users"
+  `users`
 WHERE
-  "users"."created_at" BETWEEN '2022-01-01 00:00:00'
+  `users`.`created_at` BETWEEN '2022-01-01 00:00:00'
   AND '2022-12-31 23:59:59'
 EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($instance->resolve($request, $query)));
@@ -49,9 +49,9 @@ EOT;
 SELECT
   *
 FROM
-  "users"
+  `users`
 WHERE
-  "users"."created_at" >= '2022-01-01 00:00:00'
+  `users`.`created_at` >= '2022-01-01 00:00:00'
 EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($instance->resolve($request, $query)));
     }
@@ -72,9 +72,9 @@ EOT;
 SELECT
   *
 FROM
-  "users"
+  `users`
 WHERE
-  "users"."created_at" <= '2022-12-31 23:59:59'
+  `users`.`created_at` <= '2022-12-31 23:59:59'
 EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($instance->resolve($request, $query)));
     }

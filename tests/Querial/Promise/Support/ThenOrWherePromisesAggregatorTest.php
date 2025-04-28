@@ -26,11 +26,11 @@ class ThenOrWherePromisesAggregatorTest extends WithEloquentModelTestCase
 SELECT
   *
 FROM
-  "users"
+  `users`
 WHERE
-  ("users"."name" = 'test')
+  (`users`.`name` = 'test')
   OR (
-    "users"."email" LIKE '%email@email.com%'
+    `users`.`email` LIKE '%email@email.com%'
   )
 EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($query));

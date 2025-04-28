@@ -30,10 +30,10 @@ class IfCallableTest extends WithEloquentModelTestCase
 SELECT
   *
 FROM
-  "users"
+  `users`
 WHERE
-  "users"."name" = 'test'
-  AND "users"."email" LIKE '%email@email.com%'
+  `users`.`name` = 'test'
+  AND `users`.`email` LIKE '%email@email.com%'
 EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($query));
     }
@@ -48,9 +48,7 @@ EOT;
         $model = $this->createModel();
         $query = $model->newQuery();
 
-        $query = (new IfCallable(function (Request $request) {
-            return $request->filled('mode') && $request->input('mode') === 'search';
-        }, new ThenPromisesAggregator([
+        $query = (new IfCallable(fn (Request $request) => $request->filled('mode') && $request->input('mode') === 'search', new ThenPromisesAggregator([
             new ThenWhereEqual('name'),
             new ThenWhereLike('email'),
         ])))->resolve($request, $query);
@@ -58,10 +56,10 @@ EOT;
 SELECT
   *
 FROM
-  "users"
+  `users`
 WHERE
-  "users"."name" = 'test'
-  AND "users"."email" LIKE '%email@email.com%'
+  `users`.`name` = 'test'
+  AND `users`.`email` LIKE '%email@email.com%'
 EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($query));
     }
@@ -76,9 +74,7 @@ EOT;
         $model = $this->createModel();
         $query = $model->newQuery();
 
-        $query = (new IfCallable(function (Request $request) {
-            return $request->filled('name') && $request->input('name') === 'search';
-        }, new ThenPromisesAggregator([
+        $query = (new IfCallable(fn (Request $request) => $request->filled('name') && $request->input('name') === 'search', new ThenPromisesAggregator([
             new ThenWhereEqual('name'),
             new ThenWhereLike('email'),
         ])))->resolve($request, $query);
@@ -86,7 +82,7 @@ EOT;
 SELECT
   *
 FROM
-  "users"
+  `users`
 EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($query));
     }

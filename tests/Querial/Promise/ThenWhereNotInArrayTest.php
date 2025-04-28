@@ -24,9 +24,9 @@ class ThenWhereNotInArrayTest extends WithEloquentModelTestCase
 SELECT
   *
 FROM
-  "users"
+  `users`
 WHERE
-  "users"."name" NOT IN ('test1')
+  `users`.`name` NOT IN ('test1')
 EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($query));
     }
@@ -46,9 +46,9 @@ EOT;
 SELECT
   *
 FROM
-  "users"
+  `users`
 WHERE
-  "users"."name" NOT IN ('test1', 'test2')
+  `users`.`name` NOT IN ('test1', 'test2')
 EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($query));
     }

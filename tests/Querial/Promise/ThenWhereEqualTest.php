@@ -29,9 +29,9 @@ class ThenWhereEqualTest extends WithEloquentModelTestCase
 SELECT
   *
 FROM
-  "users"
+  `users`
 WHERE
-  "users"."name" = 'test'
+  `users`.`name` = 'test'
 EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($query));
     }
@@ -52,9 +52,9 @@ EOT;
 SELECT
   *
 FROM
-  "users"
+  `users`
 WHERE
-  "items"."name" = 'test'
+  `items`.`name` = 'test'
 EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($query));
     }

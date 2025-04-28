@@ -25,9 +25,9 @@ class ThenOrWhereLikeTest extends WithEloquentModelTestCase
 SELECT
   *
 FROM
-  "users"
+  `users`
 WHERE
-  "users"."name" LIKE '%test%'
+  `users`.`name` LIKE '%test%'
 EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($query));
 
@@ -37,10 +37,10 @@ EOT;
 SELECT
   *
 FROM
-  "users"
+  `users`
 WHERE
-  "users"."name" LIKE '%test%'
-  OR "users"."email" LIKE '%email@email.com%'
+  `users`.`name` LIKE '%test%'
+  OR `users`.`email` LIKE '%email@email.com%'
 EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($query));
     }

@@ -80,7 +80,7 @@ class PipelineTest extends TestCase
 
         try {
             $pipeline->build($builder);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             // 無視
         }
 

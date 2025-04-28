@@ -20,19 +20,15 @@ class ThenCallableTest extends WithEloquentModelTestCase
         $model = $this->createModel();
         $query = $model->newQuery();
 
-        $instance = (new ThenCallable(function (Request $request) {
-            return $request->has('mode') && $request->input('mode') === 'search';
-        }, function (Request $request, Builder $builder) {
-            return $builder->where('name', 'LIKE', 'test%');
-        }));
+        $instance = (new ThenCallable(fn (Request $request) => $request->has('mode') && $request->input('mode') === 'search', fn (Request $request, Builder $builder) => $builder->where('name', 'LIKE', 'test%')));
         $this->assertTrue($instance->match($request));
         $sql = <<<'EOT'
 SELECT
   *
 FROM
-  "users"
+  `users`
 WHERE
-  "name" LIKE 'test%'
+  `name` LIKE 'test%'
 EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($instance->resolve($request, $query)));
     }
@@ -47,17 +43,13 @@ EOT;
         $model = $this->createModel();
         $query = $model->newQuery();
 
-        $instance = (new ThenCallable(function (Request $request) {
-            return $request->has('mode') && $request->input('mode') === 'search';
-        }, function (Request $request, Builder $builder) {
-            return $builder->where('name', 'LIKE', 'test%');
-        }));
+        $instance = (new ThenCallable(fn (Request $request) => $request->has('mode') && $request->input('mode') === 'search', fn (Request $request, Builder $builder) => $builder->where('name', 'LIKE', 'test%')));
         $this->assertNotTrue($instance->match($request));
         $sql = <<<'EOT'
 SELECT
   *
 FROM
-  "users"
+  `users`
 EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($instance->resolve($request, $query)));
     }

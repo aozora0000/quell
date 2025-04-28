@@ -12,14 +12,11 @@ use ReturnTypeWillChange;
 
 class DatetimeTarget implements TargetInterface
 {
-    protected string $format;
-
     protected string $target;
 
-    public function __construct(string $format, string $target, string $postfix = '')
+    public function __construct(protected string $format, string $target, string $postfix = '')
     {
         $this->target = $target.$postfix;
-        $this->format = $format;
     }
 
     public function is(Request $request): bool
@@ -32,7 +29,7 @@ class DatetimeTarget implements TargetInterface
         }
         try {
             return $this->value($request) instanceof Carbon;
-        } catch (InvalidFormatException $exception) {
+        } catch (InvalidFormatException) {
             return false;
         }
     }

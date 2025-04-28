@@ -14,7 +14,7 @@ class ThenWheresOrLike extends PromiseQuery
     /**
      * @var ThenOrWhereLike[]
      */
-    private array $promises;
+    private readonly array $promises;
 
     public function __construct(
         array $attributes,

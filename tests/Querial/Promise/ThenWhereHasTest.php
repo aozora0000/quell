@@ -26,15 +26,15 @@ class ThenWhereHasTest extends WithEloquentModelTestCase
 SELECT
   *
 FROM
-  "users"
+  `users`
 WHERE
   EXISTS (
     SELECT
       *
     FROM
-      "items"
+      `items`
     WHERE
-      "users"."id" = "items"."user_id"
+      `users`.`id` = `items`.`user_id`
   )
 EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($query));
@@ -60,25 +60,25 @@ EOT;
 SELECT
   *
 FROM
-  "users"
+  `users`
 WHERE
   EXISTS (
     SELECT
       *
     FROM
-      "items"
+      `items`
     WHERE
-      "users"."id" = "items"."user_id"
-      AND "users"."name" = 'test'
+      `users`.`id` = `items`.`user_id`
+      AND `users`.`name` = 'test'
   )
   AND EXISTS (
     SELECT
       *
     FROM
-      "items"
+      `items`
     WHERE
-      "users"."id" = "items"."user_id"
-      AND "users"."name" = 'test'
+      `users`.`id` = `items`.`user_id`
+      AND `users`.`name` = 'test'
   )
 EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($query));

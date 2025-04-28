@@ -33,9 +33,7 @@ class ThenWhereHasNot extends PromiseQuery
             return $builder;
         }
 
-        return $builder->whereDoesntHave($this->relation, function (Builder $builder) use ($request) {
-            return $this->aggregator->resolve($request, $builder);
-        });
+        return $builder->whereDoesntHave($this->relation, fn (Builder $builder) => $this->aggregator->resolve($request, $builder));
     }
 
     public function match(Request $request): bool
