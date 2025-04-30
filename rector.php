@@ -2,7 +2,10 @@
 
 declare(strict_types=1);
 
+use Rector\CodingStyle\Rector\Catch_\CatchExceptionNameMatchingTypeRector;
 use Rector\Config\RectorConfig;
+use Rector\Naming\Rector\Assign\RenameVariableToMatchMethodCallReturnTypeRector;
+use Rector\Naming\Rector\Class_\RenamePropertyToMatchTypeRector;
 use Rector\Naming\Rector\ClassMethod\RenameParamToMatchTypeRector;
 use Rector\Naming\Rector\ClassMethod\RenameVariableToMatchNewTypeRector;
 use Rector\PHPUnit\CodeQuality\Rector\ClassMethod\ReplaceTestAnnotationWithPrefixedFunctionRector;
@@ -52,9 +55,12 @@ return static function (RectorConfig $config): void {
         __DIR__.'/storage',
         __DIR__.'/.phpunit.cache',
         __DIR__.'/node_modules',
+        // AddOverrideAttributeToOverriddenMethodsRector::class,
         ReplaceTestAnnotationWithPrefixedFunctionRector::class,
         RenameParamToMatchTypeRector::class,
         RenameVariableToMatchNewTypeRector::class,
-        // AddOverrideAttributeToOverriddenMethodsRector::class,
+        RenameVariableToMatchMethodCallReturnTypeRector::class,
+        RenamePropertyToMatchTypeRector::class,
+        CatchExceptionNameMatchingTypeRector::class,
     ]);
 };
