@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
-use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\ValueObject\PhpVersion;
@@ -33,6 +32,6 @@ return static function (RectorConfig $config): void {
         __DIR__.'/storage',
         __DIR__.'/.phpunit.cache',
         __DIR__.'/node_modules',
-        AddOverrideAttributeToOverriddenMethodsRector::class,
+        // AddOverrideAttributeToOverriddenMethodsRector::class,
     ]);
 };
