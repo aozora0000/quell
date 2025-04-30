@@ -38,7 +38,7 @@ class QuellTest extends WithEloquentModelTestCase
             }
         };
 
-        $query = $this->createModel()->newQuery();
+        $builder = $this->createModel()->newQuery();
         $sql = <<<'EOT'
 SELECT
   *
@@ -51,7 +51,7 @@ WHERE
     AND '2022-12-31'
   )
 EOT;
-        $this->assertSame(mb_strtolower($sql), $this->format($instance->build($query)));
+        $this->assertSame(mb_strtolower($sql), $this->format($instance->build($builder)));
 
     }
 
@@ -63,7 +63,7 @@ EOT;
         {
             protected function default(): ?callable
             {
-                return static function (Request $request, EloquentBuilder|QueryBuilder $builder) {
+                return static function (Request $request, EloquentBuilder|QueryBuilder $builder): void {
                     $builder->limit(10);
                 };
             }
@@ -107,7 +107,7 @@ EOT;
         {
             protected function failed(): ?callable
             {
-                return static function (Request $request, QueryBuilder|EloquentBuilder $builder, \Throwable $throwable) {
+                return static function (Request $request, QueryBuilder|EloquentBuilder $builder, \Throwable $throwable): EloquentBuilder|\Illuminate\Database\Query\Builder {
                     $builder->where('name', $throwable->getMessage());
 
                     return $builder;

@@ -9,9 +9,6 @@ use Tests\Querial\WithEloquentModelTestCase;
 
 class ThenWhereLikeTest extends WithEloquentModelTestCase
 {
-    /**
-     * @test
-     */
     #[Test]
     public function リクエストにキーが存在する場合_where_likeクエリを発行する事を確認(): void
     {
@@ -20,6 +17,7 @@ class ThenWhereLikeTest extends WithEloquentModelTestCase
         $query = $model->newQuery();
 
         $query = (new ThenWhereLike('name'))->resolve($request, $query);
+
         $sql = <<<'EOT'
 SELECT
   *

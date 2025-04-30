@@ -9,9 +9,6 @@ use Tests\Querial\WithEloquentModelTestCase;
 
 class ThenWhereInArrayTest extends WithEloquentModelTestCase
 {
-    /**
-     * @test
-     */
     #[Test]
     public function リクエストにキーが存在し単体の場合_where_inを発行する事を確認(): void
     {
@@ -20,6 +17,7 @@ class ThenWhereInArrayTest extends WithEloquentModelTestCase
         $query = $model->newQuery();
 
         $query = (new ThenWhereInArray('name'))->resolve($request, $query);
+
         $sql = <<<'EOT'
 SELECT
   *
@@ -31,9 +29,6 @@ EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($query));
     }
 
-    /**
-     * @test
-     */
     #[Test]
     public function リクエストにキーが存在し配列の場合_where_inを発行する事を確認(): void
     {
@@ -42,6 +37,7 @@ EOT;
         $query = $model->newQuery();
 
         $query = (new ThenWhereInArray('name'))->resolve($request, $query);
+
         $sql = <<<'EOT'
 SELECT
   *

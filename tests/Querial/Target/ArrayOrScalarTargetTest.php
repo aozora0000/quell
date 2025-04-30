@@ -12,30 +12,28 @@ use Querial\Target\ArrayOrScalarTarget;
 class ArrayOrScalarTargetTest extends TestCase
 {
     /**
-     * @return array<array{bool,array<string, mixed>}>
+     * @return \Iterator<(int | string), array{bool, array<string, mixed>}>
      */
-    public static function dataProvider(): array
+    public static function dataProvider(): \Iterator
     {
-        return [
-            [
-                true,
-                ['email' => '@'],
-            ],
-            [
-                true,
-                ['email' => [
-                    '@',
-                    '@',
-                ]],
-            ],
-            [
-                false,
-                ['email' => ''],
-            ],
-            [
-                false,
-                [],
-            ],
+        yield [
+            true,
+            ['email' => '@'],
+        ];
+        yield [
+            true,
+            ['email' => [
+                '@',
+                '@',
+            ]],
+        ];
+        yield [
+            false,
+            ['email' => ''],
+        ];
+        yield [
+            false,
+            [],
         ];
     }
 
@@ -49,7 +47,7 @@ class ArrayOrScalarTargetTest extends TestCase
     {
         $target = new ArrayOrScalarTarget('email');
         $request = Request::create('/', 'GET', $data);
-        static::assertEquals($expect, $target->is($request));
+        $this->assertSame($expect, $target->is($request));
     }
 
     public function test_of(): void
@@ -58,7 +56,7 @@ class ArrayOrScalarTargetTest extends TestCase
 
         $data = ['email' => '@'];
         $request = Request::create('/', 'GET', $data);
-        static::assertEquals(['@'], $target->value($request));
+        $this->assertSame(['@'], $target->value($request));
 
         $data = [
             'email' => [
@@ -67,14 +65,14 @@ class ArrayOrScalarTargetTest extends TestCase
             ],
         ];
         $request = Request::create('/', 'GET', $data);
-        static::assertEquals(['@', '@'], $target->value($request));
+        $this->assertSame(['@', '@'], $target->value($request));
 
         $data = ['email' => ''];
         $request = Request::create('/', 'GET', $data);
-        static::assertEquals([], $target->value($request));
+        $this->assertSame([], $target->value($request));
 
         $data = [];
         $request = Request::create('/', 'GET', $data);
-        static::assertEquals([], $target->value($request));
+        $this->assertSame([], $target->value($request));
     }
 }

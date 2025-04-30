@@ -11,9 +11,6 @@ use Tests\Querial\WithEloquentModelTestCase;
 
 class ThenWhereHasTest extends WithEloquentModelTestCase
 {
-    /**
-     * @test
-     */
     #[Test]
     public function リクエストにキーが存在する場合_exists_whereサブクエリを発行する事を確認(): void
     {
@@ -22,6 +19,7 @@ class ThenWhereHasTest extends WithEloquentModelTestCase
         $query = $model->newQuery();
 
         $query = (new ThenWhereHas('items'))->resolve($request, $query);
+
         $sql = <<<'EOT'
 SELECT
   *
@@ -40,9 +38,6 @@ EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($query));
     }
 
-    /**
-     * @test
-     */
     #[Test]
     public function 複数の_existsサブクエリが入った時に_an_dになる(): void
     {

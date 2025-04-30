@@ -11,66 +11,72 @@ use Querial\Target\DatetimeTarget;
 class DatetimeTargetTest extends TestCase
 {
     /**
-     * @return array<array{bool,string,array<string, mixed>}>
+     * @return \Iterator<(int | string), array{bool, string, array<string, mixed>}>
      */
-    public static function dataProvider(): array
+    public static function dataProvider(): \Iterator
     {
-        return [
+        yield [
+            true,
+            'Y-m-d H:i:s',
             [
-                true,
-                'Y-m-d H:i:s',
-                [
-                    'period' => '2020-01-01 00:00:00',
-                ],
-            ], [
-                true,
-                'Y-m-d',
-                [
-                    'period' => '2020-01-01',
-                ],
-            ], [
-                false,
-                'Y-m-d H:i:s',
-                [
-                    'period' => '2020-01-01',
-                ],
-            ], [
-                true,
-                'Y/m/d',
-                [
-                    'period' => '2020/01/01',
-                ],
-            ], [
-                false,
-                'Y-m-d',
-                [
-                    'period' => '2020/01/01',
-                ],
-            ], [
-                true,
-                'U',
-                [
-                    'period' => '1577836800',
-                ],
-            ], [
-                // TODO: 12月扱いになるが許容すべきなのか？Datetimeもstrtotimeに準拠する？
-                true,
-                'Y-m-d H:i:s',
-                [
-                    'period' => '2020-00-01 00:00:00',
-                ],
-            ], [
-                true,
-                'H:i:s',
-                [
-                    'period' => '00:00:00',
-                ],
-            ], [
-                false,
-                'Y-m-d H:i:s',
-                [
-                    'period' => 'testetst',
-                ],
+                'period' => '2020-01-01 00:00:00',
+            ],
+        ];
+        yield [
+            true,
+            'Y-m-d',
+            [
+                'period' => '2020-01-01',
+            ],
+        ];
+        yield [
+            false,
+            'Y-m-d H:i:s',
+            [
+                'period' => '2020-01-01',
+            ],
+        ];
+        yield [
+            true,
+            'Y/m/d',
+            [
+                'period' => '2020/01/01',
+            ],
+        ];
+        yield [
+            false,
+            'Y-m-d',
+            [
+                'period' => '2020/01/01',
+            ],
+        ];
+        yield [
+            true,
+            'U',
+            [
+                'period' => '1577836800',
+            ],
+        ];
+        yield [
+            // TODO: 12月扱いになるが許容すべきなのか？Datetimeもstrtotimeに準拠する？
+            true,
+            'Y-m-d H:i:s',
+            [
+                'period' => '2020-00-01 00:00:00',
+            ],
+        ];
+        yield [
+            true,
+            'H:i:s',
+            [
+                'period' => '00:00:00',
+            ],
+        ];
+        yield [
+            false,
+            'Y-m-d H:i:s',
+            [
+                'period' => 'testetst',
             ],
         ];
     }
@@ -85,7 +91,7 @@ class DatetimeTargetTest extends TestCase
     {
         $target = new DatetimeTarget($format, 'period');
         $request = Request::create('/', 'GET', $data);
-        static::assertEquals($expect, $target->is($request), $format);
+        $this->assertSame($expect, $target->is($request), $format);
     }
 
     /**
@@ -97,12 +103,13 @@ class DatetimeTargetTest extends TestCase
     public function test_of(bool $expect, string $format, array $data): void
     {
         if (! $expect) {
-            static::assertTrue(true);
+            $this->assertTrue(true);
 
             return;
         }
+
         $target = new DatetimeTarget($format, 'period');
         $request = Request::create('/', 'GET', $data);
-        static::assertInstanceOf(Carbon::class, $target->value($request));
+        $this->assertInstanceOf(Carbon::class, $target->value($request));
     }
 }

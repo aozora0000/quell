@@ -13,6 +13,7 @@ class ThenPromisesAggregator extends AggregatePromiseQuery
         if (! $this->match($request)) {
             return $builder;
         }
+
         $promises = $this->getMatchedPromises($this->promises, $request);
 
         foreach ($promises as $promise) {

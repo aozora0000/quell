@@ -24,9 +24,11 @@ class DatetimeTarget implements TargetInterface
         if (! $request->filled($this->target)) {
             return false;
         }
+
         if (! is_scalar($request->input($this->target))) {
             return false;
         }
+
         try {
             return $this->value($request) instanceof Carbon;
         } catch (InvalidFormatException) {

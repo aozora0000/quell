@@ -9,16 +9,13 @@ use Tests\Querial\WithEloquentModelTestCase;
 
 class ThenWhereFullTextTest extends WithEloquentModelTestCase
 {
-    /**
-     * @test
-     */
     #[Test]
     public function リクエストにキーが存在する場合_full_text_searchクエリを発行する事を確認(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test']);
 
         $model = $this->createModel();
-        $query = $model->newQuery();
+        $builder = $model->newQuery();
 
         $instance = new ThenWhereFullText('price', null);
         $sql = <<<'EOT'
@@ -29,6 +26,6 @@ from
 where
   match (`price`) against ('' in natural language mode)
 EOT;
-        $this->assertSame(mb_strtolower($sql), $this->format($instance->resolve($request, $query)));
+        $this->assertSame(mb_strtolower($sql), $this->format($instance->resolve($request, $builder)));
     }
 }

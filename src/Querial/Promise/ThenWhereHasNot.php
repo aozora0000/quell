@@ -22,22 +22,23 @@ class ThenWhereHasNot extends PromiseQuery
      */
     public function __construct(
         protected string $relation,
-        protected ?AggregatePromiseQuery $aggregator = null) {}
+        protected ?AggregatePromiseQuery $aggregatePromiseQuery = null) {}
 
     public function resolve(Request $request, Builder $builder): Builder
     {
-        if ($this->aggregator === null) {
+        if ($this->aggregatePromiseQuery === null) {
             return $builder->whereDoesntHave($this->relation);
         }
+
         if (! $this->match($request)) {
             return $builder;
         }
 
-        return $builder->whereDoesntHave($this->relation, fn (Builder $builder) => $this->aggregator->resolve($request, $builder));
+        return $builder->whereDoesntHave($this->relation, fn (Builder $builder) => $this->aggregatePromiseQuery->resolve($request, $builder));
     }
 
     public function match(Request $request): bool
     {
-        return $this->aggregator === null || $this->aggregator->match($request);
+        return $this->aggregatePromiseQuery === null || $this->aggregatePromiseQuery->match($request);
     }
 }

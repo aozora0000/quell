@@ -39,6 +39,7 @@ class ThenWhereLike extends PromiseQuery
         if (! $this->match($request)) {
             return $builder;
         }
+
         $attribute = $this->createAttributeFromTable($builder, $this->attribute);
         $value = addcslashes($this->target->value($request), '%_\\');
 

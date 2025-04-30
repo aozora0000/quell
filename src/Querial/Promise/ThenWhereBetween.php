@@ -48,9 +48,12 @@ class ThenWhereBetween extends PromiseQuery
 
     public function match(Request $request): bool
     {
-        return
-            $this->target->is($request) ||
-            $this->target->max()->is($request) ||
-            $this->target->min()->is($request);
+        if ($this->target->is($request)) {
+            return true;
+        }
+        if ($this->target->max()->is($request)) {
+            return true;
+        }
+        return $this->target->min()->is($request);
     }
 }

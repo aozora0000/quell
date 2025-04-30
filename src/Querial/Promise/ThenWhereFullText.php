@@ -19,7 +19,7 @@ class ThenWhereFullText extends PromiseQuery
         ?string $inputTarget = null,
         ?string $table = null)
     {
-        $this->target = new ScalarTarget($inputTarget ?: $attribute);
+        $this->target = new ScalarTarget($inputTarget !== null && $inputTarget !== '' && $inputTarget !== '0' ? $inputTarget : $attribute);
         $this->table = $table;
     }
 

@@ -12,6 +12,7 @@ class ThenWhereLessThanEqual extends ThenWhereEqual
         if (! $this->match($request)) {
             return $builder;
         }
+
         $attribute = $this->createAttributeFromTable($builder, $this->attribute);
 
         return $builder->where($attribute, '<=', $this->target->value($request));

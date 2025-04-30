@@ -43,15 +43,18 @@ abstract class Quell
     final public function build(EloquentBuilder $builder): EloquentBuilder
     {
         $pipeline = new Pipeline($this->request);
-        if ($this->promise() !== null) {
+        if ($this->promise() instanceof PromiseInterface) {
             $pipeline->then($this->promise());
         }
+
         if ($this->failed() !== null) {
             $pipeline->onFailed($this->failed());
         }
+
         if ($this->finally() !== null) {
             $pipeline->onFinally($this->finally());
         }
+
         if ($this->default() !== null) {
             $pipeline->onDefault($this->default());
         }

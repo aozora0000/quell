@@ -12,23 +12,21 @@ use Querial\Target\ScalarTarget;
 class ScalarTargetTest extends TestCase
 {
     /**
-     * @return array<array{bool,array<string, mixed>}>
+     * @return \Iterator<(int | string), array{bool, array<string, mixed>}>
      */
-    public static function dataProvider(): array
+    public static function dataProvider(): \Iterator
     {
-        return [
-            [
-                true,
-                ['email' => '@'],
-            ],
-            [
-                false,
-                ['email' => ''],
-            ],
-            [
-                false,
-                [],
-            ],
+        yield [
+            true,
+            ['email' => '@'],
+        ];
+        yield [
+            false,
+            ['email' => ''],
+        ];
+        yield [
+            false,
+            [],
         ];
     }
 
@@ -42,7 +40,7 @@ class ScalarTargetTest extends TestCase
     {
         $target = new ScalarTarget('email');
         $request = Request::create('/', 'GET', $data);
-        static::assertEquals($expect, $target->is($request));
+        $this->assertSame($expect, $target->is($request));
     }
 
     /**
@@ -55,7 +53,7 @@ class ScalarTargetTest extends TestCase
     {
         $target = new ScalarTarget('email');
         $request = Request::create('/', 'GET', $data);
-        static::assertIsBool($expect);
-        static::assertEquals($target->value($request), $request->get('email'));
+        $this->assertIsBool($expect);
+        $this->assertEquals($target->value($request), $request->get('email'));
     }
 }

@@ -12,12 +12,8 @@ use ReflectionClass;
 
 class PipelineTest extends TestCase
 {
-    /**
-     * @test
-     * Promiseを追加できることを確認します
-     */
     #[Test]
-    public function 追加したpromiseが取得できることを確認()
+    public function 追加したpromiseが取得できることを確認(): void
     {
         $request = Request::create('/', 'GET');
         $pipeline = new Pipeline($request);
@@ -26,41 +22,35 @@ class PipelineTest extends TestCase
         $pipeline->then($promise);
 
         $reflection = new ReflectionClass($pipeline);
-        $property = $reflection->getProperty('promises');
-        $property->setAccessible(true);
-        $promises = $property->getValue($pipeline);
+        $reflectionProperty = $reflection->getProperty('promises');
+        $reflectionProperty->setAccessible(true);
+
+        $promises = $reflectionProperty->getValue($pipeline);
 
         $this->assertCount(1, $promises);
         $this->assertSame($promise, $promises[0]);
     }
 
-    /**
-     * @test
-     * onFailedクロージャを設定できることを確認します
-     */
     #[Test]
-    public function on_failedクロージャが設定できることを確認()
+    public function on_failedクロージャが設定できることを確認(): void
     {
         $request = Request::create('/', 'GET');
         $pipeline = new Pipeline($request);
-        $callback = function () {};
+        $callback = function (): void {};
 
         $pipeline->onFailed($callback);
 
         $reflection = new ReflectionClass($pipeline);
-        $property = $reflection->getProperty('onFailedClosure');
-        $property->setAccessible(true);
-        $closure = $property->getValue($pipeline);
+        $reflectionProperty = $reflection->getProperty('onFailedClosure');
+        $reflectionProperty->setAccessible(true);
+
+        $closure = $reflectionProperty->getValue($pipeline);
 
         $this->assertSame($callback, $closure);
     }
 
-    /**
-     * @test
-     * 例外が発生した場合にonFailedクロージャが呼び出されることを確認します
-     */
     #[Test]
-    public function 例外発生時にon_failedクロージャが呼び出されることを確認()
+    public function 例外発生時にon_failedクロージャが呼び出されることを確認(): void
     {
         $request = Request::create('/', 'GET');
         $pipeline = new Pipeline($request);
@@ -72,7 +62,7 @@ class PipelineTest extends TestCase
         $pipeline->then($promise);
 
         $onFailedCalled = false;
-        $pipeline->onFailed(function () use (&$onFailedCalled) {
+        $pipeline->onFailed(function () use (&$onFailedCalled): void {
             $onFailedCalled = true;
         });
 
@@ -87,18 +77,14 @@ class PipelineTest extends TestCase
         $this->assertTrue($onFailedCalled);
     }
 
-    /**
-     * @test
-     * onFinallyクロージャが呼び出されることを確認します
-     */
     #[Test]
-    public function on_finallyクロージャが呼び出されることを確認()
+    public function on_finallyクロージャが呼び出されることを確認(): void
     {
         $request = Request::create('/', 'GET');
         $pipeline = new Pipeline($request);
 
         $onFinallyCalled = false;
-        $pipeline->onFinally(function () use (&$onFinallyCalled) {
+        $pipeline->onFinally(function () use (&$onFinallyCalled): void {
             $onFinallyCalled = true;
         });
 
@@ -109,18 +95,14 @@ class PipelineTest extends TestCase
         $this->assertTrue($onFinallyCalled);
     }
 
-    /**
-     * @test
-     * onDefaultクロージャがデフォルトの場合に呼び出されることを確認します
-     */
     #[Test]
-    public function on_defaultクロージャがデフォルトで呼び出されることを確認()
+    public function on_defaultクロージャがデフォルトで呼び出されることを確認(): void
     {
         $request = Request::create('/', 'GET');
         $pipeline = new Pipeline($request);
 
         $onDefaultCalled = false;
-        $pipeline->onDefault(function () use (&$onDefaultCalled) {
+        $pipeline->onDefault(function () use (&$onDefaultCalled): void {
             $onDefaultCalled = true;
         });
 

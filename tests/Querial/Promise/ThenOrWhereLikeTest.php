@@ -9,9 +9,6 @@ use Tests\Querial\WithEloquentModelTestCase;
 
 class ThenOrWhereLikeTest extends WithEloquentModelTestCase
 {
-    /**
-     * @test
-     */
     #[Test]
     public function 複数の_whereクエリが入った時に_o_rになる(): void
     {
@@ -21,6 +18,7 @@ class ThenOrWhereLikeTest extends WithEloquentModelTestCase
 
         // 検索するテーブルを指定してクエリを作成する
         $query = (new ThenOrWhereLike('name'))->resolve($request, $query);
+
         $sql = <<<'EOT'
 SELECT
   *

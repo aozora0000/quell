@@ -10,9 +10,6 @@ use Tests\Querial\WithEloquentModelTestCase;
 
 class ThenWhereNotLikeTest extends WithEloquentModelTestCase
 {
-    /**
-     * @test
-     */
     #[Test]
     public function 無指定の場合、部分一致としてlike検索される(): void
     {
@@ -21,6 +18,7 @@ class ThenWhereNotLikeTest extends WithEloquentModelTestCase
         $query = $model->newQuery();
 
         $query = (new ThenWhereNotLike('name'))->resolve($request, $query);
+
         $sql = <<<'EOT'
 SELECT
   *
@@ -32,19 +30,15 @@ EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($query));
     }
 
-    /**
-     * @test
-     *
-     * @return void
-     */
     #[Test]
-    public function 指定された場合、後方一致としてlike検索される()
+    public function 指定された場合、後方一致としてlike検索される(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
         $model = $this->createModel();
         $query = $model->newQuery();
 
         $query = (new ThenWhereNotLike('email', null, null, LikeFormatter::BACKWARD_MATCH))->resolve($request, $query);
+
         $sql = <<<'EOT'
 SELECT
   *
@@ -56,9 +50,6 @@ EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($query));
     }
 
-    /**
-     * @test
-     */
     #[Test]
     public function 指定された場合、前方一致としてlike検索される(): void
     {
@@ -67,6 +58,7 @@ EOT;
         $query = $model->newQuery();
 
         $query = (new ThenWhereNotLike('email', null, null, LikeFormatter::FORWARD_MATCH))->resolve($request, $query);
+
         $sql = <<<'EOT'
 SELECT
   *

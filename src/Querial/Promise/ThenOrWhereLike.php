@@ -27,7 +27,7 @@ class ThenOrWhereLike extends PromiseQuery
         protected string $attribute,
         ?string $inputTarget = null,
         ?string $table = null,
-        protected LikeFormatter $formatter = LikeFormatter::PARTIAL_MATCH
+        protected LikeFormatter $likeFormatter = LikeFormatter::PARTIAL_MATCH
     ) {
         $this->target = new ScalarTarget($inputTarget ?? $attribute);
         $this->table = $table;
@@ -38,10 +38,11 @@ class ThenOrWhereLike extends PromiseQuery
         if (! $this->match($request)) {
             return $builder;
         }
+
         $attribute = $this->createAttributeFromTable($builder, $this->attribute);
         $value = addcslashes($this->target->value($request), '%_\\');
 
-        return $builder->orWhere($attribute, 'LIKE', $this->formatter->format($value));
+        return $builder->orWhere($attribute, 'LIKE', $this->likeFormatter->format($value));
     }
 
     public function match(Request $request): bool

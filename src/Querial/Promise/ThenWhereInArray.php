@@ -27,7 +27,7 @@ class ThenWhereInArray extends PromiseQuery
         ?string $inputTarget = null,
         ?string $table = null)
     {
-        $this->target = new ArrayOrScalarTarget($inputTarget ?: $attribute);
+        $this->target = new ArrayOrScalarTarget($inputTarget !== null && $inputTarget !== '' && $inputTarget !== '0' ? $inputTarget : $attribute);
         $this->table = $table;
     }
 
@@ -41,6 +41,7 @@ class ThenWhereInArray extends PromiseQuery
         if (! $this->match($request)) {
             return $builder;
         }
+
         $attribute = $this->createAttributeFromTable($builder, $this->attribute);
 
         return $builder->whereIn($attribute, $this->target->value($request));

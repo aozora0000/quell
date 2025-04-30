@@ -12,9 +12,6 @@ use Tests\Querial\WithEloquentModelTestCase;
 
 class IfCallableTest extends WithEloquentModelTestCase
 {
-    /**
-     * @test
-     */
     #[Test]
     public function 通常関数の条件に一致した場合、promiseクエリが実行される(): void
     {
@@ -38,9 +35,6 @@ EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($query));
     }
 
-    /**
-     * @test
-     */
     #[Test]
     public function 即時関数の条件に一致した場合、_promiseクエリが実行される(): void
     {
@@ -48,7 +42,7 @@ EOT;
         $model = $this->createModel();
         $query = $model->newQuery();
 
-        $query = (new IfCallable(fn (Request $request) => $request->filled('mode') && $request->input('mode') === 'search', new ThenPromisesAggregator([
+        $query = (new IfCallable(fn (Request $request): bool => $request->filled('mode') && $request->input('mode') === 'search', new ThenPromisesAggregator([
             new ThenWhereEqual('name'),
             new ThenWhereLike('email'),
         ])))->resolve($request, $query);
@@ -64,9 +58,6 @@ EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($query));
     }
 
-    /**
-     * @test
-     */
     #[Test]
     public function 即時関数の条件に一致しない場合、_promiseクエリは実行されない(): void
     {
@@ -74,7 +65,7 @@ EOT;
         $model = $this->createModel();
         $query = $model->newQuery();
 
-        $query = (new IfCallable(fn (Request $request) => $request->filled('name') && $request->input('name') === 'search', new ThenPromisesAggregator([
+        $query = (new IfCallable(fn (Request $request): bool => $request->filled('name') && $request->input('name') === 'search', new ThenPromisesAggregator([
             new ThenWhereEqual('name'),
             new ThenWhereLike('email'),
         ])))->resolve($request, $query);

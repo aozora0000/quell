@@ -13,9 +13,6 @@ use Tests\Querial\WithEloquentModelTestCase;
  */
 class ThenWhereNotEqualTest extends WithEloquentModelTestCase
 {
-    /**
-     * @test
-     */
     #[Test]
     public function リクエストに存在するキーでwhereを掛ける(): void
     {
@@ -25,6 +22,7 @@ class ThenWhereNotEqualTest extends WithEloquentModelTestCase
 
         // リクエストに存在するキーでwhereを掛ける
         $query = (new ThenWhereNotEqual('name'))->resolve($request, $query);
+
         $sql = <<<'EOT'
 SELECT
   *
@@ -36,9 +34,6 @@ EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($query));
     }
 
-    /**
-     * @test
-     */
     #[Test]
     public function リクエストに存在するキーでandwhereを掛ける(): void
     {
@@ -49,6 +44,7 @@ EOT;
         // リクエストに存在するキーでand whereを掛ける
         $query = (new ThenWhereNotEqual('name'))->resolve($request, $query);
         $query = (new ThenWhereNotEqual('email'))->resolve($request, $query);
+
         $sql = <<<'EOT'
 SELECT
   *
@@ -61,9 +57,6 @@ EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($query));
     }
 
-    /**
-     * @test
-     */
     #[Test]
     public function リクエストに存在しないキーの場合、_sq_lには反映されない(): void
     {
@@ -75,6 +68,7 @@ EOT;
         // リクエストに存在しないキーの場合、SQLには反映されない
         $query = (new ThenWhereNotEqual('name'))->resolve($request, $query);
         $query = (new ThenWhereNotEqual('noattr'))->resolve($request, $query);
+
         $sql = <<<'EOT'
 SELECT
   *
@@ -86,9 +80,6 @@ EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($query));
     }
 
-    /**
-     * @test
-     */
     #[Test]
     public function 検索するテーブルを指定してクエリを作成する(): void
     {
@@ -98,6 +89,7 @@ EOT;
 
         // 検索するテーブルを指定してクエリを作成する
         $query = (new ThenWhereNotEqual('name', null, 'items'))->resolve($request, $query);
+
         $sql = <<<'EOT'
 SELECT
   *

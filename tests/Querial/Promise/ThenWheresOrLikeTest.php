@@ -11,11 +11,8 @@ use Tests\Querial\WithEloquentModelTestCase;
 
 class ThenWheresOrLikeTest extends WithEloquentModelTestCase
 {
-    /**
-     * @test
-     */
     #[Test]
-    public function コンストラクターのテスト()
+    public function コンストラクターのテスト(): void
     {
         $table = 'users';
         $formatter = LikeFormatter::PARTIAL_MATCH;
@@ -24,11 +21,8 @@ class ThenWheresOrLikeTest extends WithEloquentModelTestCase
         $this->assertInstanceOf(ThenWheresOrLike::class, $instance);
     }
 
-    /**
-     * @test
-     */
     #[Test]
-    public function マッチ関数が正しいを返すテスト()
+    public function マッチ関数が正しいを返すテスト(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
 
@@ -38,17 +32,14 @@ class ThenWheresOrLikeTest extends WithEloquentModelTestCase
         $this->assertTrue($result);
     }
 
-    /**
-     * @test
-     */
     #[Test]
-    public function リゾルブ関数が正しいビルダーを返すテスト()
+    public function リゾルブ関数が正しいビルダーを返すテスト(): void
     {
         $request = Request::create('/', 'GET', ['search' => 'test']);
         $model = $this->createModel();
-        $query = $model->newQuery();
+        $builder = $model->newQuery();
         $instance = new ThenWheresOrLike(['name', 'email'], 'search');
-        $result = $instance->resolve($request, $query);
+        $result = $instance->resolve($request, $builder);
 
         $this->assertInstanceOf(Builder::class, $result);
         $sql = <<<'EOT'
@@ -62,26 +53,23 @@ WHERE
     or `users`.`email` like '%test%'
   )
 EOT;
-        $this->assertSame(mb_strtolower($sql), $this->format($query));
+        $this->assertSame(mb_strtolower($sql), $this->format($builder));
     }
 
-    /**
-     * @test
-     */
     #[Test]
-    public function 複合した時に正しいビルダーを返すテスト()
+    public function 複合した時に正しいビルダーを返すテスト(): void
     {
         $request = Request::create('/', 'GET', [
             'email' => 'email@email.com',
             'search' => 'test',
         ]);
         $model = $this->createModel();
-        $query = $model->newQuery();
+        $builder = $model->newQuery();
         $instance = new ThenWherePromisesAggregator([
             new ThenWhereEqual('email'),
             new ThenWheresOrLike(['name', 'column1'], 'search'),
         ]);
-        $result = $instance->resolve($request, $query);
+        $result = $instance->resolve($request, $builder);
 
         $this->assertInstanceOf(Builder::class, $result);
         $sql = <<<'EOT'
@@ -98,6 +86,6 @@ WHERE
     )
   )
 EOT;
-        $this->assertSame(mb_strtolower($sql), $this->format($query));
+        $this->assertSame(mb_strtolower($sql), $this->format($builder));
     }
 }

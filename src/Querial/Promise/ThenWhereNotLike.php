@@ -12,6 +12,7 @@ class ThenWhereNotLike extends ThenWhereLike
         if (! $this->match($request)) {
             return $builder;
         }
+
         $attribute = $this->createAttributeFromTable($builder, $this->attribute);
         $value = addcslashes($this->target->value($request), '%_\\');
 

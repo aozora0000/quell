@@ -11,7 +11,7 @@ class CallableTargetTest extends TestCase
     public function test_is(): void
     {
         $request = Request::create('/', 'GET', ['name' => 'test', 'email' => 'email@email.com']);
-        $target = new CallableTarget(static fn (Request $request) => $request->query('name') === 'test', static fn (Request $request) => 'overwrite');
+        $target = new CallableTarget(static fn (Request $request): bool => $request->query('name') === 'test', static fn (Request $request): string => 'overwrite');
         $this->assertTrue($target->is($request));
         $this->assertSame('overwrite', $target->value($request));
     }

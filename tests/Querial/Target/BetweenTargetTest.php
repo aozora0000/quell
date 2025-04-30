@@ -11,31 +11,29 @@ use Querial\Target\ScalarTarget;
 class BetweenTargetTest extends TestCase
 {
     /**
-     * @return array<array{bool,array<string, mixed>}>
+     * @return \Iterator<(int | string), array{bool, array<string, mixed>}>
      */
-    public static function dataProvider(): array
+    public static function dataProvider(): \Iterator
     {
-        return [
+        yield [
+            true,
             [
-                true,
-                [
-                    'from' => 1,
-                    'to' => 3,
-                ],
+                'from' => 1,
+                'to' => 3,
             ],
+        ];
+        yield [
+            false,
             [
-                false,
-                [
-                    'from' => 1,
-                    'to' => '',
-                ],
+                'from' => 1,
+                'to' => '',
             ],
+        ];
+        yield [
+            false,
             [
-                false,
-                [
-                    'from' => '',
-                    'to' => 3,
-                ],
+                'from' => '',
+                'to' => 3,
             ],
         ];
     }
@@ -50,7 +48,7 @@ class BetweenTargetTest extends TestCase
     {
         $target = new BetweenTarget(new ScalarTarget('from'), new ScalarTarget('to'));
         $request = Request::create('/', 'GET', $data);
-        $this->assertEquals($expect, $target->is($request), implode(': ', $target->value($request)));
+        $this->assertSame($expect, $target->is($request), implode(': ', $target->value($request)));
     }
 
     public function test_of(): void

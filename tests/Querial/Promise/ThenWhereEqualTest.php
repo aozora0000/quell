@@ -13,9 +13,6 @@ use Tests\Querial\WithEloquentModelTestCase;
  */
 class ThenWhereEqualTest extends WithEloquentModelTestCase
 {
-    /**
-     * @test
-     */
     #[Test]
     public function リクエストにキーが存在する場合_whereクエリを発行する事を確認(): void
     {
@@ -25,6 +22,7 @@ class ThenWhereEqualTest extends WithEloquentModelTestCase
 
         // リクエストに存在するキーでwhereを掛ける
         $query = (new ThenWhereEqual('name'))->resolve($request, $query);
+
         $sql = <<<'EOT'
 SELECT
   *
@@ -36,9 +34,6 @@ EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($query));
     }
 
-    /**
-     * @test
-     */
     #[Test]
     public function 別テーブルでも_whereイコールが出来る事を確認(): void
     {
@@ -48,6 +43,7 @@ EOT;
 
         // 検索するテーブルを指定してクエリを作成する
         $query = (new ThenWhereEqual('name', null, 'items'))->resolve($request, $query);
+
         $sql = <<<'EOT'
 SELECT
   *

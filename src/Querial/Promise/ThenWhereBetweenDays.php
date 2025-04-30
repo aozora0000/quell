@@ -36,6 +36,7 @@ class ThenWhereBetweenDays extends ThenWhereBetween
         if (! $this->match($request)) {
             return $builder;
         }
+
         $attribute = $this->createAttributeFromTable($builder, $this->attribute);
 
         if ($this->target->is($request)) {
@@ -48,6 +49,7 @@ class ThenWhereBetweenDays extends ThenWhereBetween
                 default => $builder->whereBetween($attribute, [$min, $max]),
             };
         }
+
         if ($this->target->max()->is($request)) {
             $max = $this->target->max();
 
@@ -56,6 +58,7 @@ class ThenWhereBetweenDays extends ThenWhereBetween
                 default => $builder->where($attribute, '<=', $max->value($request)),
             };
         }
+
         if ($this->target->min()->is($request)) {
             $min = $this->target->min();
 

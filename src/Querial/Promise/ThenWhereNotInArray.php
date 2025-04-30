@@ -12,6 +12,7 @@ class ThenWhereNotInArray extends ThenWhereInArray
         if (! $this->match($request)) {
             return $builder;
         }
+
         $attribute = $this->createAttributeFromTable($builder, $this->attribute);
 
         return $builder->whereNotIn($attribute, $this->target->value($request));

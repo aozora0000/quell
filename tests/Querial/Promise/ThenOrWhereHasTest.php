@@ -11,9 +11,6 @@ use Tests\Querial\WithEloquentModelTestCase;
 
 class ThenOrWhereHasTest extends WithEloquentModelTestCase
 {
-    /**
-     * @test
-     */
     #[Test]
     public function 複数の_existsサブクエリが入った時に_o_rになる(): void
     {

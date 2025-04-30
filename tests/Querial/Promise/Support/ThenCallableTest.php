@@ -10,9 +10,6 @@ use Tests\Querial\WithEloquentModelTestCase;
 
 class ThenCallableTest extends WithEloquentModelTestCase
 {
-    /**
-     * @test
-     */
     #[Test]
     public function 即時関数の条件に一致した場合、即時関数内のクエリが実行される(): void
     {
@@ -20,7 +17,7 @@ class ThenCallableTest extends WithEloquentModelTestCase
         $model = $this->createModel();
         $query = $model->newQuery();
 
-        $instance = (new ThenCallable(fn (Request $request) => $request->has('mode') && $request->input('mode') === 'search', fn (Request $request, Builder $builder) => $builder->where('name', 'LIKE', 'test%')));
+        $instance = (new ThenCallable(fn (Request $request): bool => $request->has('mode') && $request->input('mode') === 'search', fn (Request $request, Builder $builder) => $builder->where('name', 'LIKE', 'test%')));
         $this->assertTrue($instance->match($request));
         $sql = <<<'EOT'
 SELECT
@@ -33,9 +30,6 @@ EOT;
         $this->assertSame(mb_strtolower($sql), $this->format($instance->resolve($request, $query)));
     }
 
-    /**
-     * @test
-     */
     #[Test]
     public function 即時関数の条件に一致しない場合、即時関数内のクエリは実行されない(): void
     {
@@ -43,7 +37,7 @@ EOT;
         $model = $this->createModel();
         $query = $model->newQuery();
 
-        $instance = (new ThenCallable(fn (Request $request) => $request->has('mode') && $request->input('mode') === 'search', fn (Request $request, Builder $builder) => $builder->where('name', 'LIKE', 'test%')));
+        $instance = (new ThenCallable(fn (Request $request): bool => $request->has('mode') && $request->input('mode') === 'search', fn (Request $request, Builder $builder) => $builder->where('name', 'LIKE', 'test%')));
         $this->assertNotTrue($instance->match($request));
         $sql = <<<'EOT'
 SELECT

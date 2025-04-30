@@ -70,7 +70,7 @@ class Pipeline implements PipelineInterface
 
     protected function getMatchedPromises(array $promises, Request $request): array
     {
-        return array_filter($promises, static fn (PromiseInterface $promise) => $promise->match($request));
+        return array_filter($promises, static fn (PromiseInterface $promise): bool => $promise->match($request));
     }
 
     /**
@@ -80,18 +80,18 @@ class Pipeline implements PipelineInterface
     {
         try {
             $promises = $this->getMatchedPromises($this->promises, $this->request);
-            if (count($promises) !== 0) {
+            if ($promises !== []) {
                 $this->is_default = false;
             }
+
             foreach ($promises as $promise) {
                 $builder = $promise->resolve($this->request, $builder);
             }
-        } catch (Throwable $exception) {
-            if (! $this->hasFailedClosure()) {
-                throw $exception;
-            }
+        } catch (Throwable $throwable) {
+            throw_unless($this->hasFailedClosure(), $throwable);
+
             $this->is_default = false;
-            call_user_func($this->onFailedClosure, $this->request, $builder, $exception);
+            call_user_func($this->onFailedClosure, $this->request, $builder, $throwable);
         }
 
         if ($this->hasFinallyClosure()) {
@@ -107,16 +107,16 @@ class Pipeline implements PipelineInterface
 
     public function hasFailedClosure(): bool
     {
-        return $this->onFailedClosure !== null;
+        return $this->onFailedClosure instanceof \Closure;
     }
 
     public function hasFinallyClosure(): bool
     {
-        return $this->onFinallyClosure !== null;
+        return $this->onFinallyClosure instanceof \Closure;
     }
 
     public function hasDefaultClosure(): bool
     {
-        return $this->onDefaultClosure !== null;
+        return $this->onDefaultClosure instanceof \Closure;
     }
 }

@@ -22,12 +22,12 @@ class ThenWheresOrLike extends PromiseQuery
         ?string $table = null,
         Formatter $formatter = LikeFormatter::PARTIAL_MATCH)
     {
-        $this->promises = array_map(fn (string $attribute) => new ThenOrWhereLike($attribute, $target, $table, $formatter), $attributes);
+        $this->promises = array_map(fn (string $attribute): ThenOrWhereLike => new ThenOrWhereLike($attribute, $target, $table, $formatter), $attributes);
     }
 
     public function match(Request $request): bool
     {
-        return collect($this->promises)->some(fn (ThenOrWhereLike $target) => $target->match($request));
+        return collect($this->promises)->contains(fn (ThenOrWhereLike $target): bool => $target->match($request));
     }
 
     public function resolve(Request $request, EloquentBuilder $builder): EloquentBuilder
