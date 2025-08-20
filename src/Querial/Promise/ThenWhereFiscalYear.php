@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Querial\Promise;
 
+use DateTimeImmutable;
+use DateTimeZone;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Http\Request;
 use Querial\Contracts\Support\PromiseQuery;
 use Querial\Target\ScalarTarget;
-use DateTimeImmutable;
-use DateTimeZone;
 
 /**
  * 日本の会計年度など、任意の開始月での「年度」指定により期間絞り込みを行うPromise。

@@ -18,8 +18,11 @@ use Querial\Target\ScalarTarget;
 class ThenLimitOffset extends PromiseQuery
 {
     protected ScalarTarget $limitTarget;
+
     protected ScalarTarget $offsetTarget;
+
     protected ScalarTarget $perPageTarget;
+
     protected ScalarTarget $pageTarget;
 
     public function __construct(
@@ -47,6 +50,7 @@ class ThenLimitOffset extends PromiseQuery
                     $builder->offset($offset);
                 }
             }
+
             return $builder;
         }
 

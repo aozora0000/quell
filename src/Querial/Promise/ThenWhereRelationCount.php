@@ -18,10 +18,10 @@ class ThenWhereRelationCount extends PromiseQuery
     protected ScalarTarget $target;
 
     /**
-     * @param string $relation リレーション名
-     * @param string $operator 演算子(既定: ">=")
-     * @param string|null $inputTarget 件数を受け取るキー
-     * @param AggregatePromiseQuery|null $aggregatePromiseQuery リレーション側の追加条件
+     * @param  string  $relation  リレーション名
+     * @param  string  $operator  演算子(既定: ">=")
+     * @param  string|null  $inputTarget  件数を受け取るキー
+     * @param  AggregatePromiseQuery|null  $aggregatePromiseQuery  リレーション側の追加条件
      */
     public function __construct(
         protected string $relation,
@@ -52,6 +52,7 @@ class ThenWhereRelationCount extends PromiseQuery
         if ($this->aggregatePromiseQuery !== null && ! $this->aggregatePromiseQuery->match($request)) {
             return false;
         }
+
         return $this->target->is($request);
     }
 }

@@ -87,15 +87,15 @@ SELECT
 FROM
   `users`
 WHERE
-  (
+  EXISTS (
     SELECT
-      count(*)
+      *
     FROM
       `items`
     WHERE
       `users`.`id` = `items`.`user_id`
       AND `users`.`name` = 'test'
-  ) >= 1
+  )
 EOT;
         $this->assertSame(mb_strtolower($expected), $this->format($instance->resolve($request, $builder)), '関連側条件付きのwhereHas件数サブクエリが一致しません');
     }

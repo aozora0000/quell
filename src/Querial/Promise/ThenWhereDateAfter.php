@@ -19,10 +19,10 @@ class ThenWhereDateAfter extends PromiseQuery
     protected DatetimeTarget $target;
 
     /**
-     * @param string $attribute 対象カラム
-     * @param string|null $inputTarget リクエストのキー（未指定時は$attribute）
-     * @param string $format 受け取るフォーマット（既定: Y-m-d）
-     * @param string|null $table テーブル名
+     * @param  string  $attribute  対象カラム
+     * @param  string|null  $inputTarget  リクエストのキー（未指定時は$attribute）
+     * @param  string  $format  受け取るフォーマット（既定: Y-m-d）
+     * @param  string|null  $table  テーブル名
      */
     public function __construct(
         protected string $attribute,

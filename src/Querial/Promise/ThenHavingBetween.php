@@ -22,10 +22,10 @@ class ThenHavingBetween extends PromiseQuery
     protected BetweenTarget $target;
 
     /**
-     * @param string $attribute HAVING 対象（列名またはエイリアス）
-     * @param string|null $inputTarget リクエストキー（未指定は $attribute）
-     * @param string $minPostfix リクエストキーの最小側サフィックス（既定: _min）
-     * @param string $maxPostfix リクエストキーの最大側サフィックス（既定: _max）
+     * @param  string  $attribute  HAVING 対象（列名またはエイリアス）
+     * @param  string|null  $inputTarget  リクエストキー（未指定は $attribute）
+     * @param  string  $minPostfix  リクエストキーの最小側サフィックス（既定: _min）
+     * @param  string  $maxPostfix  リクエストキーの最大側サフィックス（既定: _max）
      */
     public function __construct(
         protected string $attribute,
@@ -48,6 +48,7 @@ class ThenHavingBetween extends PromiseQuery
 
         if ($this->target->is($request)) {
             [$min, $max] = $this->target->value($request);
+
             return $builder->havingBetween($attribute, [$min, $max]);
         }
 
@@ -70,6 +71,7 @@ class ThenHavingBetween extends PromiseQuery
         if ($this->target->max()->is($request)) {
             return true;
         }
+
         return $this->target->min()->is($request);
     }
 }

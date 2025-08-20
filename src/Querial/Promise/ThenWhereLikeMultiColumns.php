@@ -22,10 +22,10 @@ class ThenWhereLikeMultiColumns extends PromiseQuery
     private ThenWheresOrLike $delegate;
 
     /**
-     * @param string[] $attributes 対象カラム配列
-     * @param string $target 入力キー
-     * @param string|null $table テーブル指定（任意）
-     * @param Formatter $formatter LIKEフォーマッタ（既定: 部分一致）
+     * @param  string[]  $attributes  対象カラム配列
+     * @param  string  $target  入力キー
+     * @param  string|null  $table  テーブル指定（任意）
+     * @param  Formatter  $formatter  LIKEフォーマッタ（既定: 部分一致）
      */
     public function __construct(
         array $attributes,

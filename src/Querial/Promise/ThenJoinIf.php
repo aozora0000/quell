@@ -19,8 +19,8 @@ class ThenJoinIf extends PromiseQuery
     protected ScalarTarget $target;
 
     /**
-     * @param array<string,array{table:string, first:string, operator:string, second:string, type?:'inner'|'left'}> $allowedJoins
-     * @param string $inputTarget 入力キー（既定: join）
+     * @param  array<string,array{table:string, first:string, operator:string, second:string, type?:'inner'|'left'}>  $allowedJoins
+     * @param  string  $inputTarget  入力キー（既定: join）
      */
     public function __construct(
         protected array $allowedJoins,
@@ -50,6 +50,7 @@ class ThenJoinIf extends PromiseQuery
         if ($type === 'left') {
             return $builder->leftJoin($def['table'], sprintf('%s.%s', $firstTable, $firstCol), $def['operator'], sprintf('%s.%s', $secondTable, $secondCol));
         }
+
         return $builder->join($def['table'], sprintf('%s.%s', $firstTable, $firstCol), $def['operator'], sprintf('%s.%s', $secondTable, $secondCol));
     }
 

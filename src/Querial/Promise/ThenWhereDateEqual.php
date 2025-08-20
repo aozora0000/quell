@@ -17,10 +17,10 @@ class ThenWhereDateEqual extends PromiseQuery
     protected DatetimeTarget $target;
 
     /**
-     * @param string $attribute 絞り込み対象のカラム
-     * @param string|null $inputTarget リクエストのキー(未指定時は$attribute)
-     * @param string $format 受け取る日付フォーマット(既定: Y-m-d)
-     * @param string|null $table テーブル指定
+     * @param  string  $attribute  絞り込み対象のカラム
+     * @param  string|null  $inputTarget  リクエストのキー(未指定時は$attribute)
+     * @param  string  $format  受け取る日付フォーマット(既定: Y-m-d)
+     * @param  string|null  $table  テーブル指定
      */
     public function __construct(
         protected string $attribute,

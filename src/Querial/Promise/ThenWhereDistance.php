@@ -17,16 +17,18 @@ use Querial\Target\ScalarTarget;
 class ThenWhereDistance extends PromiseQuery
 {
     protected ScalarTarget $latTarget;
+
     protected ScalarTarget $lngTarget;
+
     protected ScalarTarget $radiusTarget;
 
     /**
-     * @param string $latitudeColumn テーブル上の緯度カラム名
-     * @param string $longitudeColumn テーブル上の経度カラム名
-     * @param string $latKey リクエストの緯度キー
-     * @param string $lngKey リクエストの経度キー
-     * @param string $radiusKey リクエストの半径キー
-     * @param float $earthRadiusKm 地球半径(km)
+     * @param  string  $latitudeColumn  テーブル上の緯度カラム名
+     * @param  string  $longitudeColumn  テーブル上の経度カラム名
+     * @param  string  $latKey  リクエストの緯度キー
+     * @param  string  $lngKey  リクエストの経度キー
+     * @param  string  $radiusKey  リクエストの半径キー
+     * @param  float  $earthRadiusKm  地球半径(km)
      */
     public function __construct(
         protected string $latitudeColumn,
@@ -81,6 +83,7 @@ class ThenWhereDistance extends PromiseQuery
         if (! $this->radiusTarget->is($request)) {
             return false;
         }
+
         return true;
     }
 

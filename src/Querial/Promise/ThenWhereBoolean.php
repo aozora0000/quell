@@ -21,9 +21,9 @@ class ThenWhereBoolean extends PromiseQuery
     protected ScalarTarget $target;
 
     /**
-     * @param string $attribute 真偽カラム名
-     * @param string|null $inputTarget リクエストのキー（未指定時は$attribute）
-     * @param string|null $table テーブル名（未指定時はモデルのテーブル）
+     * @param  string  $attribute  真偽カラム名
+     * @param  string|null  $inputTarget  リクエストのキー（未指定時は$attribute）
+     * @param  string|null  $table  テーブル名（未指定時はモデルのテーブル）
      */
     public function __construct(
         protected string $attribute,
@@ -52,6 +52,7 @@ class ThenWhereBoolean extends PromiseQuery
             return false;
         }
         $raw = $this->target->value($request);
+
         return $this->isTruthy($raw) || $this->isFalsy($raw);
     }
 
@@ -66,6 +67,7 @@ class ThenWhereBoolean extends PromiseQuery
         if ($this->isFalsy($value)) {
             return false;
         }
+
         // ここには来ない想定（matchで弾く）が、デフォルトはfalse
         return false;
     }

@@ -17,7 +17,7 @@ class ThenLimitOffsetTest extends WithEloquentModelTestCase
         $model = $this->createModel();
         $builder = $model->newQuery();
 
-        $instance = new ThenLimitOffset();
+        $instance = new ThenLimitOffset;
 
         $expected = <<<'EOT'
 SELECT

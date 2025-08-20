@@ -51,6 +51,7 @@ class ThenWhereBetweenExclusive extends PromiseQuery
         if ($this->target->max()->is($request)) {
             return true;
         }
+
         return $this->target->min()->is($request);
     }
 }
