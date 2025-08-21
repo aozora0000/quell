@@ -7,6 +7,7 @@ namespace Querial\Promise;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Http\Request;
 use Querial\Contracts\Support\PromiseQuery;
+use Querial\Helper\Str;
 use Querial\Target\ScalarTarget;
 
 /**
@@ -41,7 +42,7 @@ class ThenWhereBoolean extends PromiseQuery
         }
 
         $attribute = $this->createAttributeFromTable($builder, $this->attribute);
-        $value = $this->normalize($this->target->value($request));
+        $value = Str::isTruthy($this->target->value($request));
 
         return $builder->where($attribute, '=', $value ? 1 : 0);
     }
@@ -53,32 +54,7 @@ class ThenWhereBoolean extends PromiseQuery
         }
         $raw = $this->target->value($request);
 
-        return $this->isTruthy($raw) || $this->isFalsy($raw);
+        return Str::isTruthy($raw) || Str::isFalsy($raw);
     }
 
-    /**
-     * 文字列から真偽値を正規化する
-     */
-    private function normalize(string $value): bool
-    {
-        if ($this->isTruthy($value)) {
-            return true;
-        }
-        if ($this->isFalsy($value)) {
-            return false;
-        }
-
-        // ここには来ない想定（matchで弾く）が、デフォルトはfalse
-        return false;
-    }
-
-    private function isTruthy(string $value): bool
-    {
-        return in_array(strtolower($value), ['1', 'true', 'on', 'yes'], true);
-    }
-
-    private function isFalsy(string $value): bool
-    {
-        return in_array(strtolower($value), ['0', 'false', 'off', 'no'], true);
-    }
 }

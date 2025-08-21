@@ -7,7 +7,9 @@ namespace Querial\Promise;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Http\Request;
 use Querial\Contracts\Support\PromiseQuery;
+use Querial\Helper\Str;
 use Querial\Target\ScalarTarget;
+use Querial\Helper\Order;
 
 /**
  * 複数キー優先で ORDER BY を適用する Promise。
@@ -41,7 +43,8 @@ class ThenOrderByMulti extends PromiseQuery
 
     public function resolve(Request $request, EloquentBuilder $builder): EloquentBuilder
     {
-        $tokens = $this->parseTokens($request);
+        $raw = $this->target->is($request) ? $this->target->value($request) : implode(',', $this->defaultTokens);
+        $tokens = Str::parseOrderByTokens($raw, $this->allowedMap, $this->defaultTokens);
         foreach ($tokens as [$column, $dir]) {
             // マッピングの値が「テーブル.カラム」でない場合は createAttributeFromTable で補う
             $qualified = str_contains($column, '.') ? $column : $this->createAttributeFromTable($builder, $column);
@@ -51,37 +54,4 @@ class ThenOrderByMulti extends PromiseQuery
         return $builder;
     }
 
-    /**
-     * @return array<array{0:string,1:'asc'|'desc'}>
-     */
-    private function parseTokens(Request $request): array
-    {
-        $raw = $this->target->is($request) ? $this->target->value($request) : implode(',', $this->defaultTokens);
-        $parts = array_values(array_filter(array_map('trim', explode(',', $raw)), fn ($v) => $v !== ''));
-
-        $result = [];
-        foreach ($parts as $token) {
-            $dir = str_starts_with($token, '-') ? 'desc' : 'asc';
-            $key = ltrim($token, '+-');
-            if (! array_key_exists($key, $this->allowedMap)) {
-                continue; // 不正トークンは無視
-            }
-            $column = $this->allowedMap[$key];
-            $result[] = [$column, $dir];
-        }
-
-        // すべて不正だった場合、デフォルトへ
-        if ($result === [] && $this->defaultTokens !== []) {
-            foreach ($this->defaultTokens as $token) {
-                $dir = str_starts_with($token, '-') ? 'desc' : 'asc';
-                $key = ltrim($token, '+-');
-                if (! array_key_exists($key, $this->allowedMap)) {
-                    continue;
-                }
-                $result[] = [$this->allowedMap[$key], $dir];
-            }
-        }
-
-        return $result;
-    }
 }

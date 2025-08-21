@@ -7,6 +7,8 @@ namespace Querial\Promise;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Http\Request;
 use Querial\Contracts\Support\PromiseQuery;
+use Querial\Helper\Arr;
+use Querial\Helper\Str;
 
 /**
  * リクエストの連想配列（例: filters[status][]=...）をマップに従って whereIn を適用する Promise。
@@ -41,7 +43,7 @@ class ThenWhereInRequestArrayMap extends PromiseQuery
             if (! array_key_exists($inputKey, $bag)) {
                 continue;
             }
-            $values = $this->normalizeValues($bag[$inputKey]);
+            $values = Arr::toList($bag[$inputKey]);
             if ($values !== []) {
                 return true;
             }
@@ -61,7 +63,7 @@ class ThenWhereInRequestArrayMap extends PromiseQuery
             if (! array_key_exists($inputKey, $bag)) {
                 continue;
             }
-            $values = $this->normalizeValues($bag[$inputKey]);
+            $values = Arr::toList($bag[$inputKey]);
             if ($values === []) {
                 continue;
             }
@@ -74,18 +76,4 @@ class ThenWhereInRequestArrayMap extends PromiseQuery
         return $builder;
     }
 
-    /**
-     * 値を配列に正規化し、空文字/NULLを除外してインデックスを詰める。
-     *
-     * @return array<int, scalar>
-     */
-    private function normalizeValues(mixed $raw): array
-    {
-        $list = is_array($raw) ? array_values($raw) : [$raw];
-        $list = array_values(array_filter($list, static function ($v) {
-            return $v !== '' && $v !== null; // 空要素は除外
-        }));
-
-        return $list;
-    }
 }

@@ -7,6 +7,7 @@ namespace Querial\Promise;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Http\Request;
 use Querial\Contracts\Support\PromiseQuery;
+use Querial\Helper\Str;
 use Querial\Target\ScalarTarget;
 
 /**
@@ -46,7 +47,7 @@ class ThenWhereInSplitArray extends PromiseQuery
         if (! $this->target->is($request)) {
             return false;
         }
-        $values = $this->splitValues((string) $this->target->value($request));
+        $values = Str::splitToList((string) $this->target->value($request), $this->delimiter, $this->cast);
 
         return $values !== [];
     }
@@ -59,35 +60,8 @@ class ThenWhereInSplitArray extends PromiseQuery
 
         $attribute = $this->createAttributeFromTable($builder, $this->attribute);
         $raw = (string) $this->target->value($request);
-        $values = $this->splitValues($raw);
+        $values = Str::splitToList($raw, $this->delimiter, $this->cast);
 
         return $builder->whereIn($attribute, $values);
-    }
-
-    /**
-     * 入力文字列を区切り文字で分割し、trim/空要素除外/キャストを行う。
-     *
-     * @return array<int, string|int|float>
-     */
-    private function splitValues(string $raw): array
-    {
-        if ($raw === '') {
-            return [];
-        }
-
-        $parts = array_map(static fn ($v) => trim((string) $v), explode($this->delimiter, $raw));
-        $parts = array_values(array_filter($parts, static fn ($v) => $v !== ''));
-
-        if ($parts === []) {
-            return [];
-        }
-
-        return array_map(function (string $v) {
-            return match ($this->cast) {
-                'int' => (int) $v,
-                'float' => (float) $v,
-                default => $v,
-            };
-        }, $parts);
     }
 }

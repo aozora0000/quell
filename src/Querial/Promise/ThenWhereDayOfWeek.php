@@ -39,8 +39,12 @@ class ThenWhereDayOfWeek extends PromiseQuery
         }
 
         $attribute = $this->createAttributeFromTable($builder, $this->attribute);
-        $value = $this->normalize((int) $this->target->value($request));
-
+        $target = (int) $this->target->value($request);
+        $value = match (true) {
+            $target >= 1 && $target <= 7 => $target,
+            $target >= 0 && $target <= 6 => $target + 1,
+            default => 1,
+        };
         // DAYOFWEEK(`table`.`column`) = N をそのまま埋め込む（toRawSqlの比較を安定させる）
         [$tbl, $col] = explode('.', $attribute, 2);
 
@@ -55,21 +59,5 @@ class ThenWhereDayOfWeek extends PromiseQuery
         $v = (int) $this->target->value($request);
 
         return ($v >= 0 && $v <= 6) || ($v >= 1 && $v <= 7);
-    }
-
-    /**
-     * 0-6 → 1-7 へ正規化（0=日曜→1）
-     */
-    private function normalize(int $v): int
-    {
-        if ($v >= 1 && $v <= 7) {
-            return $v;
-        }
-        if ($v >= 0 && $v <= 6) {
-            return $v + 1;
-        }
-
-        // 想定外は日曜（1）にフォールバック（matchで弾かれるため通常到達しない）
-        return 1;
     }
 }

@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Querial\Promise;
@@ -7,6 +6,7 @@ namespace Querial\Promise;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Http\Request;
 use Querial\Contracts\Support\PromiseQuery;
+use Querial\Helper\Str;
 use Querial\Target\ScalarTarget;
 
 /**
@@ -42,7 +42,7 @@ class ThenWhereInNumericRangeList extends PromiseQuery
         if (! $this->target->is($request)) {
             return false;
         }
-        $tokens = $this->parseTokens((string) $this->target->value($request));
+        $tokens = Str::parseNumericRangeTokens((string) $this->target->value($request), $this->delimiter, $this->rangeSeparator);
 
         return $tokens !== [];
     }
@@ -54,7 +54,7 @@ class ThenWhereInNumericRangeList extends PromiseQuery
         }
 
         $attribute = $this->createAttributeFromTable($builder, $this->attribute);
-        $tokens = $this->parseTokens((string) $this->target->value($request));
+        $tokens = Str::parseNumericRangeTokens((string) $this->target->value($request), $this->delimiter, $this->rangeSeparator);
 
         return $builder->where(function (EloquentBuilder $q) use ($tokens, $attribute): void {
             foreach ($tokens as $t) {
@@ -67,51 +67,5 @@ class ThenWhereInNumericRangeList extends PromiseQuery
                 }
             }
         });
-    }
-
-    /**
-     * 文字列をパースしてトークン化する。
-     * 戻り値例: [ ['type'=>'range','min'=>1,'max'=>3], ['type'=>'value','value'=>5] ]
-     *
-     * @return array<int, array<string, int|float|string>>
-     */
-    private function parseTokens(string $raw): array
-    {
-        if ($raw === '') {
-            return [];
-        }
-        $list = array_map(static fn ($v) => trim((string) $v), explode($this->delimiter, $raw));
-        $list = array_values(array_filter($list, static fn ($v) => $v !== ''));
-
-        $tokens = [];
-        foreach ($list as $item) {
-            // レンジ形式か？
-            $pos = strpos($item, $this->rangeSeparator);
-            if ($pos !== false) {
-                [$l, $r] = [trim(substr($item, 0, $pos)), trim(substr($item, $pos + strlen($this->rangeSeparator)))];
-                if ($l === '' || $r === '') {
-                    continue; // 片側欠損は無視
-                }
-                if (!is_numeric($l) || !is_numeric($r)) {
-                    continue; // 非数値は無視
-                }
-                $min = $l + 0; // 数値化（int/float）
-                $max = $r + 0;
-                if ($min > $max) {
-                    // 入れ替え
-                    [$min, $max] = [$max, $min];
-                }
-                $tokens[] = ['type' => 'range', 'min' => $min, 'max' => $max];
-                continue;
-            }
-
-            // 単一値
-            if (!is_numeric($item)) {
-                continue;
-            }
-            $tokens[] = ['type' => 'value', 'value' => $item + 0];
-        }
-
-        return $tokens;
     }
 }
