@@ -19,7 +19,7 @@ class ThenWhereLikeMultiColumns extends PromiseQuery
     /**
      * @var ThenWheresOrLike 内部委譲用
      */
-    private ThenWheresOrLike $delegate;
+    private readonly ThenWheresOrLike $delegate;
 
     /**
      * @param  string[]  $attributes  対象カラム配列

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\ThenOrderByMulti;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenOrderByMultiTest extends WithEloquentModelTestCase
+final class ThenOrderByMultiTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function 複数指定の優先順で_order_byが適用される(): void

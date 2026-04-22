@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Querial\Promise;
 
 use Illuminate\Http\Request;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenWhereLessThanEqualTest extends WithEloquentModelTestCase
+final class ThenWhereLessThanEqualTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function リクエストにキーが存在する場合_lessthanequa_lクエリを発行する事を確認(): void
@@ -16,7 +18,7 @@ class ThenWhereLessThanEqualTest extends WithEloquentModelTestCase
         $model = $this->createModel();
         $builder = $model->newQuery();
 
-        $instance = new ThenWhereLessThanEqual('price', null);
+        $instance = new ThenWhereLessThanEqual('price');
         $sql = <<<'EOT'
 SELECT
   *

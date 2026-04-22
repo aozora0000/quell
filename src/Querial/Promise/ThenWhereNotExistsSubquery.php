@@ -20,14 +20,14 @@ use Querial\Target\ScalarTarget;
  */
 class ThenWhereNotExistsSubquery extends PromiseQuery
 {
-    private ScalarTarget $flagTarget;
+    private readonly ScalarTarget $flagTarget;
 
     /**
-     * @param string $subTable サブクエリで参照するテーブル名（例: items）
-     * @param string $foreignKey サブテーブル側の外部キー（例: user_id）
-     * @param string $localKey 親テーブル側のローカルキー（例: id）
-     * @param string $inputTarget リクエストのフラグキー（既定: not_exists）
-     * @param AggregatePromiseQuery|null $aggregatePromiseQuery サブクエリに適用する条件群（任意）
+     * @param  string  $subTable  サブクエリで参照するテーブル名（例: items）
+     * @param  string  $foreignKey  サブテーブル側の外部キー（例: user_id）
+     * @param  string  $localKey  親テーブル側のローカルキー（例: id）
+     * @param  string  $inputTarget  リクエストのフラグキー（既定: not_exists）
+     * @param  AggregatePromiseQuery|null  $aggregatePromiseQuery  サブクエリに適用する条件群（任意）
      */
     public function __construct(
         private readonly string $subTable,
@@ -62,9 +62,10 @@ class ThenWhereNotExistsSubquery extends PromiseQuery
                 ->whereColumn($localQualified, $foreignQualified);
 
             // 追加条件をサブクエリ側へ適用
-            if ($this->aggregatePromiseQuery !== null) {
+            if ($this->aggregatePromiseQuery instanceof AggregatePromiseQuery) {
                 // EloquentBuilder 互換のため、クエリビルダをラップ
-                $eloquent = new class($q) extends EloquentBuilder {
+                $eloquent = new class($q) extends EloquentBuilder
+                {
                     public function __construct(QueryBuilder $query)
                     {
                         // ダミーモデルなしで QueryBuilder をラップ

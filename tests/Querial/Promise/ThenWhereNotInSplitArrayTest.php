@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\ThenWhereNotInSplitArray;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenWhereNotInSplitArrayTest extends WithEloquentModelTestCase
+final class ThenWhereNotInSplitArrayTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function カンマ区切りの文字列を_where_not_inに変換して適用できる(): void

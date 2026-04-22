@@ -44,6 +44,7 @@ class ThenLimitOffset extends PromiseQuery
             if ($limit > 0) {
                 $builder->limit($limit);
             }
+
             if ($this->offsetTarget->is($request)) {
                 $offset = (int) $request->str($this->offsetKey, '0')->value();
                 if ($offset > 0) {
@@ -60,6 +61,7 @@ class ThenLimitOffset extends PromiseQuery
             if ($this->pageTarget->is($request)) {
                 $page = max(1, (int) $request->str($this->pageKey, '1')->value());
             }
+
             $offset = ($page - 1) * $perPage;
 
             $builder->limit($perPage);
@@ -73,6 +75,10 @@ class ThenLimitOffset extends PromiseQuery
 
     public function match(Request $request): bool
     {
-        return $this->limitTarget->is($request) || $this->perPageTarget->is($request);
+        if ($this->limitTarget->is($request)) {
+            return true;
+        }
+
+        return $this->perPageTarget->is($request);
     }
 }

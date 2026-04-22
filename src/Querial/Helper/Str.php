@@ -34,19 +34,17 @@ class Str
             return [];
         }
 
-        $parts = array_map(static fn ($v) => trim((string) $v), explode($delimiter, $raw));
-        $parts = array_values(array_filter($parts, static fn ($v) => $v !== ''));
+        $parts = array_map(static fn ($v): string => trim((string) $v), explode($delimiter, $raw));
+        $parts = array_values(array_filter($parts, static fn ($v): bool => $v !== ''));
 
         if ($parts === []) {
             return [];
         }
 
-        return array_map(static function (string $v) use ($cast) {
-            return match ($cast) {
-                'int' => (int) $v,
-                'float' => (float) $v,
-                default => $v,
-            };
+        return array_map(static fn (string $v) => match ($cast) {
+            'int' => (int) $v,
+            'float' => (float) $v,
+            default => $v,
         }, $parts);
     }
 
@@ -67,8 +65,8 @@ class Str
             return [];
         }
 
-        $list = array_map(static fn ($v) => trim((string) $v), explode($delimiter, $raw));
-        $list = array_values(array_filter($list, static fn ($v) => $v !== ''));
+        $list = array_map(static fn ($v): string => trim((string) $v), explode($delimiter, $raw));
+        $list = array_values(array_filter($list, static fn ($v): bool => $v !== ''));
 
         $tokens = [];
         foreach ($list as $item) {
@@ -78,14 +76,17 @@ class Str
                 if ($l === '' || $r === '') {
                     continue; // 片側欠損は無視
                 }
+
                 if (! is_numeric($l) || ! is_numeric($r)) {
                     continue; // 非数値は無視
                 }
+
                 $min = $l + 0; // 数値化（int/float）
                 $max = $r + 0;
                 if ($min > $max) {
                     [$min, $max] = [$max, $min]; // 逆転時は入れ替え
                 }
+
                 $tokens[] = ['type' => 'range', 'min' => $min, 'max' => $max];
 
                 continue;
@@ -94,6 +95,7 @@ class Str
             if (! is_numeric($item)) {
                 continue; // 非数値は無視
             }
+
             $tokens[] = ['type' => 'value', 'value' => $item + 0];
         }
 
@@ -114,26 +116,28 @@ class Str
      */
     public static function parseOrderByTokens(string $raw, array $allowedMap, array $defaultTokens = []): array
     {
-        $parts = array_values(array_filter(array_map('trim', explode(',', $raw)), static fn ($v) => $v !== ''));
+        $parts = array_values(array_filter(array_map(trim(...), explode(',', $raw)), static fn ($v): bool => $v !== ''));
 
         $result = [];
-        foreach ($parts as $token) {
-            $dir = str_starts_with($token, '-') ? 'desc' : 'asc';
-            $key = ltrim($token, '+-');
+        foreach ($parts as $part) {
+            $dir = str_starts_with($part, '-') ? 'desc' : 'asc';
+            $key = ltrim($part, '+-');
             if (! array_key_exists($key, $allowedMap)) {
                 continue; // 不正トークンは無視
             }
+
             $column = $allowedMap[$key];
             $result[] = [$column, $dir];
         }
 
         if ($result === [] && $defaultTokens !== []) {
-            foreach ($defaultTokens as $token) {
-                $dir = str_starts_with($token, '-') ? 'desc' : 'asc';
-                $key = ltrim($token, '+-');
+            foreach ($defaultTokens as $defaultToken) {
+                $dir = str_starts_with($defaultToken, '-') ? 'desc' : 'asc';
+                $key = ltrim($defaultToken, '+-');
                 if (! array_key_exists($key, $allowedMap)) {
                     continue;
                 }
+
                 $result[] = [$allowedMap[$key], $dir];
             }
         }
@@ -172,6 +176,6 @@ class Str
         // 小数点以下は6桁固定で作成後、末尾の0と小数点をトリムして安定化
         $normalized = rtrim(rtrim(sprintf('%.6F', $number), '0'), '.');
 
-        return "'{$normalized}'";
+        return sprintf("'%s'", $normalized);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\ThenHavingBetween;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenHavingBetweenTest extends WithEloquentModelTestCase
+final class ThenHavingBetweenTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function 最小最大が揃っている時は_having_betweenでクエリを実行する(): void

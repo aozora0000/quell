@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
@@ -9,7 +11,7 @@ use Querial\Promise\ThenOrWhereHas;
 use Querial\Promise\ThenWhereEqual;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenOrWhereHasTest extends WithEloquentModelTestCase
+final class ThenOrWhereHasTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function 複数の_existsサブクエリが入った時に_o_rになる(): void

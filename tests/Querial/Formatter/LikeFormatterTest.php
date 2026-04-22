@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Formatter;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Querial\Formatter\LikeFormatter;
 
-class LikeFormatterTest extends TestCase
+final class LikeFormatterTest extends TestCase
 {
     #[Test]
     public function 前方一致(): void

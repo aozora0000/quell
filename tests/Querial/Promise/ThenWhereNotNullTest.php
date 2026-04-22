@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\ThenWhereNotNull;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenWhereNotNullTest extends WithEloquentModelTestCase
+final class ThenWhereNotNullTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function 指定キーが存在する場合_isnotnullでクエリを実行する(): void

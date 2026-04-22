@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise\Support;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -8,7 +10,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\Support\ThenCallable;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenCallableTest extends WithEloquentModelTestCase
+final class ThenCallableTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function 即時関数の条件に一致した場合、即時関数内のクエリが実行される(): void

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\ThenWhereBetween;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenWhereBetweenTest extends WithEloquentModelTestCase
+final class ThenWhereBetweenTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function 最小最大が揃っている時は_betwee_nでクエリを実行する(): void
@@ -17,7 +19,7 @@ class ThenWhereBetweenTest extends WithEloquentModelTestCase
         $model = $this->createModel();
         $builder = $model->newQuery();
 
-        $instance = new ThenWhereBetween('price', null);
+        $instance = new ThenWhereBetween('price');
         $sql = <<<'EOT'
 SELECT
   *
@@ -38,7 +40,7 @@ EOT;
         $model = $this->createModel();
         $builder = $model->newQuery();
 
-        $instance = new ThenWhereBetween('price', null);
+        $instance = new ThenWhereBetween('price');
         $sql = <<<'EOT'
 SELECT
   *
@@ -58,7 +60,7 @@ EOT;
         $model = $this->createModel();
         $builder = $model->newQuery();
 
-        $instance = new ThenWhereBetween('price', null);
+        $instance = new ThenWhereBetween('price');
         $sql = <<<'EOT'
 SELECT
   *

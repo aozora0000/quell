@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
@@ -9,7 +11,7 @@ use Querial\Promise\ThenWhereEqual;
 use Querial\Promise\ThenWhereHas;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenWhereHasTest extends WithEloquentModelTestCase
+final class ThenWhereHasTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function リクエストにキーが存在する場合_exists_whereサブクエリを発行する事を確認(): void

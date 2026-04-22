@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\ThenWhereLessThan;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenWhereLessThanTest extends WithEloquentModelTestCase
+final class ThenWhereLessThanTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function リクエストにキーが存在する場合_lesstha_nクエリを発行する事を確認(): void
@@ -17,7 +19,7 @@ class ThenWhereLessThanTest extends WithEloquentModelTestCase
         $model = $this->createModel();
         $builder = $model->newQuery();
 
-        $instance = new ThenWhereLessThan('price', null);
+        $instance = new ThenWhereLessThan('price');
         $sql = <<<'EOT'
 SELECT
   *

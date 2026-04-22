@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\ThenWhereInRequestArrayMap;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenWhereInRequestArrayMapTest extends WithEloquentModelTestCase
+final class ThenWhereInRequestArrayMapTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function 連想配列を_mapに従って_andで_where_in適用できる(): void

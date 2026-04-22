@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\ThenWhereDateEqual;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenWhereDateEqualTest extends WithEloquentModelTestCase
+final class ThenWhereDateEqualTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function 指定日付が存在する場合_同一日の範囲でクエリを実行する(): void

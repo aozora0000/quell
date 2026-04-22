@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\ThenWhereDistance;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenWhereDistanceTest extends WithEloquentModelTestCase
+final class ThenWhereDistanceTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function 半径内検索のwhere_rawが付与される(): void

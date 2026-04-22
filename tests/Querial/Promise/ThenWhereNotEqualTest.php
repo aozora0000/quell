@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Database\Query\Builder;
@@ -11,7 +13,7 @@ use Tests\Querial\WithEloquentModelTestCase;
 /**
  * @property Builder $builder
  */
-class ThenWhereNotEqualTest extends WithEloquentModelTestCase
+final class ThenWhereNotEqualTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function リクエストに存在するキーでwhereを掛ける(): void

@@ -40,8 +40,8 @@ class ThenWhereRelationCount extends PromiseQuery
 
         $count = (int) $this->target->value($request);
         $callback = null;
-        if ($this->aggregatePromiseQuery !== null) {
-            $callback = fn (Builder $q) => $this->aggregatePromiseQuery->resolve($request, $q);
+        if ($this->aggregatePromiseQuery instanceof AggregatePromiseQuery) {
+            $callback = fn (Builder $q): Builder => $this->aggregatePromiseQuery->resolve($request, $q);
         }
 
         return $builder->whereHas($this->relation, $callback, $this->operator, $count);
@@ -49,7 +49,7 @@ class ThenWhereRelationCount extends PromiseQuery
 
     public function match(Request $request): bool
     {
-        if ($this->aggregatePromiseQuery !== null && ! $this->aggregatePromiseQuery->match($request)) {
+        if ($this->aggregatePromiseQuery instanceof AggregatePromiseQuery && ! $this->aggregatePromiseQuery->match($request)) {
             return false;
         }
 

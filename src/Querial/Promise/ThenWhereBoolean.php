@@ -52,9 +52,12 @@ class ThenWhereBoolean extends PromiseQuery
         if (! $this->target->is($request)) {
             return false;
         }
+
         $raw = $this->target->value($request);
+        if (Str::isTruthy($raw)) {
+            return true;
+        }
 
-        return Str::isTruthy($raw) || Str::isFalsy($raw);
+        return Str::isFalsy($raw);
     }
-
 }

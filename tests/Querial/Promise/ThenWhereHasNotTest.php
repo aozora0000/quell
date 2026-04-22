@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
@@ -9,7 +11,7 @@ use Querial\Promise\ThenWhereEqual;
 use Querial\Promise\ThenWhereHasNot;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenWhereHasNotTest extends WithEloquentModelTestCase
+final class ThenWhereHasNotTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function リクエストにキーが存在する場合_notexists_whereサブクエリを発行する事を確認(): void

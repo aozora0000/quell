@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise\Support;
 
 use Illuminate\Http\Request;
@@ -10,7 +12,7 @@ use Querial\Promise\ThenWhereEqual;
 use Querial\Promise\ThenWhereLike;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class IfCallableTest extends WithEloquentModelTestCase
+final class IfCallableTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function 通常関数の条件に一致した場合、promiseクエリが実行される(): void

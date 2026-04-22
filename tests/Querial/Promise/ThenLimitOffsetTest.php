@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\ThenLimitOffset;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenLimitOffsetTest extends WithEloquentModelTestCase
+final class ThenLimitOffsetTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function per_pageとpageからlimit_offsetが適用される(): void

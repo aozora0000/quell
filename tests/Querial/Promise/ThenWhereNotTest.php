@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
@@ -8,7 +10,7 @@ use Querial\Promise\ThenWhereEqual;
 use Querial\Promise\ThenWhereNot;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenWhereNotTest extends WithEloquentModelTestCase
+final class ThenWhereNotTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function 否定条件が適用される(): void

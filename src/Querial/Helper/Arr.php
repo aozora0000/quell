@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Querial\Helper;
 
 class Arr
@@ -14,10 +16,7 @@ class Arr
     public static function toList(mixed $raw): array
     {
         $list = is_array($raw) ? array_values($raw) : [$raw];
-        $list = array_values(array_filter($list, static function ($v) {
-            return $v !== '' && $v !== null;
-        }));
 
-        return $list;
+        return array_values(array_filter($list, static fn ($v) => $v !== '' && $v !== null));
     }
 }

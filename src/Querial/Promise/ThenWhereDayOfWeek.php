@@ -56,6 +56,7 @@ class ThenWhereDayOfWeek extends PromiseQuery
         if (! $this->target->is($request)) {
             return false;
         }
+
         $v = (int) $this->target->value($request);
 
         return ($v >= 0 && $v <= 6) || ($v >= 1 && $v <= 7);

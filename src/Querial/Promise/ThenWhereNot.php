@@ -16,7 +16,7 @@ use Querial\Contracts\Support\PromiseQuery;
  */
 class ThenWhereNot extends PromiseQuery
 {
-    public function __construct(private PromiseInterface $promise) {}
+    public function __construct(private readonly PromiseInterface $promise) {}
 
     public function resolve(Request $request, EloquentBuilder $builder): EloquentBuilder
     {

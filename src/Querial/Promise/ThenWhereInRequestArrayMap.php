@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Http\Request;
 use Querial\Contracts\Support\PromiseQuery;
 use Querial\Helper\Arr;
-use Querial\Helper\Str;
 
 /**
  * リクエストの連想配列（例: filters[status][]=...）をマップに従って whereIn を適用する Promise。
@@ -39,10 +38,12 @@ class ThenWhereInRequestArrayMap extends PromiseQuery
         if (! is_array($bag)) {
             return false;
         }
-        foreach ($this->map as $inputKey => $_) {
+
+        foreach (array_keys($this->map) as $inputKey) {
             if (! array_key_exists($inputKey, $bag)) {
                 continue;
             }
+
             $values = Arr::toList($bag[$inputKey]);
             if ($values !== []) {
                 return true;
@@ -63,6 +64,7 @@ class ThenWhereInRequestArrayMap extends PromiseQuery
             if (! array_key_exists($inputKey, $bag)) {
                 continue;
             }
+
             $values = Arr::toList($bag[$inputKey]);
             if ($values === []) {
                 continue;
@@ -75,5 +77,4 @@ class ThenWhereInRequestArrayMap extends PromiseQuery
 
         return $builder;
     }
-
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
@@ -9,7 +11,7 @@ use Querial\Promise\ThenWhereEqual;
 use Querial\Promise\ThenWhereRelationCount;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenWhereRelationCountTest extends WithEloquentModelTestCase
+final class ThenWhereRelationCountTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function 件数以上で絞り込む(): void

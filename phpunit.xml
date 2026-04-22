@@ -4,7 +4,16 @@
          bootstrap="vendor/autoload.php"
          colors="true"
          failOnPhpunitDeprecation="true"
+         stopOnNotice="true"
+         displayDetailsOnTestsThatTriggerNotices="true"
+         displayDetailsOnTestsThatTriggerWarnings="true"
+         displayDetailsOnTestsThatTriggerDeprecations="true"
 >
+    <php>
+        <!-- PHPのerror_reportingを設定 -->
+        <ini name="error_reporting" value="-1"/>
+        <ini name="display_errors" value="On" />
+    </php>
     <testsuites>
         <testsuite name="Unit">
             <directory suffix="Test.php">./tests/</directory>

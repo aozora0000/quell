@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\ThenWhereLike;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenWhereLikeTest extends WithEloquentModelTestCase
+final class ThenWhereLikeTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function リクエストにキーが存在する場合_where_likeクエリを発行する事を確認(): void

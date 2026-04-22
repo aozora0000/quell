@@ -9,7 +9,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Querial\Target\ArrayOrScalarTarget;
 
-class ArrayOrScalarTargetTest extends TestCase
+final class ArrayOrScalarTargetTest extends TestCase
 {
     /**
      * @return \Iterator<(int | string), array{bool, array<string, mixed>}>
@@ -38,8 +38,6 @@ class ArrayOrScalarTargetTest extends TestCase
     }
 
     /**
-     * @dataProvider dataProvider
-     *
      * @param  array<string, mixed>  $data
      */
     #[DataProvider('dataProvider')]

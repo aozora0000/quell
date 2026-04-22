@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial;
 
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Http\Request;
 use Querial\Contracts\PromiseInterface;
@@ -11,7 +14,7 @@ use Querial\Promise\ThenWhereBetween;
 use Querial\Promise\ThenWhereEqual;
 use Querial\Quell;
 
-class QuellTest extends WithEloquentModelTestCase
+final class QuellTest extends WithEloquentModelTestCase
 {
     public function test_build(): void
     {
@@ -29,7 +32,7 @@ class QuellTest extends WithEloquentModelTestCase
                 return null;
             }
 
-            protected function promise(): ?PromiseInterface
+            protected function promise(): PromiseInterface
             {
                 return new ThenWherePromisesAggregator([
                     new ThenWhereEqual('name'),
@@ -61,7 +64,7 @@ EOT;
 
         $instance = new class($request) extends Quell
         {
-            protected function default(): ?callable
+            protected function default(): callable
             {
                 return static function (Request $request, EloquentBuilder|QueryBuilder $builder): void {
                     $builder->limit(10);
@@ -78,7 +81,7 @@ EOT;
                 return null;
             }
 
-            protected function promise(): ?PromiseInterface
+            protected function promise(): PromiseInterface
             {
                 return new ThenWherePromisesAggregator([
                     new ThenWhereEqual('name'),
@@ -105,9 +108,9 @@ EOT;
 
         $instance = new class($request) extends Quell
         {
-            protected function failed(): ?callable
+            protected function failed(): callable
             {
-                return static function (Request $request, QueryBuilder|EloquentBuilder $builder, \Throwable $throwable): EloquentBuilder|\Illuminate\Database\Query\Builder {
+                return static function (Request $request, QueryBuilder|EloquentBuilder $builder, \Throwable $throwable): EloquentBuilder|Builder {
                     $builder->where('name', $throwable->getMessage());
 
                     return $builder;
@@ -119,7 +122,7 @@ EOT;
                 return null;
             }
 
-            protected function promise(): ?PromiseInterface
+            protected function promise(): PromiseInterface
             {
                 return new class implements PromiseInterface
                 {

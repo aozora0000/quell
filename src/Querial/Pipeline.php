@@ -107,16 +107,16 @@ class Pipeline implements PipelineInterface
 
     public function hasFailedClosure(): bool
     {
-        return $this->onFailedClosure instanceof \Closure;
+        return $this->onFailedClosure instanceof Closure;
     }
 
     public function hasFinallyClosure(): bool
     {
-        return $this->onFinallyClosure instanceof \Closure;
+        return $this->onFinallyClosure instanceof Closure;
     }
 
     public function hasDefaultClosure(): bool
     {
-        return $this->onDefaultClosure instanceof \Closure;
+        return $this->onDefaultClosure instanceof Closure;
     }
 }

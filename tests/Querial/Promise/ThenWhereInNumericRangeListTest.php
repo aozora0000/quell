@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\ThenWhereInNumericRangeList;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenWhereInNumericRangeListTest extends WithEloquentModelTestCase
+final class ThenWhereInNumericRangeListTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function 数値レンジリストから_or条件のbetweenと等価比較が構築される(): void

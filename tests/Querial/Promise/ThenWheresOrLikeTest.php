@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Querial\Promise;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -9,7 +11,7 @@ use Querial\Formatter\LikeFormatter;
 use Querial\Promise\Support\ThenWherePromisesAggregator;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenWheresOrLikeTest extends WithEloquentModelTestCase
+final class ThenWheresOrLikeTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function コンストラクターのテスト(): void

@@ -20,7 +20,7 @@ use Querial\Target\ScalarTarget;
  */
 class ThenWhereExistsSubquery extends PromiseQuery
 {
-    private ScalarTarget $flagTarget;
+    private readonly ScalarTarget $flagTarget;
 
     /**
      * @param  string  $subTable  サブクエリで参照するテーブル名（例: items）
@@ -62,7 +62,7 @@ class ThenWhereExistsSubquery extends PromiseQuery
                 ->whereColumn($localQualified, $foreignQualified);
 
             // 追加条件をサブクエリ側へ適用
-            if ($this->aggregatePromiseQuery !== null) {
+            if ($this->aggregatePromiseQuery instanceof AggregatePromiseQuery) {
                 // EloquentBuilder 互換のため、クエリビルダをラップ
                 $eloquent = new class($q) extends EloquentBuilder
                 {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
@@ -9,7 +11,7 @@ use Querial\Promise\ThenWhereEqual;
 use Querial\Promise\ThenWhereNotExistsSubquery;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenWhereNotExistsSubqueryTest extends WithEloquentModelTestCase
+final class ThenWhereNotExistsSubqueryTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function not_exists指定で_where_not_existsサブクエリが適用される(): void

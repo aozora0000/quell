@@ -1,29 +1,32 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial;
 
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Http\Request;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Querial\Contracts\PromiseInterface;
 use Querial\Pipeline;
 use ReflectionClass;
 
-class PipelineTest extends TestCase
+final class PipelineTest extends TestCase
 {
     #[Test]
+    #[AllowMockObjectsWithoutExpectations]
     public function 追加したpromiseが取得できることを確認(): void
     {
         $request = Request::create('/', 'GET');
         $pipeline = new Pipeline($request);
-        $promise = $this->createMock(PromiseInterface::class);
+        $promise = $this->createStub(PromiseInterface::class);
 
         $pipeline->then($promise);
 
         $reflection = new ReflectionClass($pipeline);
         $reflectionProperty = $reflection->getProperty('promises');
-        $reflectionProperty->setAccessible(true);
 
         $promises = $reflectionProperty->getValue($pipeline);
 
@@ -32,6 +35,7 @@ class PipelineTest extends TestCase
     }
 
     #[Test]
+    #[AllowMockObjectsWithoutExpectations]
     public function on_failedクロージャが設定できることを確認(): void
     {
         $request = Request::create('/', 'GET');
@@ -42,7 +46,6 @@ class PipelineTest extends TestCase
 
         $reflection = new ReflectionClass($pipeline);
         $reflectionProperty = $reflection->getProperty('onFailedClosure');
-        $reflectionProperty->setAccessible(true);
 
         $closure = $reflectionProperty->getValue($pipeline);
 
@@ -50,6 +53,7 @@ class PipelineTest extends TestCase
     }
 
     #[Test]
+    #[AllowMockObjectsWithoutExpectations]
     public function 例外発生時にon_failedクロージャが呼び出されることを確認(): void
     {
         $request = Request::create('/', 'GET');
@@ -66,7 +70,7 @@ class PipelineTest extends TestCase
             $onFailedCalled = true;
         });
 
-        $builder = $this->createMock(EloquentBuilder::class);
+        $builder = $this->createStub(EloquentBuilder::class);
 
         try {
             $pipeline->build($builder);
@@ -78,6 +82,7 @@ class PipelineTest extends TestCase
     }
 
     #[Test]
+    #[AllowMockObjectsWithoutExpectations]
     public function on_finallyクロージャが呼び出されることを確認(): void
     {
         $request = Request::create('/', 'GET');
@@ -88,7 +93,7 @@ class PipelineTest extends TestCase
             $onFinallyCalled = true;
         });
 
-        $builder = $this->createMock(EloquentBuilder::class);
+        $builder = $this->createStub(EloquentBuilder::class);
 
         $pipeline->build($builder);
 
@@ -96,6 +101,7 @@ class PipelineTest extends TestCase
     }
 
     #[Test]
+    #[AllowMockObjectsWithoutExpectations]
     public function on_defaultクロージャがデフォルトで呼び出されることを確認(): void
     {
         $request = Request::create('/', 'GET');
@@ -106,7 +112,7 @@ class PipelineTest extends TestCase
             $onDefaultCalled = true;
         });
 
-        $builder = $this->createMock(EloquentBuilder::class);
+        $builder = $this->createStub(EloquentBuilder::class);
 
         $pipeline->build($builder);
 

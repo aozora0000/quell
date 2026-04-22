@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\ThenOrWhereLike;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenOrWhereLikeTest extends WithEloquentModelTestCase
+final class ThenOrWhereLikeTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function 複数の_whereクエリが入った時に_o_rになる(): void

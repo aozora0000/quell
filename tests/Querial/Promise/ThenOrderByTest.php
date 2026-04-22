@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\ThenOrderBy;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenOrderByTest extends WithEloquentModelTestCase
+final class ThenOrderByTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function 指定カラムと方向で_order_byが適用される(): void

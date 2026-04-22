@@ -7,9 +7,9 @@ namespace Querial\Promise;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Http\Request;
 use Querial\Contracts\Support\PromiseQuery;
+use Querial\Helper\Order;
 use Querial\Helper\Str;
 use Querial\Target\ScalarTarget;
-use Querial\Helper\Order;
 
 /**
  * リクエストで指定されたカラムと方向に基づいて ORDER BY を適用する Promise。
@@ -37,9 +37,9 @@ class ThenOrderBy extends PromiseQuery
         $this->dirTarget = new ScalarTarget($this->dirKey);
     }
 
-    private ScalarTarget $columnTarget;
+    private readonly ScalarTarget $columnTarget;
 
-    private ScalarTarget $dirTarget;
+    private readonly ScalarTarget $dirTarget;
 
     public function match(Request $request): bool
     {
@@ -56,5 +56,4 @@ class ThenOrderBy extends PromiseQuery
 
         return $builder->orderBy($qualified, $dir);
     }
-
 }

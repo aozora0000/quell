@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
@@ -8,7 +10,7 @@ use Querial\Formatter\LikeFormatter;
 use Querial\Promise\ThenWhereNotLike;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenWhereNotLikeTest extends WithEloquentModelTestCase
+final class ThenWhereNotLikeTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function 無指定の場合、部分一致としてlike検索される(): void

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\ThenWhereBoolean;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenWhereBooleanTest extends WithEloquentModelTestCase
+final class ThenWhereBooleanTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function 真偽値がtrue系の値の時_boolean等価条件が適用される(): void

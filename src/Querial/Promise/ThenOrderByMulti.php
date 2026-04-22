@@ -7,9 +7,9 @@ namespace Querial\Promise;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Http\Request;
 use Querial\Contracts\Support\PromiseQuery;
+use Querial\Helper\Order;
 use Querial\Helper\Str;
 use Querial\Target\ScalarTarget;
-use Querial\Helper\Order;
 
 /**
  * 複数キー優先で ORDER BY を適用する Promise。
@@ -33,7 +33,7 @@ class ThenOrderByMulti extends PromiseQuery
         $this->target = new ScalarTarget($this->inputKey);
     }
 
-    private ScalarTarget $target;
+    private readonly ScalarTarget $target;
 
     public function match(Request $request): bool
     {
@@ -53,5 +53,4 @@ class ThenOrderByMulti extends PromiseQuery
 
         return $builder;
     }
-
 }

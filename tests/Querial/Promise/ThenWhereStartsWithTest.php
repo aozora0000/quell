@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\ThenWhereStartsWith;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenWhereStartsWithTest extends WithEloquentModelTestCase
+final class ThenWhereStartsWithTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function 指定文字列で前方一致の_like検索が行われる(): void

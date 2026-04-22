@@ -21,7 +21,7 @@ use Querial\Target\ScalarTarget;
  */
 class ThenWhereInSplitArray extends PromiseQuery
 {
-    private ScalarTarget $target;
+    private readonly ScalarTarget $target;
 
     /**
      * @param  string  $attribute  対象カラム名
@@ -37,7 +37,7 @@ class ThenWhereInSplitArray extends PromiseQuery
         private readonly string $cast = 'string',
         ?string $table = null,
     ) {
-        $key = ($inputTarget !== null && $inputTarget !== '' && $inputTarget !== '0') ? $inputTarget : $attribute;
+        $key = (in_array($inputTarget, [null, '', '0'], true)) ? $attribute : $inputTarget;
         $this->target = new ScalarTarget($key);
         $this->table = $table;
     }
@@ -47,7 +47,8 @@ class ThenWhereInSplitArray extends PromiseQuery
         if (! $this->target->is($request)) {
             return false;
         }
-        $values = Str::splitToList((string) $this->target->value($request), $this->delimiter, $this->cast);
+
+        $values = Str::splitToList($this->target->value($request), $this->delimiter, $this->cast);
 
         return $values !== [];
     }
@@ -59,7 +60,7 @@ class ThenWhereInSplitArray extends PromiseQuery
         }
 
         $attribute = $this->createAttributeFromTable($builder, $this->attribute);
-        $raw = (string) $this->target->value($request);
+        $raw = $this->target->value($request);
         $values = Str::splitToList($raw, $this->delimiter, $this->cast);
 
         return $builder->whereIn($attribute, $values);

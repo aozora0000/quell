@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Target;
 
 use Illuminate\Http\Request;
@@ -8,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Querial\Target\BetweenTarget;
 use Querial\Target\ScalarTarget;
 
-class BetweenTargetTest extends TestCase
+final class BetweenTargetTest extends TestCase
 {
     /**
      * @return \Iterator<(int | string), array{bool, array<string, mixed>}>
@@ -39,8 +41,6 @@ class BetweenTargetTest extends TestCase
     }
 
     /**
-     * @dataProvider dataProvider
-     *
      * @param  array<string, mixed>  $data
      */
     #[DataProvider('dataProvider')]

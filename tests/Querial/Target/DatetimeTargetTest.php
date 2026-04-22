@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Target;
 
 use Carbon\Carbon;
@@ -8,7 +10,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Querial\Target\DatetimeTarget;
 
-class DatetimeTargetTest extends TestCase
+final class DatetimeTargetTest extends TestCase
 {
     /**
      * @return \Iterator<(int | string), array{bool, string, array<string, mixed>}>
@@ -82,8 +84,6 @@ class DatetimeTargetTest extends TestCase
     }
 
     /**
-     * @dataProvider dataProvider
-     *
      * @param  array<string, mixed>  $data
      */
     #[DataProvider('dataProvider')]
@@ -95,8 +95,6 @@ class DatetimeTargetTest extends TestCase
     }
 
     /**
-     * @dataProvider dataProvider
-     *
      * @param  array<string, mixed>  $data
      */
     #[DataProvider('dataProvider')]

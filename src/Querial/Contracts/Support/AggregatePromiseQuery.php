@@ -26,7 +26,7 @@ abstract class AggregatePromiseQuery implements PromiseInterface
     final public function __construct(array $promises)
     {
         foreach ($promises as $promise) {
-            throw_unless($promise instanceof PromiseInterface, new InvalidClassException('Required PromiseInterface Implement in Class'));
+            throw_unless($promise instanceof PromiseInterface, InvalidClassException::class, 'Required PromiseInterface Implement in Class');
         }
 
         $this->promises = $promises;

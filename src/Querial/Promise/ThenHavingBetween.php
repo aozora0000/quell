@@ -68,6 +68,7 @@ class ThenHavingBetween extends PromiseQuery
         if ($this->target->is($request)) {
             return true;
         }
+
         if ($this->target->max()->is($request)) {
             return true;
         }

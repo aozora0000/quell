@@ -13,9 +13,9 @@ use Querial\Formatter\LikeFormatter;
 class ThenWhereStartsWith extends ThenWhereLike
 {
     /**
-     * @param string $attribute 対象カラム
-     * @param string|null $inputTarget 入力キー（省略時は $attribute）
-     * @param string|null $table テーブル名（任意）
+     * @param  string  $attribute  対象カラム
+     * @param  string|null  $inputTarget  入力キー（省略時は $attribute）
+     * @param  string|null  $table  テーブル名（任意）
      */
     public function __construct(string $attribute, ?string $inputTarget = null, ?string $table = null)
     {

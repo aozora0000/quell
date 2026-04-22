@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\ThenWhereStartsWithMultiColumns;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenWhereStartsWithMultiColumnsTest extends WithEloquentModelTestCase
+final class ThenWhereStartsWithMultiColumnsTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function 単一キーワードで複数カラムの前方一致_or_likeが適用される(): void
@@ -20,7 +22,7 @@ class ThenWhereStartsWithMultiColumnsTest extends WithEloquentModelTestCase
         $instance = new ThenWhereStartsWithMultiColumns(['name', 'email'], 'q');
 
         // 1回目の解決で where 句が1セット追加される
-        $sql = $this->format($instance->resolve($request, $builder));
+        $this->format($instance->resolve($request, $builder));
 
         $expected = <<<'EOT'
 select

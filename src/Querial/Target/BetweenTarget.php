@@ -35,7 +35,7 @@ class BetweenTarget implements TargetInterface
      *
      * @return string[]
      */
-    public function value(Request $request)
+    public function value(Request $request): array
     {
         return array_values(Arr::sort([
             $this->maxTarget->value($request),

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\ThenWhereInArray;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenWhereInArrayTest extends WithEloquentModelTestCase
+final class ThenWhereInArrayTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function リクエストにキーが存在し単体の場合_where_inを発行する事を確認(): void

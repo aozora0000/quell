@@ -78,14 +78,11 @@ class ThenWhereDistance extends PromiseQuery
         if (! $this->latTarget->is($request)) {
             return false;
         }
+
         if (! $this->lngTarget->is($request)) {
             return false;
         }
-        if (! $this->radiusTarget->is($request)) {
-            return false;
-        }
 
-        return true;
+        return $this->radiusTarget->is($request);
     }
-
 }

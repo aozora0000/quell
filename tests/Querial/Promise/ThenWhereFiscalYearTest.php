@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\ThenWhereFiscalYear;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenWhereFiscalYearTest extends WithEloquentModelTestCase
+final class ThenWhereFiscalYearTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function 既定の4月始まり年度で期間絞り込みを行う(): void

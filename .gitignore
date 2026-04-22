@@ -12,4 +12,4 @@ vendor
 .phpunit.result.cache
 .php_cs.cache
 composer.lock
-.junie
+.junie/*!/.junie/guidelines.md

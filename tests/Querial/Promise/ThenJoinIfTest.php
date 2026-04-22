@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\ThenJoinIf;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenJoinIfTest extends WithEloquentModelTestCase
+final class ThenJoinIfTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function 許可されたjoinが適用される(): void

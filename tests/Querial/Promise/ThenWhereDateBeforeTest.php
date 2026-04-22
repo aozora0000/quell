@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\ThenWhereDateBefore;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenWhereDateBeforeTest extends WithEloquentModelTestCase
+final class ThenWhereDateBeforeTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function 指定日付以前のクエリが適用される(): void

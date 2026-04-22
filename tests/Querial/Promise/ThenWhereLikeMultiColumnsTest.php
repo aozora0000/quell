@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\ThenWhereLikeMultiColumns;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenWhereLikeMultiColumnsTest extends WithEloquentModelTestCase
+final class ThenWhereLikeMultiColumnsTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function 単一キーワードで複数カラムの_or_likeが適用される(): void
@@ -18,7 +20,7 @@ class ThenWhereLikeMultiColumnsTest extends WithEloquentModelTestCase
 
         $instance = new ThenWhereLikeMultiColumns(['name', 'email'], 'q');
 
-        $sql = $this->format($instance->resolve($request, $builder));
+        $this->format($instance->resolve($request, $builder));
 
         $expected = <<<'EOT'
 select

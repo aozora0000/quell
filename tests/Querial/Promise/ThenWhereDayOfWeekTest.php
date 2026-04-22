@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\ThenWhereDayOfWeek;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenWhereDayOfWeekTest extends WithEloquentModelTestCase
+final class ThenWhereDayOfWeekTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function 曜日での絞り込みが適用される(): void

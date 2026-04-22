@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
@@ -9,7 +11,7 @@ use Querial\Promise\ThenWhereEqual;
 use Querial\Promise\ThenWhereExistsSubquery;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenWhereExistsSubqueryTest extends WithEloquentModelTestCase
+final class ThenWhereExistsSubqueryTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function exists指定で_where_existsサブクエリが適用される(): void

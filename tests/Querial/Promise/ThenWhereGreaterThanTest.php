@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\ThenWhereGreaterThan;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenWhereGreaterThanTest extends WithEloquentModelTestCase
+final class ThenWhereGreaterThanTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function リクエストにキーが存在する場合_greatertha_nクエリを発行する事を確認(): void
@@ -17,7 +19,7 @@ class ThenWhereGreaterThanTest extends WithEloquentModelTestCase
         $model = $this->createModel();
         $builder = $model->newQuery();
 
-        $instance = new ThenWhereGreaterThan('price', null);
+        $instance = new ThenWhereGreaterThan('price');
         $sql = <<<'EOT'
 SELECT
   *

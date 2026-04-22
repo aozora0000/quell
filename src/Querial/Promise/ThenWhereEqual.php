@@ -27,7 +27,7 @@ class ThenWhereEqual extends PromiseQuery
         ?string $inputTarget = null,
         ?string $table = null)
     {
-        $this->target = new ScalarTarget($inputTarget !== null && $inputTarget !== '' && $inputTarget !== '0' ? $inputTarget : $attribute);
+        $this->target = new ScalarTarget(in_array($inputTarget, [null, '', '0'], true) ? $attribute : $inputTarget);
         $this->table = $table;
     }
 

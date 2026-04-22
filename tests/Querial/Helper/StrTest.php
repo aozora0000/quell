@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Helper;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Querial\Helper\Str;
 
-class StrTest extends TestCase
+final class StrTest extends TestCase
 {
     // 真偽値ヘルパー
     #[Test]
@@ -23,7 +25,6 @@ class StrTest extends TestCase
         $this->assertTrue(Str::isFalsy('no'), 'no は偽として判定されるべきです');
     }
 
-
     // 配列/分割ヘルパー
     #[Test]
     public function 文字列を区切りで分割し_trimと空要素除外ができる(): void
@@ -39,12 +40,12 @@ class StrTest extends TestCase
     {
         // '1, 2, ,3' は [1,2,3] になる
         $expected = [1, 2, 3];
-        $actual = Str::splitToList('1, 2, ,3', ',','int');
+        $actual = Str::splitToList('1, 2, ,3', ',', 'int');
         $this->assertSame($expected, $actual, 'intキャストの結果が期待と異なります');
     }
 
     #[Test]
-    public function 数値をSQL文字列にクォートできる(): void
+    public function 数値を_sq_l文字列にクォートできる(): void
     {
         // 12.340000 は '12.34' としてクォートされる
         $expected = "'12.34'";

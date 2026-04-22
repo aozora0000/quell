@@ -26,7 +26,7 @@ class ThenWhereHasNot extends PromiseQuery
 
     public function resolve(Request $request, Builder $builder): Builder
     {
-        if ($this->aggregatePromiseQuery === null) {
+        if (! $this->aggregatePromiseQuery instanceof AggregatePromiseQuery) {
             return $builder->whereDoesntHave($this->relation);
         }
 
@@ -34,11 +34,11 @@ class ThenWhereHasNot extends PromiseQuery
             return $builder;
         }
 
-        return $builder->whereDoesntHave($this->relation, fn (Builder $builder) => $this->aggregatePromiseQuery->resolve($request, $builder));
+        return $builder->whereDoesntHave($this->relation, fn (Builder $builder): Builder => $this->aggregatePromiseQuery->resolve($request, $builder));
     }
 
     public function match(Request $request): bool
     {
-        return $this->aggregatePromiseQuery === null || $this->aggregatePromiseQuery->match($request);
+        return ! $this->aggregatePromiseQuery instanceof AggregatePromiseQuery || $this->aggregatePromiseQuery->match($request);
     }
 }

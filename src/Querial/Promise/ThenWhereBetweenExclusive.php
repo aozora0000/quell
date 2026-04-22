@@ -26,6 +26,7 @@ class ThenWhereBetweenExclusive extends PromiseQuery
     ) {
         $target = $inputTarget ?? $this->attribute;
         $this->target = new BetweenTarget(new ScalarTarget($target, $maxPostfix), new ScalarTarget($target, $minPostfix));
+
         $this->table = $table;
     }
 
@@ -48,6 +49,7 @@ class ThenWhereBetweenExclusive extends PromiseQuery
         if ($this->target->is($request)) {
             return true;
         }
+
         if ($this->target->max()->is($request)) {
             return true;
         }

@@ -27,7 +27,7 @@ class ThenWhereInArray extends PromiseQuery
         ?string $inputTarget = null,
         ?string $table = null)
     {
-        $this->target = new ArrayOrScalarTarget($inputTarget !== null && $inputTarget !== '' && $inputTarget !== '0' ? $inputTarget : $attribute);
+        $this->target = new ArrayOrScalarTarget(in_array($inputTarget, [null, '', '0'], true) ? $attribute : $inputTarget);
         $this->table = $table;
     }
 

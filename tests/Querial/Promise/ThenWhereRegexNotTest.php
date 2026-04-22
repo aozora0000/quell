@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise;
 
 use Illuminate\Http\Request;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Querial\Promise\ThenWhereRegexNot;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenWhereRegexNotTest extends WithEloquentModelTestCase
+final class ThenWhereRegexNotTest extends WithEloquentModelTestCase
 {
     #[Test]
     public function 正規表現の否定検索が適用される(): void

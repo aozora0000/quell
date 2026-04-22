@@ -22,6 +22,7 @@ return static function (RectorConfig $config): void {
     ]);
     $config->sets([
         LaravelSetList::LARAVEL_120,
+        LaravelSetList::LARAVEL_130,
         LaravelSetList::LARAVEL_CODE_QUALITY,
         LaravelSetList::LARAVEL_ARRAY_STR_FUNCTION_TO_STATIC_CALL,
         LaravelSetList::LARAVEL_COLLECTION,
@@ -29,6 +30,7 @@ return static function (RectorConfig $config): void {
         LaravelSetList::LARAVEL_IF_HELPERS,
         LaravelSetList::LARAVEL_LEGACY_FACTORIES_TO_CLASSES,
         LevelSetList::UP_TO_PHP_82,
+        LevelSetList::UP_TO_PHP_83,
         // SetList::PHP_POLYFILLS,
         SetList::CODE_QUALITY,
         SetList::CODING_STYLE,

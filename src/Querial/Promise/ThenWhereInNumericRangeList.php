@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Querial\Promise;
@@ -16,14 +17,14 @@ use Querial\Target\ScalarTarget;
  */
 class ThenWhereInNumericRangeList extends PromiseQuery
 {
-    private ScalarTarget $target;
+    private readonly ScalarTarget $target;
 
     /**
-     * @param string $attribute 対象カラム
-     * @param string|null $inputTarget 入力キー（省略時は $attribute）
-     * @param string $delimiter 要素区切り（既定: ','）
-     * @param string $rangeSeparator レンジ区切り（既定: '-'）
-     * @param string|null $table テーブル名（任意）
+     * @param  string  $attribute  対象カラム
+     * @param  string|null  $inputTarget  入力キー（省略時は $attribute）
+     * @param  string  $delimiter  要素区切り（既定: ','）
+     * @param  string  $rangeSeparator  レンジ区切り（既定: '-'）
+     * @param  string|null  $table  テーブル名（任意）
      */
     public function __construct(
         private readonly string $attribute,
@@ -32,7 +33,7 @@ class ThenWhereInNumericRangeList extends PromiseQuery
         private readonly string $rangeSeparator = '-',
         ?string $table = null,
     ) {
-        $key = ($inputTarget !== null && $inputTarget !== '' && $inputTarget !== '0') ? $inputTarget : $attribute;
+        $key = (in_array($inputTarget, [null, '', '0'], true)) ? $attribute : $inputTarget;
         $this->target = new ScalarTarget($key);
         $this->table = $table;
     }
@@ -42,7 +43,8 @@ class ThenWhereInNumericRangeList extends PromiseQuery
         if (! $this->target->is($request)) {
             return false;
         }
-        $tokens = Str::parseNumericRangeTokens((string) $this->target->value($request), $this->delimiter, $this->rangeSeparator);
+
+        $tokens = Str::parseNumericRangeTokens($this->target->value($request), $this->delimiter, $this->rangeSeparator);
 
         return $tokens !== [];
     }
@@ -54,16 +56,16 @@ class ThenWhereInNumericRangeList extends PromiseQuery
         }
 
         $attribute = $this->createAttributeFromTable($builder, $this->attribute);
-        $tokens = Str::parseNumericRangeTokens((string) $this->target->value($request), $this->delimiter, $this->rangeSeparator);
+        $tokens = Str::parseNumericRangeTokens($this->target->value($request), $this->delimiter, $this->rangeSeparator);
 
         return $builder->where(function (EloquentBuilder $q) use ($tokens, $attribute): void {
-            foreach ($tokens as $t) {
-                if ($t['type'] === 'range') {
-                    $min = (string) $t['min'];
-                    $max = (string) $t['max'];
+            foreach ($tokens as $token) {
+                if ($token['type'] === 'range') {
+                    $min = (string) $token['min'];
+                    $max = (string) $token['max'];
                     $q->orWhereBetween($attribute, [$min, $max]);
                 } else { // value
-                    $q->orWhere($attribute, '=', (string) $t['value']);
+                    $q->orWhere($attribute, '=', (string) $token['value']);
                 }
             }
         });

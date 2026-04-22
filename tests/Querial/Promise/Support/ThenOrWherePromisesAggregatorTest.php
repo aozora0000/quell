@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Querial\Promise\Support;
 
 use Illuminate\Http\Request;
@@ -8,7 +10,7 @@ use Querial\Promise\ThenWhereEqual;
 use Querial\Promise\ThenWhereLike;
 use Tests\Querial\WithEloquentModelTestCase;
 
-class ThenOrWherePromisesAggregatorTest extends WithEloquentModelTestCase
+final class ThenOrWherePromisesAggregatorTest extends WithEloquentModelTestCase
 {
     public function test_resolve(): void
     {
